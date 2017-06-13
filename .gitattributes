@@ -1,1 +1,3 @@
 * text=auto !eol
+contools/contools--Tools.sync_all.bat -text
+contools/contools_git.sync_all.bat -text
