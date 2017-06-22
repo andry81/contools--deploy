@@ -1,4 +1,5 @@
 * text=auto !eol
+all/git/svn_to_git_sync_all.bat -text
 contools/git/contools--Tools.sync_all.bat -text
 contools/git/contools_git.sync_all.bat -text
 external_tools/git/external_tools_git.sync_all.bat -text
