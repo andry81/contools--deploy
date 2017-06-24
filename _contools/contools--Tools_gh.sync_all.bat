@@ -2,7 +2,7 @@
 
 setlocal
 
-rem extract name of sunc directory from name of the script
+rem extract name of sync directory from name of the script
 set "?~nx0=%~nx0"
 
 set "WCROOT_SUFFIX=%?~nx0:*.=%"
