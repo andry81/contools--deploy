@@ -1,5 +1,8 @@
 * text=auto !eol
-all/git/svn_to_git_sync_all.bat -text
-contools/git/contools--Tools.sync_all.bat -text
-contools/git/contools_git.sync_all.bat -text
-external_tools/git/external_tools_git.sync_all.bat -text
+__scm_root/sf.update_all.bat -text
+__scm_root/sf_to_gh.sync_all.bat -text
+_contools/contools--Tools_gh.sync_all.bat -text
+_contools/contools_gh.sync_all.bat -text
+_contools/contools_sf.update_all.bat -text
+_contools/external_tools_gh.sync_all.bat -text
+_contools/external_tools_sf.update_all.bat -text
