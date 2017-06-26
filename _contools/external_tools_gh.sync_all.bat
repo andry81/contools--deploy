@@ -23,6 +23,7 @@ pushd "%~dp0%WCROOT%" && (
   call :CMD git svn fetch || ( popd & goto EXIT )
   call :CMD git svn rebase || ( popd & goto EXIT )
   call :CMD git push origin master || ( popd & goto EXIT )
+  popd
 )
 
 :EXIT

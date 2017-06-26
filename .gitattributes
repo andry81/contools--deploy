@@ -1,8 +1,24 @@
 * text=auto !eol
+__scm_root/gh.init_all.bat -text
+__scm_root/gh.pull_all.bat -text
+__scm_root/gh.reset_all.bat -text
+__scm_root/sf.checkout_all.bat -text
 __scm_root/sf.update_all.bat -text
 __scm_root/sf_to_gh.sync_all.bat -text
+_contools/configure.bat -text
+_contools/contools--Tools_gh.init.bat -text
+_contools/contools--Tools_gh.pull_all.bat -text
+_contools/contools--Tools_gh.reset_all.bat -text
 _contools/contools--Tools_gh.sync_all.bat -text
+_contools/contools_gh.init.bat -text
+_contools/contools_gh.pull_all.bat -text
+_contools/contools_gh.reset_all.bat -text
 _contools/contools_gh.sync_all.bat -text
+_contools/contools_sf.checkout_all.bat -text
 _contools/contools_sf.update_all.bat -text
+_contools/external_tools_gh.init.bat -text
+_contools/external_tools_gh.pull_all.bat -text
+_contools/external_tools_gh.reset_all.bat -text
 _contools/external_tools_gh.sync_all.bat -text
+_contools/external_tools_sf.checkout_all.bat -text
 _contools/external_tools_sf.update_all.bat -text

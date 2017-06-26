@@ -20,6 +20,7 @@ set /A NEST_LVL+=1
 
 pushd "%~dp0%WCROOT%" && (
   call :CMD svn up || ( popd & goto EXIT )
+  popd
 )
 
 :EXIT
