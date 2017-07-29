@@ -20,6 +20,8 @@ set /A NEST_LVL+=1
 
 pushd "%~dp0%WCROOT%" && (
   call :CMD git pull origin master || ( popd & goto EXIT )
+  call :CMD git svn fetch || ( popd & goto EXIT )
+  call :CMD git svn rebase || ( popd & goto EXIT )
   call :CMD git subtree pull --prefix=Scripts/Tools tools master || ( popd & goto EXIT )
   call :CMD git subtree pull --prefix=Scripts/Tools/scm/svn --squash tools-svn master || ( popd & goto EXIT )
   call :CMD git push origin master || ( popd & goto EXIT )
