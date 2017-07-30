@@ -9,9 +9,9 @@ setlocal
   echo set "GIT.USER=user"
   echo set "GIT.EMAIL=user@mail.com"
   echo.
-  echo set "CONTOOLS_ROOT.SVN.REPOROOT=https://svn.code.sf.net/p/contools/contools/trunk"
+  echo set "CONTOOLS_ROOT.SVN.REPOROOT=https://svn.code.sf.net/p/contools/contools"
   echo set "CONTOOLS_TOOLS.SVN.REPOROOT=https://svn.code.sf.net/p/contools/contools/trunk/Scripts/Tools"
-  echo set "EXTERNAL_TOOLS.SVN.REPOROOT=https://svn.code.sf.net/p/contools/external_tools/trunk"
+  echo set "EXTERNAL_TOOLS.SVN.REPOROOT=https://svn.code.sf.net/p/contools/external_tools"
   echo.
   echo set "CONTOOLS_ROOT.GIT.ORIGIN=https://github.com/%%GIT.REPO_OWNER%%/contools.git"
   echo set "CONTOOLS_TOOLS.GIT.ORIGIN=https://github.com/%%GIT.REPO_OWNER%%/contools--Tools.git"

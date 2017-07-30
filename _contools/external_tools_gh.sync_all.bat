@@ -2,6 +2,10 @@
 
 setlocal
 
+if not exist "%~dp0configure.user.bat" ( call "%~dp0configure.bat" || goto :EOF )
+
+call "%~dp0configure.user.bat" || goto :EOF
+
 rem extract name of sync directory from name of the script
 set "?~nx0=%~nx0"
 
@@ -19,10 +23,13 @@ if "%NEST_LVL%" == "" set NEST_LVL=0
 set /A NEST_LVL+=1
 
 pushd "%~dp0%WCROOT%" && (
-  call :CMD git pull origin master || ( popd & goto EXIT )
+  rem check ref on existance
+  git ls-remote -h --exit-code "%EXTERNAL_TOOLS.GIT.ORIGIN%" trunk > nul && (
+    call :CMD git pull origin trunk:master || ( popd & goto EXIT )
+  )
   call :CMD git svn fetch || ( popd & goto EXIT )
   call :CMD git svn rebase || ( popd & goto EXIT )
-  call :CMD git push origin master || ( popd & goto EXIT )
+  call :CMD git push origin master:trunk || ( popd & goto EXIT )
   popd
 )
 

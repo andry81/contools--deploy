@@ -59,7 +59,7 @@ if not exist "%~dp0%WCROOT%\.git" ( call :CMD git init "%%~dp0%%WCROOT%%" %%* ||
 
 pushd "%~dp0%WCROOT%" && (
   rem reinit git svn
-  call :GIT_SVN_INIT "%%CONTOOLS_ROOT.SVN.REPOROOT%%" || ( popd & goto EXIT )
+  call :GIT_SVN_INIT "%%CONTOOLS_ROOT.SVN.REPOROOT%%" --stdlayout || ( popd & goto EXIT )
 
   call :CMD git config user.name "%%GIT.USER%%" || ( popd & goto EXIT )
   call :CMD git config user.email "%%GIT.EMAIL%%" || ( popd & goto EXIT )
@@ -102,8 +102,10 @@ rem reset svn-remote.svn.url
 call :CMD git config --local --replace-all svn-remote.svn.url %%* || goto :EOF
 
 rem create git-svn reference
-if not exist ".git\refs\remotes\git-svn" (
-  call :CMD git update-ref refs/remotes/git-svn master || goto :EOF
+if not exist ".git\refs\remotes\git-svn" if exist ".git\refs\remotes\" (
+  if exist ".git\refs\heads\master" (
+    call :CMD git update-ref refs/remotes/git-svn master || goto :EOF
+  )
 )
 
 exit /b
