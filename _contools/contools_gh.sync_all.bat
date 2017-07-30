@@ -25,11 +25,12 @@ set /A NEST_LVL+=1
 set FIRST_TIME_SYNC=0
 
 pushd "%~dp0%WCROOT%" && (
-  rem check ref on existance
-  git ls-remote -h --exit-code "%CONTOOLS_ROOT.GIT.ORIGIN%" trunk > nul && (
-    set FIRST_TIME_SYNC=1
-    call :CMD git pull origin trunk:master || ( popd & goto EXIT )
-  )
+  (
+    rem check ref on existance
+    git ls-remote -h --exit-code "%CONTOOLS_ROOT.GIT.ORIGIN%" trunk > nul && (
+      call :CMD git pull origin trunk:master || ( popd & goto EXIT )
+    )
+  ) || set FIRST_TIME_SYNC=1
   call :CMD git svn fetch || ( popd & goto EXIT )
   call :CMD git svn rebase || ( popd & goto EXIT )
 
