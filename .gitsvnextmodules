@@ -1,0 +1,32 @@
+[submodule "solutions/all-in-one/all-in-one"]
+	path = solutions/all-in-one/all-in-one
+	owner = solutions/all-in-one
+	url = ^/deploy/trunk/projects/_root
+	branch = /
+	fetch = :refs/remotes/git-svn
+	remote = svn
+	type = dir
+[submodule "solutions/all-in-one/all-in-one/contools"]
+	path = solutions/all-in-one/all-in-one/contools
+	owner = solutions/all-in-one
+	url = ^/deploy/trunk/projects/contools
+	branch = /
+	fetch = :refs/remotes/git-svn
+	remote = svn
+	type = dir
+[submodule "solutions/all-in-one/all-in-one/nsisplus"]
+	path = solutions/all-in-one/all-in-one/nsisplus
+	owner = solutions/all-in-one
+	url = /p/nsisplus/deploy/trunk/projects/nsisplus
+	branch = /
+	fetch = :refs/remotes/git-svn
+	remote = svn
+	type = dir
+[submodule "solutions/all-in-one/all-in-one/svncmd"]
+	path = solutions/all-in-one/all-in-one/svncmd
+	owner = solutions/all-in-one
+	url = /p/svncmd/deploy/trunk/projects/svncmd
+	branch = /
+	fetch = :refs/remotes/git-svn
+	remote = svn
+	type = dir

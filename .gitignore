@@ -1,2 +1,2 @@
-__scm_root/configure.user.bat
-_contools/configure.user.bat
+projects/_root/configure.user.bat
+projects/contools/configure.user.bat
