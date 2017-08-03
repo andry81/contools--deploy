@@ -60,14 +60,14 @@ if not exist "%~dp0%WCROOT%\.git" ( call :CMD git init "%%~dp0%%WCROOT%%" %%* ||
 
 pushd "%~dp0%WCROOT%" && (
   rem reinit git svn
-  call :GIT_SVN_INIT "%%EXTERNAL_TOOLS.SVN.REPOROOT%%" --stdlayout || ( popd & goto EXIT )
+  call :GIT_SVN_INIT "%%CONTOOLS_DEPLOY.SVN.REPOROOT%%" || ( popd & goto EXIT )
 
-  call :CMD git config user.name "%%GIT.USER%%" || ( popd & goto EXIT )
-  call :CMD git config user.email "%%GIT.EMAIL%%" || ( popd & goto EXIT )
+  call :CMD git config user.name "%%GIT2.USER%%" || ( popd & goto EXIT )
+  call :CMD git config user.email "%%GIT2.EMAIL%%" || ( popd & goto EXIT )
 
   (
-    git remote get-url origin > nul 2> nul && call :CMD git remote set-url origin "%%EXTERNAL_TOOLS.GIT.ORIGIN%%"
-  ) || call :CMD git remote add origin "%%EXTERNAL_TOOLS.GIT.ORIGIN%%" || ( popd & goto EXIT )
+    git remote get-url origin > nul 2> nul && call :CMD git remote set-url origin "%%CONTOOLS_DEPLOY.GIT2.ORIGIN%%"
+  ) || call :CMD git remote add origin "%%CONTOOLS_DEPLOY.GIT2.ORIGIN%%" || ( popd & goto EXIT )
 
   popd
 )

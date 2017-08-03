@@ -17,6 +17,11 @@ projects/contools/bb~contools--Tools.git_init.bat -text
 projects/contools/bb~contools--Tools.git_pull_all.bat -text
 projects/contools/bb~contools--Tools.git_reset_all.bat -text
 projects/contools/bb~contools--Tools.svn_to_git_sync_all.bat -text
+projects/contools/bb~contools--deploy.git_fetch.bat -text
+projects/contools/bb~contools--deploy.git_init.bat -text
+projects/contools/bb~contools--deploy.git_pull_all.bat -text
+projects/contools/bb~contools--deploy.git_reset_all.bat -text
+projects/contools/bb~contools--deploy.svn_to_git_sync_all.bat -text
 projects/contools/bb~contools.git_fetch.bat -text
 projects/contools/bb~contools.git_init.bat -text
 projects/contools/bb~contools.git_pull_all.bat -text
@@ -33,6 +38,11 @@ projects/contools/gh~contools--Tools.git_init.bat -text
 projects/contools/gh~contools--Tools.git_pull_all.bat -text
 projects/contools/gh~contools--Tools.git_reset_all.bat -text
 projects/contools/gh~contools--Tools.svn_to_git_sync_all.bat -text
+projects/contools/gh~contools--deploy.git_fetch.bat -text
+projects/contools/gh~contools--deploy.git_init.bat -text
+projects/contools/gh~contools--deploy.git_pull_all.bat -text
+projects/contools/gh~contools--deploy.git_reset_all.bat -text
+projects/contools/gh~contools--deploy.svn_to_git_sync_all.bat -text
 projects/contools/gh~contools.git_fetch.bat -text
 projects/contools/gh~contools.git_init.bat -text
 projects/contools/gh~contools.git_pull_all.bat -text
@@ -45,5 +55,7 @@ projects/contools/gh~external_tools.git_reset_all.bat -text
 projects/contools/gh~external_tools.svn_to_git_sync_all.bat -text
 projects/contools/sf~contools.svn_checkout_all.bat -text
 projects/contools/sf~contools.svn_update_all.bat -text
+projects/contools/sf~deploy.svn_checkout_all.bat -text
+projects/contools/sf~deploy.svn_update_all.bat -text
 projects/contools/sf~external_tools.svn_checkout_all.bat -text
 projects/contools/sf~external_tools.svn_update_all.bat -text
