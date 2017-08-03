@@ -20,12 +20,13 @@ call set "HUB_ABBR=%%HUB_ABBR:%OP_NAME%=%%"
 set "HUB_ABBR=%HUB_ABBR:~0,-1%"
 
 :IGNORE_HUB_ABBR_SUFFIX
-set "PROJECTS_ROOT=%~dp0.."
+set "PROJECTS_ROOT=%~dp0"
+if "%PROJECTS_ROOT:~-1%" == "\" set "PROJECTS_ROOT=%PROJECTS_ROOT:~0,-1%"
 
 rem from leaf repositories to a root repository
-call set "GIT.PROJECT_PATH_LIST=%%GIT.PROJECT_PATH_LIST:{{HUB_ABBR}}=%HUB_ABBR%%%"
+call set "SVN.PROJECT_PATH_LIST=%%SVN.PROJECT_PATH_LIST:{{HUB_ABBR}}=%HUB_ABBR%%%"
 
-for %%i in (%GIT.PROJECT_PATH_LIST%) do (
+for %%i in (%SVN.PROJECT_PATH_LIST%) do (
   echo.%%i: %OP_NAME%...
   call "%%PROJECTS_ROOT%%\%%i.%%OP_NAME%%.bat" %%* || goto EXIT
   echo.---

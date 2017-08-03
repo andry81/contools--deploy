@@ -5,6 +5,9 @@ setlocal
 (
   echo.@echo off
   echo.
+  echo.set PROJECT_NAME=contools
+  echo.set "WCROOT_OFFSET=../../../_%%PROJECT_NAME%%"
+  echo.
   echo.rem primary mirror: github.com
   echo set "GIT.REPO_OWNER=andry81"
   echo set "GIT.USER=user"

@@ -24,7 +24,7 @@ if "%NEST_LVL%" == "" set NEST_LVL=0
 
 set /A NEST_LVL+=1
 
-if not exist "%~dp0%WCROOT%" mkdir "%~dp0%WCROOT%"
+if not exist "%~dp0%WCROOT%\" mkdir "%~dp0%WCROOT%"
 if not exist "%~dp0%WCROOT%\.svn" ( call :CMD svn co "%%CONTOOLS_ROOT.SVN.REPOROOT%%/trunk" "%%~dp0%%WCROOT%%" || goto EXIT )
 
 :EXIT
