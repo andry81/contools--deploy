@@ -59,7 +59,7 @@ if not exist "%~dp0%WCROOT%\.git" ( call :CMD git init "%%~dp0%%WCROOT%%" %%* ||
 
 pushd "%~dp0%WCROOT%" && (
   rem reinit git svn
-  call :GIT_SVN_INIT "%%CONTOOLS_TOOLS.SVN.REPOROOT%%/trunk" || ( popd & goto EXIT )
+  call :GIT_SVN_INIT "%%CONTOOLS_TOOLS.SVN.REPOROOT%%" || ( popd & goto EXIT )
 
   call :CMD git config user.name "%%GIT.USER%%" || ( popd & goto EXIT )
   call :CMD git config user.email "%%GIT.EMAIL%%" || ( popd & goto EXIT )
