@@ -1,7 +1,7 @@
 [submodule "solutions/all-in-one/all-in-one"]
 	path = solutions/all-in-one/all-in-one
 	owner = solutions/all-in-one
-	url = ^/deploy/trunk/projects/_root
+	url = ^/trunk/projects/_root
 	branch = /
 	fetch = :refs/remotes/git-svn
 	remote = svn
@@ -9,7 +9,7 @@
 [submodule "solutions/all-in-one/all-in-one/contools"]
 	path = solutions/all-in-one/all-in-one/contools
 	owner = solutions/all-in-one
-	url = ^/deploy/trunk/projects/contools
+	url = ^/trunk/projects/contools
 	branch = /
 	fetch = :refs/remotes/git-svn
 	remote = svn
