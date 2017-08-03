@@ -18,6 +18,8 @@ call set "WCROOT=%%WCROOT:.%WCROOT_SUFFIX%.=%%"
 :IGNORE_WCROOT_SUFFIX
 if "%WCROOT:~-1%" == "." set "WCROOT=%WCROOT:~0,-1%"
 
+if not "%WCROOT_OFFSET%" == "" set "WCROOT=%WCROOT_OFFSET%/%WCROOT%"
+
 if "%NEST_LVL%" == "" set NEST_LVL=0
 
 set /A NEST_LVL+=1
