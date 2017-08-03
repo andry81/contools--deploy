@@ -1,5 +1,5 @@
 * README_EN.txt
-* 2017.08.03
+* 2017.08.04
 * deploy/projects/_root
 
 1. DESCRIPTION
@@ -46,7 +46,7 @@ The default directory structure is this:
 -------------------------------------------------------------------------------
 4. USAGE
 -------------------------------------------------------------------------------
-Scripts name format:
+The solution root deploy scripts format:
   `<HubAbbrivatedName>~<RepositoryOperation>.bat`, where:
 
   `HubAbbrivatedName` can be:
@@ -64,6 +64,13 @@ Scripts name format:
     `svn_checkout_all` - checkout svn repository into new svn working copy
         directory
     `svn_update_all` - update svn working copy directory
+
+Projects deploy scripts format:
+  `<HubAbbrivatedName>~<RepositoryName>.<RepositoryOperation>.bat`, where:
+
+  `HubAbbrivatedName` the same as for the root solution deploy scripts.
+  `RepositoryName` is a repository name allocated in the hub.
+  `RepositoryOperation` the same as for the root solution deploy scripts:
 
 -------------------------------------------------------------------------------
 5. AUTHOR EMAIL
