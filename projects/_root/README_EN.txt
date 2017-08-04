@@ -18,23 +18,23 @@ The SVN and GIT deploy scripts for respective project repositories.
 -------------------------------------------------------------------------------
 The default directory structure is this:
 
-<root>
+/<root>
   |
-  +-- __scm_solutions   - the deploy scripts checkout directory
+  +-/__scm_solutions - the deploy scripts checkout directory
+  |  |
+  |  +-/all-in-one  - the solution root deploy scripts
   |     |
-  |     +-- all-in-one  - the solution root deploy scripts
-  |           |
-  |           +-- contools - the project deploy scripts
-  |           |
-  |           +-- nsisplus - the project deploy scripts
-  |           |
-  |           +-- svncmd   - the project deploy scripts
+  |     +-/contools - the project deploy scripts
+  |     |
+  |     +-/nsisplus - the project deploy scripts
+  |     |
+  |     +-/svncmd   - the project deploy scripts
   |
-  +-- _contools         - the root for WCs of the project
+  +-/_contools      - the root for WCs of the project
   |
-  +-- _nsisplus         - the root for WCs of the project
+  +-/_nsisplus      - the root for WCs of the project
   |
-  +-- _svncmd           - the root for WCs of the project
+  +-/_svncmd        - the root for WCs of the project
 
 -------------------------------------------------------------------------------
 3. INSTALLATION
