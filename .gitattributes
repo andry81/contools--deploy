@@ -61,3 +61,15 @@ projects/contools/sf~deploy.svn_checkout_all.bat -text
 projects/contools/sf~deploy.svn_update_all.bat -text
 projects/contools/sf~external_tools.svn_checkout_all.bat -text
 projects/contools/sf~external_tools.svn_update_all.bat -text
+projects/shell.sf.net/home/svn/p/contools/contools/hooks/pre-revprop-change -text
+projects/shell.sf.net/home/svn/p/contools/debug/hooks/pre-revprop-change -text
+projects/shell.sf.net/home/svn/p/contools/deploy/hooks/pre-revprop-change -text
+projects/shell.sf.net/home/svn/p/contools/external_tools/hooks/pre-revprop-change -text
+projects/shell.sf.net/home/svn/p/gnubuilds/code/hooks/pre-revprop-change -text
+projects/shell.sf.net/home/svn/p/nsisplus/NsisSetupDev/hooks/pre-revprop-change -text
+projects/shell.sf.net/home/svn/p/nsisplus/NsisSetupLib/hooks/pre-revprop-change -text
+projects/shell.sf.net/home/svn/p/nsisplus/NsisSetupSamples/hooks/pre-revprop-change -text
+projects/shell.sf.net/home/svn/p/nsisplus/deploy/hooks/pre-revprop-change -text
+projects/shell.sf.net/home/svn/p/svncmd/deploy/hooks/pre-revprop-change -text
+projects/shell.sf.net/home/svn/p/svncmd/scripts/hooks/pre-revprop-change -text
+projects/shell.sf.net/home/users/a/an/andry81/chmod-pre-revprop-change.sh -text
