@@ -16,3 +16,24 @@ setlocal
   echo.  nsisplus\{{HUB_ABBR}}~nsisplus--NsisSetupLib nsisplus\{{HUB_ABBR}}~nsisplus--NsisSetupDev nsisplus\{{HUB_ABBR}}~nsisplus--NsisSetupSamples
   echo.
 ) > "%~dp0configure.user.bat"
+
+for /F "usebackq eol=	 tokens=* delims=" %%i in (`dir /A:D /B *.*`) do (
+  set "DIR=%%i"
+  call :PROCESS_DIR
+)
+
+pause
+
+exit /b 0
+
+:PROCESS_DIR
+rem ignore directories beginning by `.`
+if "%DIR:~0,1%" == "." exit /b 0
+
+if exist "%DIR%\configure.bat" call :CMD "%%DIR%%\configure.bat"
+
+exit /b
+
+:CMD
+echo.^>%*
+(%*)

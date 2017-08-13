@@ -1,5 +1,5 @@
 * README_EN.txt
-* 2017.08.06
+* 2017.08.13
 * deploy/projects/_root
 
 1. DESCRIPTION
@@ -41,10 +41,11 @@ The default directory structure is this:
 3. INSTALLATION
 -------------------------------------------------------------------------------
 1. run the solution root `configure.bat`
-2. run the `configure.bat` in all project's directories
-3. edit the `WCROOT_OFFSET` variable to change the default directory structure
-4. edit the `GIT.USER`/`GIT.EMAIL`/`GIT2.USER`/`GIT2.EMAIL` to mirror from svn
-   to git under unique account (will be showed in a merge info after a merge).
+2. edit the `WCROOT_OFFSET` variable in the `configure.user.bat` to
+   change the default directory structure
+3. edit the `GIT.USER`/`GIT.EMAIL`/`GIT2.USER`/`GIT2.EMAIL` in projects's
+   `configure.user.bat` to mirror from svn to git under unique account
+   (will be showed in a merge info after a merge).
 
 -------------------------------------------------------------------------------
 4. USAGE
