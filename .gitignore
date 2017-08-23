@@ -1,2 +1,8 @@
 projects/_root/configure.user.bat
+projects/contools/Tools/configure.user.bat
 projects/contools/configure.user.bat
+projects/contools/configureex.user.bat
+projects/contools/contools/configure.user.bat
+projects/contools/debug/configure.user.bat
+projects/contools/deploy/configure.user.bat
+projects/contools/external_tools/configure.user.bat

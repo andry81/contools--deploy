@@ -1,28 +1,38 @@
 @echo off
 
+echo.^>%~dpnx0
+
 setlocal
+
+if not defined NEST_LVL set NEST_LVL=0
+
+set /A NEST_LVL+=1
 
 (
   echo.@echo off
   echo.
-  echo.set SVN.PROJECT_PATH_LIST=contools\{{HUB_ABBR}}~deploy nsisplus\{{HUB_ABBR}}~deploy svncmd\{{HUB_ABBR}}~deploy ^^
-  echo.  contools\{{HUB_ABBR}}~external_tools contools\{{HUB_ABBR}}~contools svncmd\{{HUB_ABBR}}~svncmd ^^
-  echo.  nsisplus\{{HUB_ABBR}}~NsisSetupLib nsisplus\{{HUB_ABBR}}~NsisSetupDev nsisplus\{{HUB_ABBR}}~NsisSetupSamples
+  echo.set SVN.PROJECT_PATH_LIST=contools\deploy\{{HUB_ABBR}}~ nsisplus\deploy\{{HUB_ABBR}}~ svncmd\deploy\{{HUB_ABBR}}~ ^^
+  echo.  contools\debug\{{HUB_ABBR}}~ ^^
+  echo.  contools\external_tools\{{HUB_ABBR}}~ contools\contools\{{HUB_ABBR}}~ svncmd\svncmd\{{HUB_ABBR}}~ ^^
+  echo.  nsisplus\NsisSetupLib\{{HUB_ABBR}}~ nsisplus\NsisSetupDev\{{HUB_ABBR}}~ nsisplus\NsisSetupSamples\{{HUB_ABBR}}~
   echo.
   echo.rem from leaf repositories to a root repository
-  echo.set GIT.PROJECT_PATH_LIST= contools\{{HUB_ABBR}}~contools--deploy nsisplus\{{HUB_ABBR}}~nsisplus--deploy svncmd\{{HUB_ABBR}}~svncmd--deploy ^^
-  echo.  contools\{{HUB_ABBR}}~contools--Tools svncmd\{{HUB_ABBR}}~svncmd--Scripts ^^
-  echo.  contools\{{HUB_ABBR}}~external_tools contools\{{HUB_ABBR}}~contools svncmd\{{HUB_ABBR}}~svncmd ^^
-  echo.  nsisplus\{{HUB_ABBR}}~nsisplus--NsisSetupLib nsisplus\{{HUB_ABBR}}~nsisplus--NsisSetupDev nsisplus\{{HUB_ABBR}}~nsisplus--NsisSetupSamples
+  echo.set GIT.PROJECT_PATH_LIST=contools\deploy\{{HUB_ABBR}}~ nsisplus\deploy\{{HUB_ABBR}}~ svncmd\deploy\{{HUB_ABBR}}~ ^^
+  echo.  contools\debug\{{HUB_ABBR}}~ ^^
+  echo.  contools\Tools\{{HUB_ABBR}}~ svncmd\Scripts\{{HUB_ABBR}}~ ^^
+  echo.  contools\external_tools\{{HUB_ABBR}}~ contools\contools\{{HUB_ABBR}}~ svncmd\svncmd\{{HUB_ABBR}}~ ^^
+  echo.  nsisplus\NsisSetupLib\{{HUB_ABBR}}~ nsisplus\NsisSetupDev\{{HUB_ABBR}}~ nsisplus\NsisSetupSamples\{{HUB_ABBR}}~
   echo.
 ) > "%~dp0configure.user.bat"
 
-for /F "usebackq eol=	 tokens=* delims=" %%i in (`dir /A:D /B *.*`) do (
+for /F "usebackq eol=	 tokens=* delims=" %%i in (`dir /A:D /B "%~dp0*.*"`) do (
   set "DIR=%%i"
   call :PROCESS_DIR
 )
 
-pause
+set /A NEST_LVL-=1
+
+if %NEST_LVL% LEQ 0 pause
 
 exit /b 0
 
@@ -30,7 +40,7 @@ exit /b 0
 rem ignore directories beginning by `.`
 if "%DIR:~0,1%" == "." exit /b 0
 
-if exist "%DIR%\configure.bat" call :CMD "%%DIR%%\configure.bat"
+if exist "%~dp0%DIR%\configure.bat" call :CMD "%%~dp0%%DIR%%\configure.bat"
 
 exit /b
 

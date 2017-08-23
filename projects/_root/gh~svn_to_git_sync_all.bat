@@ -2,15 +2,15 @@
 
 setlocal
 
-if not exist "%~dp0configure.user.bat" ( call "%~dp0configure.bat" || goto :EOF )
-
-call "%~dp0configure.user.bat" || goto :EOF
-
-set "?~n0=%~n0"
-
-if "%NEST_LVL%" == "" set NEST_LVL=0
+if not defined NEST_LVL set NEST_LVL=0
 
 set /A NEST_LVL+=1
+
+if not exist "%~dp0configure.user.bat" ( call "%%~dp0configure.bat" || goto :EOF )
+
+call "%%~dp0configure.user.bat" || goto :EOF
+
+set "?~n0=%~n0"
 
 set "OP_NAME=%?~n0:*~=%"
 
@@ -27,8 +27,8 @@ rem from leaf repositories to a root repository
 call set "GIT.PROJECT_PATH_LIST=%%GIT.PROJECT_PATH_LIST:{{HUB_ABBR}}=%HUB_ABBR%%%"
 
 for %%i in (%GIT.PROJECT_PATH_LIST%) do (
-  echo.%%i: %OP_NAME%...
-  call "%%PROJECTS_ROOT%%\%%i.%%OP_NAME%%.bat" %%* || goto EXIT
+  echo.%%i%OP_NAME%...
+  call "%%PROJECTS_ROOT%%\%%i%%OP_NAME%%.bat" %%* || goto EXIT
   echo.---
   echo.
 )
