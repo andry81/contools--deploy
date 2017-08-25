@@ -23,6 +23,8 @@ if not defined WCROOT ( call :EXIT_B -254 & goto EXIT )
 
 if not "%WCROOT_OFFSET%" == "" set "WCROOT=%WCROOT_OFFSET%/%WCROOT%"
 
+set FIRST_TIME_SYNC=0
+
 pushd "%~dp0%WCROOT%" && (
   (
     rem check ref on existance
