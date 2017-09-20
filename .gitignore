@@ -1,4 +1,6 @@
 projects/_root/configure.user.bat
+projects/contools/3dparty/configure.user.bat
+projects/contools/3dparty_scripts/configure.user.bat
 projects/contools/Tools/configure.user.bat
 projects/contools/configure.user.bat
 projects/contools/configureex.user.bat
