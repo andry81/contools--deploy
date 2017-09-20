@@ -22,12 +22,16 @@ set /A NEST_LVL+=1
   echo.
   echo.set "CONTOOLS_DEPLOY.SVN.REPOROOT=https://svn.code.sf.net/p/contools/deploy"
   echo.set "CONTOOLS_DEBUG.SVN.REPOROOT=https://svn.code.sf.net/p/contools/debug"
+  echo.set "CONTOOLS_3DPARTY.SVN.REPOROOT=https://svn.code.sf.net/p/contools/3dparty"
+  echo.set "CONTOOLS_3DPARTY_SCRIPTS.SVN.REPOROOT=https://svn.code.sf.net/p/contools/3dparty_scripts"
   echo.set "CONTOOLS_ROOT.SVN.REPOROOT=https://svn.code.sf.net/p/contools/contools"
   echo.set "CONTOOLS_TOOLS.SVN.REPOROOT=https://svn.code.sf.net/p/contools/contools/trunk/Scripts/Tools"
   echo.set "EXTERNAL_TOOLS.SVN.REPOROOT=https://svn.code.sf.net/p/contools/external_tools"
   echo.
   echo.set "CONTOOLS_DEPLOY.GIT.ORIGIN=https://%%GIT.USER%%@github.com/%%GIT.REPO_OWNER%%/contools--deploy.git"
   echo.set "CONTOOLS_DEBUG.GIT.ORIGIN=https://%%GIT.USER%%@github.com/%%GIT.REPO_OWNER%%/contools--debug.git"
+  echo.set "CONTOOLS_3DPARTY.GIT.ORIGIN=https://%%GIT.USER%%@github.com/%%GIT.REPO_OWNER%%/contools--3dparty.git"
+  echo.set "CONTOOLS_3DPARTY_SCRIPTS.GIT.ORIGIN=https://%%GIT.USER%%@github.com/%%GIT.REPO_OWNER%%/contools--3dparty_scripts.git"
   echo.set "CONTOOLS_ROOT.GIT.ORIGIN=https://%%GIT.USER%%@github.com/%%GIT.REPO_OWNER%%/contools.git"
   echo.set "CONTOOLS_TOOLS.GIT.ORIGIN=https://%%GIT.USER%%@github.com/%%GIT.REPO_OWNER%%/contools--Tools.git"
   echo.set "CONTOOLS_TOOLS_SVN.GIT.ORIGIN=https://%%GIT.USER%%@github.com/%%GIT.REPO_OWNER%%/svncmd--Scripts.git"
@@ -35,6 +39,8 @@ set /A NEST_LVL+=1
   echo.
   echo.set "CONTOOLS_DEPLOY.GIT2.ORIGIN=https://%%GIT2.USER%%@bitbucket.org/%%GIT2.REPO_OWNER%%/contools-deploy.git"
   echo.set "CONTOOLS_DEBUG.GIT2.ORIGIN=https://%%GIT2.USER%%@bitbucket.org/%%GIT2.REPO_OWNER%%/contools-debug.git"
+  echo.set "CONTOOLS_3DPARTY.GIT2.ORIGIN=https://%%GIT2.USER%%@bitbucket.org/%%GIT2.REPO_OWNER%%/contools-3dparty.git"
+  echo.set "CONTOOLS_3DPARTY_SCRIPTS.GIT2.ORIGIN=https://%%GIT2.USER%%@bitbucket.org/%%GIT2.REPO_OWNER%%/contools-3dparty_scripts.git"
   echo.set "CONTOOLS_ROOT.GIT2.ORIGIN=https://%%GIT2.USER%%@bitbucket.org/%%GIT2.REPO_OWNER%%/contools.git"
   echo.set "CONTOOLS_TOOLS.GIT2.ORIGIN=https://%%GIT2.USER%%@bitbucket.org/%%GIT2.REPO_OWNER%%/contools-tools.git"
   echo.set "CONTOOLS_TOOLS_SVN.GIT2.ORIGIN=https://%%GIT2.USER%%@bitbucket.org/%%GIT2.REPO_OWNER%%/svncmd-scripts.git"
