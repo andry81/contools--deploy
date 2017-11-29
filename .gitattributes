@@ -1,5 +1,12 @@
 * text=auto !eol
 projects/_root/README_EN.txt -text
+projects/_root/_common/git_init.bat -text
+projects/_root/_common/git_pull_all.bat -text
+projects/_root/_common/git_reset_all.bat -text
+projects/_root/_common/svn_checkout_all.bat -text
+projects/_root/_common/svn_to_git_fetch.bat -text
+projects/_root/_common/svn_to_git_sync_all.bat -text
+projects/_root/_common/svn_update_all.bat -text
 projects/_root/bb~git_init.bat -text
 projects/_root/bb~git_pull_all.bat -text
 projects/_root/bb~git_reset_all.bat -text
