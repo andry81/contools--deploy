@@ -30,3 +30,11 @@
 	fetch = :refs/remotes/git-svn
 	remote = svn
 	type = dir
+[submodule "solutions/all-in-one/all-in-one/tacklelib"]
+	path = solutions/all-in-one/all-in-one/tacklelib
+	owner = solutions/all-in-one
+	url = /p/tacklelib/deploy/trunk/projects/tacklelib
+	branch = /
+	fetch = :refs/remotes/git-svn
+	remote = svn
+	type = dir
