@@ -1,10 +1,15 @@
+projects/_root/3dparty/configure.user.bat
+projects/_root/3dparty/configure_private.user.bat
+projects/_root/3dparty/dev/configure.user.bat
+projects/_root/3dparty/scripts/configure.user.bat
 projects/_root/configure.user.bat
+projects/_root/configure_private.user.bat
 projects/contools/3dparty/configure.user.bat
 projects/contools/3dparty_scripts/configure.user.bat
 projects/contools/Tools/configure.user.bat
 projects/contools/bittools/configure.user.bat
 projects/contools/configure.user.bat
-projects/contools/configureex.user.bat
+projects/contools/configure_private.user.bat
 projects/contools/contools/configure.user.bat
 projects/contools/debug/configure.user.bat
 projects/contools/deploy/configure.user.bat

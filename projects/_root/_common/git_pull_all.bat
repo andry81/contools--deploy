@@ -6,8 +6,10 @@ if not defined NEST_LVL set NEST_LVL=0
 
 set /A NEST_LVL+=1
 
+if not exist "%CONFIGURE_ROOT%\configure_private.user.bat" ( call "%%CONFIGURE_ROOT%%\configure_private.bat" || goto :EOF )
 if not exist "%CONFIGURE_ROOT%\configure.user.bat" ( call "%%CONFIGURE_ROOT%%\configure.bat" || goto :EOF )
 
+call "%%CONFIGURE_ROOT%%\configure_private.user.bat" || goto :EOF
 call "%%CONFIGURE_ROOT%%\configure.user.bat" || goto :EOF
 
 set "?~n0=%~n0"

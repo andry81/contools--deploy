@@ -11,7 +11,6 @@ set /A NEST_LVL+=1
 (
   echo.@echo off
   echo.
-  rem echo.set "SVN.WCROOT_DIR=sf~Tools"
   echo.set "GIT.WCROOT_DIR=gh~contools--Tools"
   echo.set "GIT2.WCROOT_DIR=bb~contools--Tools"
   echo.

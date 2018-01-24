@@ -6,12 +6,12 @@ if not defined NEST_LVL set NEST_LVL=0
 
 set /A NEST_LVL+=1
 
+if not exist "%~dp0..\..\configure_private.user.bat" ( call "%%~dp0..\..\configure_private.bat" || goto :EOF )
 if not exist "%~dp0..\configure.user.bat" ( call "%%~dp0..\configure.bat" || goto :EOF )
-if not exist "%~dp0..\configureex.user.bat" ( call "%%~dp0..\configureex.bat" || goto :EOF )
 if not exist "%~dp0configure.user.bat" ( call "%%~dp0configure.bat" || goto :EOF )
 
+call "%%~dp0..\..\configure_private.user.bat" || goto :EOF
 call "%%~dp0..\configure.user.bat" || goto :EOF
-call "%%~dp0..\configureex.user.bat" || goto :EOF
 call "%%~dp0configure.user.bat" || goto :EOF
 
 rem extract name of sync directory from name of the script
