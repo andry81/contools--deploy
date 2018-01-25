@@ -15,28 +15,41 @@ call "%%CONFIGURE_ROOT%%\configure.user.bat" || goto :EOF
 set "?~n0=%~n0"
 set "?~nx0=%~nx0"
 
-set "OP_NAME=%?~n0%"
-set "VAR_PREFIX=%~2"
+set "OP_NAME=%~1"
+set "HUB_ABBR=%~2"
+set "HUB_TYPE=%~3"
 
-if not defined HUB_ABBR (
-  echo.%?~nx0%: error: HUB_ABBR is not set.
+if not defined OP_NAME (
+  echo.%?~nx0%: error: OP_NAME is not set.
   exit /b 1
 ) >&2
-if not defined VAR_PREFIX (
-  echo.%?~nx0%: error: VAR_PREFIX is not set.
+if not defined HUB_ABBR (
+  echo.%?~nx0%: error: HUB_ABBR is not set.
   exit /b 2
+) >&2
+if not defined HUB_TYPE (
+  echo.%?~nx0%: error: HUB_TYPE is not set.
+  exit /b 3
 ) >&2
 
 set "PROJECTS_ROOT=%CONFIGURE_ROOT%"
 
 rem from leaf repositories to a root repository
-call set "%VAR_PREFIX%.PROJECT_PATH_LIST=%%%VAR_PREFIX%.PROJECT_PATH_LIST:{{HUB_ABBR}}=%HUB_ABBR%%%"
+if defined %HUB_TYPE%.PROJECT_PATH_LIST (
+  call set "%%HUB_TYPE%%.PROJECT_PATH_LIST=%%%HUB_TYPE%.PROJECT_PATH_LIST:{{HUB_ABBR}}=%HUB_ABBR%%%"
+) else (
+  set "%HUB_TYPE%.PROJECT_PATH_LIST="
+)
 
-call set "SCM_PROJECT_PATH_LIST=%%%VAR_PREFIX%.PROJECT_PATH_LIST%%"
+call set "SCM_PROJECT_PATH_LIST=%%%HUB_TYPE%.PROJECT_PATH_LIST%%"
 
 for %%i in (%SCM_PROJECT_PATH_LIST%) do (
   echo.%%i%OP_NAME%...
-  call "%%PROJECTS_ROOT%%\%%i%%OP_NAME%%.bat" || goto EXIT
+  if exist "%PROJECTS_ROOT%\%%i%OP_NAME%.bat" (
+    call "%%PROJECTS_ROOT%%\%%i%%OP_NAME%%.bat" || goto EXIT
+  ) else (
+    echo.%%i%OP_NAME%: info: ignored, script is not found
+  )
   echo.---
   echo.
 )

@@ -13,13 +13,7 @@ projects/_root/3dparty/scripts/gl~git_reset_all.bat -text
 projects/_root/3dparty/scripts/gl~svn_to_git_fetch.bat -text
 projects/_root/3dparty/scripts/gl~svn_to_git_sync_all.bat -text
 projects/_root/README_EN.txt -text
-projects/_root/_common/git_init.bat -text
-projects/_root/_common/git_pull_all.bat -text
-projects/_root/_common/git_reset_all.bat -text
-projects/_root/_common/svn_checkout_all.bat -text
-projects/_root/_common/svn_to_git_fetch.bat -text
-projects/_root/_common/svn_to_git_sync_all.bat -text
-projects/_root/_common/svn_update_all.bat -text
+projects/_root/_common/op.bat -text
 projects/_root/bb~git_init.bat -text
 projects/_root/bb~git_pull_all.bat -text
 projects/_root/bb~git_reset_all.bat -text
