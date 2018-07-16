@@ -22,6 +22,14 @@
 	fetch = :refs/remotes/git-svn
 	remote = svn
 	type = dir
+[submodule "solutions/all-in-one/all-in-one/orbittools"]
+	path = solutions/all-in-one/all-in-one/orbittools
+	owner = solutions/all-in-one
+	url = /p/orbittools/deploy/trunk/projects/orbittools
+	branch = /
+	fetch = :refs/remotes/git-svn
+	remote = svn
+	type = dir
 [submodule "solutions/all-in-one/all-in-one/svncmd"]
 	path = solutions/all-in-one/all-in-one/svncmd
 	owner = solutions/all-in-one
