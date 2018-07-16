@@ -1,5 +1,5 @@
 * README_EN.txt
-* 2017.08.24
+* 2018.07.16
 * deploy/projects/contools
 
 1. DESCRIPTION
@@ -26,25 +26,15 @@ The default directory structure is this:
   |  +-/all-in-one  - the solution root deploy scripts
   |     |
   |     +-/contools - the project deploy scripts with repositories as
-  |     |             subdirectories
-  |     |
-  |     +-/nsisplus - the project deploy scripts with repositories as
-  |     |             subdirectories
-  |     |
-  |     +-/svncmd   - the project deploy scripts with repositories as
   |                   subdirectories
   |
   +-/_contools      - the root for WCs of the project
-  |
-  +-/_nsisplus      - the root for WCs of the project
-  |
-  +-/_svncmd        - the root for WCs of the project
 
 -------------------------------------------------------------------------------
 3. INSTALLATION
 -------------------------------------------------------------------------------
 1. run the solution root `configure.bat`
-2. run the `configureex.bat` in all project's directories if not done yet
+2. run the `configure_private.bat` in all project's directories if not done yet
 3. edit the `WCROOT_OFFSET` variable to change the default directory structure
 4. edit the `GIT.USER`/`GIT.EMAIL`/`GIT2.USER`/`GIT2.EMAIL` to mirror from svn
    to git under unique account (will be showed in a merge info after a merge).

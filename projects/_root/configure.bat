@@ -11,8 +11,10 @@ set /A NEST_LVL+=1
 (
   echo.@echo off
   echo.
-  echo.set SVN.PROJECT_PATH_LIST=tacklelib\deploy\{{HUB_ABBR}}~ ^^
+  echo.set SVN.PROJECT_PATH_LIST=orbittools\deploy\{{HUB_ABBR}}~ ^^
+  echo.  tacklelib\deploy\{{HUB_ABBR}}~ ^^
   echo.  contools\deploy\{{HUB_ABBR}}~ nsisplus\deploy\{{HUB_ABBR}}~ svncmd\deploy\{{HUB_ABBR}}~ ^^
+  echo.  orbittools\orbittools\{{HUB_ABBR}}~ orbittools\sgp4\{{HUB_ABBR}}~ orbittools\qd\{{HUB_ABBR}}~ ^^
   echo.  tacklelib\tacklelib\{{HUB_ABBR}}~ tacklelib\cmake\{{HUB_ABBR}}~ tacklelib\examples\{{HUB_ABBR}}~ ^^
   echo.  contools\debug\{{HUB_ABBR}}~ contools\3dparty\{{HUB_ABBR}}~ contools\3dparty_scripts\{{HUB_ABBR}}~ ^^
   echo.  contools\external_tools\{{HUB_ABBR}}~ contools\contools\{{HUB_ABBR}}~ svncmd\svncmd\{{HUB_ABBR}}~ ^^
@@ -20,8 +22,10 @@ set /A NEST_LVL+=1
   echo.  nsisplus\NsisSetupLib\{{HUB_ABBR}}~ nsisplus\NsisSetupDev\{{HUB_ABBR}}~ nsisplus\NsisSetupSamples\{{HUB_ABBR}}~
   echo.
   echo.rem from leaf repositories to a root repository
-  echo.set GIT.PROJECT_PATH_LIST=tacklelib\deploy\{{HUB_ABBR}}~ ^^
+  echo.set GIT.PROJECT_PATH_LIST=orbittools\deploy\{{HUB_ABBR}}~ ^^
+  echo.  tacklelib\deploy\{{HUB_ABBR}}~ ^^
   echo.  contools\deploy\{{HUB_ABBR}}~ nsisplus\deploy\{{HUB_ABBR}}~ svncmd\deploy\{{HUB_ABBR}}~ ^^
+  echo.  orbittools\orbittools\{{HUB_ABBR}}~ orbittools\sgp4\{{HUB_ABBR}}~ orbittools\qd\{{HUB_ABBR}}~ ^^
   echo.  tacklelib\tacklelib\{{HUB_ABBR}}~ tacklelib\cmake\{{HUB_ABBR}}~ tacklelib\examples\{{HUB_ABBR}}~ ^^
   echo.  contools\debug\{{HUB_ABBR}}~ contools\3dparty\{{HUB_ABBR}}~ contools\3dparty_scripts\{{HUB_ABBR}}~ ^^
   echo.  contools\Tools\{{HUB_ABBR}}~ svncmd\Scripts\{{HUB_ABBR}}~ ^^

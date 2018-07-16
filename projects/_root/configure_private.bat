@@ -28,7 +28,7 @@ set /A NEST_LVL+=1
   echo.set "GIT3.USER=user"
   echo.set "GIT3.EMAIL=user@mail.com"
   echo.
-) > "%~dp0configureex.user.bat"
+) > "%~dp0configure_private.user.bat"
 
 set /A NEST_LVL-=1
 
