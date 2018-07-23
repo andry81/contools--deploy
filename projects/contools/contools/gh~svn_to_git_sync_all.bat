@@ -70,4 +70,4 @@ exit /b
 :FIRST_TIME_CLEANUP
 if %FIRST_TIME_SYNC% EQU 0 exit /b 0
 rem cleanup empty directories after rebase
-call :CMD git clean -fd
+rem call :CMD git clean -fd
