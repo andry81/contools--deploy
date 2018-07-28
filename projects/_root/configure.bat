@@ -11,6 +11,7 @@ set /A NEST_LVL+=1
 (
   echo.@echo off
   echo.
+  echo.rem it can be from leaf repositories to a root repository
   echo.set SVN.PROJECT_PATH_LIST=orbittools\deploy\{{HUB_ABBR}}~ ^^
   echo.  tacklelib\deploy\{{HUB_ABBR}}~ ^^
   echo.  contools\deploy\{{HUB_ABBR}}~ nsisplus\deploy\{{HUB_ABBR}}~ svncmd\deploy\{{HUB_ABBR}}~ ^^
@@ -21,7 +22,7 @@ set /A NEST_LVL+=1
   echo.  contools\bittools\{{HUB_ABBR}}~ ^^
   echo.  nsisplus\NsisSetupLib\{{HUB_ABBR}}~ nsisplus\NsisSetupDev\{{HUB_ABBR}}~ nsisplus\NsisSetupSamples\{{HUB_ABBR}}~
   echo.
-  echo.rem from leaf repositories to a root repository
+  echo.rem it can be from leaf repositories to a root repository
   echo.set GIT.PROJECT_PATH_LIST=orbittools\deploy\{{HUB_ABBR}}~ ^^
   echo.  tacklelib\deploy\{{HUB_ABBR}}~ ^^
   echo.  contools\deploy\{{HUB_ABBR}}~ nsisplus\deploy\{{HUB_ABBR}}~ svncmd\deploy\{{HUB_ABBR}}~ ^^

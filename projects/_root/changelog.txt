@@ -1,0 +1,7 @@
+2018.07.28:
+* minor fixes and refactor
+
+2018.07.28:
+* new: changelog file
+* changed: removed parent script exit on child script error
+* changed: print scripts list at the end has exited with not zero return code

@@ -14,6 +14,6 @@ set "HUB_ABBR=%?~n0%"
 call set "HUB_ABBR=%%HUB_ABBR:%OP_NAME%=%%"
 set "HUB_ABBR=%HUB_ABBR:~0,-1%"
 
-call "%%~dp0_common\op.bat" "%%OP_NAME%%" "%%HUB_ABBR%%" GIT2
+call "%%~dp0_common\op.bat" "%%OP_NAME%%" "%%HUB_ABBR%%" GIT
 
 if %NEST_LVL%0 EQU 0 pause

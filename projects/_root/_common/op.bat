@@ -43,16 +43,43 @@ if defined %HUB_TYPE%.PROJECT_PATH_LIST (
 
 call set "SCM_PROJECT_PATH_LIST=%%%HUB_TYPE%.PROJECT_PATH_LIST%%"
 
+set ERROR_OP_SCRIPT_COUNT=0
+
+echo PROJECTS_ROOT=%PROJECTS_ROOT%
 for %%i in (%SCM_PROJECT_PATH_LIST%) do (
-  echo.%%i%OP_NAME%...
-  if exist "%PROJECTS_ROOT%\%%i%OP_NAME%.bat" (
-    call "%%PROJECTS_ROOT%%\%%i%%OP_NAME%%.bat" || goto EXIT
-  ) else (
-    echo.%%i%OP_NAME%: info: ignored, script is not found
-  )
-  echo.---
-  echo.
+  set "OP_SCRIPT_REL_PATH=%%i%OP_NAME%"
+  call set "OP_SCRIPT_ABS_PATH=%%PROJECTS_ROOT%%\%%OP_SCRIPT_REL_PATH%%.bat"
+  call :PROCESS_OP_SCRIPT
 )
+
+if %ERROR_OP_SCRIPT_COUNT% GTR 0 (
+  echo Overall scripts failed: %ERROR_OP_SCRIPT_COUNT%
+  for /L %%i in (1,1,%ERROR_OP_SCRIPT_COUNT%) do (
+    call echo. - "%%ERROR_OP_SCRIPT_PATH[%%i]%%"
+  )
+)
+
+goto :EXIT
+
+:PROCESS_OP_SCRIPT
+echo.%OP_SCRIPT_REL_PATH%...
+if exist "%OP_SCRIPT_ABS_PATH%" (
+  call "%%OP_SCRIPT_ABS_PATH%%" || call :REGISTER_SCRIPT_ERROR
+) else (
+  echo.%"OP_SCRIPT_REL_PATH%: info: ignored, script is not found
+  call :REGISTER_SCRIPT_ERROR
+)
+echo.---
+echo.
+
+exit /b 0
+
+:REGISTER_SCRIPT_ERROR
+rem register error script to print it at the end
+set /A ERROR_OP_SCRIPT_COUNT+=1
+set "ERROR_OP_SCRIPT_PATH[%ERROR_OP_SCRIPT_COUNT%]=%OP_SCRIPT_ABS_PATH%"
+
+exit /b 0
 
 :EXIT
 set /A NEST_LVL-=1
