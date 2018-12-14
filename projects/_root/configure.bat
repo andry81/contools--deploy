@@ -16,7 +16,7 @@ set /A NEST_LVL+=1
   echo.  tacklelib\deploy\{{HUB_ABBR}}~ ^^
   echo.  contools\deploy\{{HUB_ABBR}}~ nsisplus\deploy\{{HUB_ABBR}}~ svncmd\deploy\{{HUB_ABBR}}~ ^^
   echo.  orbittools\orbittools\{{HUB_ABBR}}~ orbittools\sgp4\{{HUB_ABBR}}~ orbittools\qd\{{HUB_ABBR}}~ ^^
-  echo.  tacklelib\tacklelib\{{HUB_ABBR}}~ tacklelib\cmake\{{HUB_ABBR}}~ tacklelib\examples\{{HUB_ABBR}}~ ^^
+  echo.  tacklelib\tacklelib\{{HUB_ABBR}}~ tacklelib\cmake\{{HUB_ABBR}}~ tacklelib\script\{{HUB_ABBR}}~ tacklelib\examples\{{HUB_ABBR}}~ ^^
   echo.  contools\debug\{{HUB_ABBR}}~ contools\3dparty\{{HUB_ABBR}}~ contools\3dparty_scripts\{{HUB_ABBR}}~ ^^
   echo.  contools\external_tools\{{HUB_ABBR}}~ contools\contools\{{HUB_ABBR}}~ svncmd\svncmd\{{HUB_ABBR}}~ ^^
   echo.  contools\bittools\{{HUB_ABBR}}~ ^^
@@ -27,7 +27,7 @@ set /A NEST_LVL+=1
   echo.  tacklelib\deploy\{{HUB_ABBR}}~ ^^
   echo.  contools\deploy\{{HUB_ABBR}}~ nsisplus\deploy\{{HUB_ABBR}}~ svncmd\deploy\{{HUB_ABBR}}~ ^^
   echo.  orbittools\orbittools\{{HUB_ABBR}}~ orbittools\sgp4\{{HUB_ABBR}}~ orbittools\qd\{{HUB_ABBR}}~ ^^
-  echo.  tacklelib\tacklelib\{{HUB_ABBR}}~ tacklelib\cmake\{{HUB_ABBR}}~ tacklelib\examples\{{HUB_ABBR}}~ ^^
+  echo.  tacklelib\tacklelib\{{HUB_ABBR}}~ tacklelib\cmake\{{HUB_ABBR}}~ tacklelib\scripts\{{HUB_ABBR}}~ tacklelib\examples\{{HUB_ABBR}}~ ^^
   echo.  contools\debug\{{HUB_ABBR}}~ contools\3dparty\{{HUB_ABBR}}~ contools\3dparty_scripts\{{HUB_ABBR}}~ ^^
   echo.  contools\Tools\{{HUB_ABBR}}~ svncmd\Scripts\{{HUB_ABBR}}~ ^^
   echo.  contools\external_tools\{{HUB_ABBR}}~ contools\contools\{{HUB_ABBR}}~ svncmd\svncmd\{{HUB_ABBR}}~ ^^
