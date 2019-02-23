@@ -11,10 +11,10 @@ set /A NEST_LVL+=1
 (
   echo.@echo off
   echo.
-  echo.set "SVN.WCROOT_DIR=sf~contools--3dparty_scripts"
-  echo.set "GIT.WCROOT_DIR=gh~contools--3dparty_scripts"
-  echo.set "GIT2.WCROOT_DIR=bb~contools--3dparty_scripts"
-  echo.set "GIT3.WCROOT_DIR=gl~3dparty_scripts"
+  echo.set "SVN.WCROOT_DIR=sf~svn~contools--3dparty_scripts"
+  echo.set "GIT.WCROOT_DIR=gh~git~contools--3dparty_scripts"
+  echo.set "GIT2.WCROOT_DIR=bb~git~contools--3dparty_scripts"
+  echo.set "GIT3.WCROOT_DIR=gl~git~3dparty_scripts"
   echo.
 ) > "%~dp0configure.user.bat"
 

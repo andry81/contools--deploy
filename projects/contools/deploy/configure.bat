@@ -11,9 +11,9 @@ set /A NEST_LVL+=1
 (
   echo.@echo off
   echo.
-  echo.set "SVN.WCROOT_DIR=sf~contools--deploy"
-  echo.set "GIT.WCROOT_DIR=gh~contools--deploy"
-  echo.set "GIT2.WCROOT_DIR=bb~contools--deploy"
+  echo.set "SVN.WCROOT_DIR=sf~svn~contools--deploy"
+  echo.set "GIT.WCROOT_DIR=gh~git~contools--deploy"
+  echo.set "GIT2.WCROOT_DIR=bb~git~contools--deploy"
   echo.
 ) > "%~dp0configure.user.bat"
 

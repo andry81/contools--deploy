@@ -1,3 +1,7 @@
+2019.02.23:
+* changed: simplification of root scripts
+* changed: readme update
+
 2018.07.28:
 * minor fixes and refactor
 
