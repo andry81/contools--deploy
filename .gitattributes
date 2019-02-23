@@ -21,7 +21,7 @@ projects/_root/bb~git~init.bat -text
 projects/_root/bb~git~pull_all.bat -text
 projects/_root/bb~git~reset_all.bat -text
 projects/_root/bb~git~svn_fetch.bat -text
-projects/_root/bb~svn_to_git_sync_all.bat -text
+projects/_root/bb~git~svn_sync_all.bat -text
 projects/_root/changelog.txt -text
 projects/_root/configure.bat -text
 projects/_root/configure_private.bat -text
