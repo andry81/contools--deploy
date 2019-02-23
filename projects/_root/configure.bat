@@ -11,7 +11,7 @@ set /A NEST_LVL+=1
 (
   echo.@echo off
   echo.
-  echo.rem it can be from leaf repositories to a root repository
+  echo.rem it must be from leaf repositories to a root repository
   echo.set SVN.PROJECT_PATH_LIST=orbittools\deploy ^^
   echo.  tacklelib\deploy ^^
   echo.  contools\deploy nsisplus\deploy svncmd\deploy ^^
@@ -22,7 +22,7 @@ set /A NEST_LVL+=1
   echo.  contools\bittools ^^
   echo.  nsisplus\NsisSetupLib nsisplus\NsisSetupDev nsisplus\NsisSetupSamples
   echo.
-  echo.rem it can be from leaf repositories to a root repository
+  echo.rem it must be from leaf repositories to a root repository
   echo.set GIT.PROJECT_PATH_LIST=orbittools\deploy ^^
   echo.  tacklelib\deploy ^^
   echo.  contools\deploy nsisplus\deploy svncmd\deploy ^^
