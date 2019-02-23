@@ -11,8 +11,8 @@ set /A NEST_LVL+=1
 (
   echo.@echo off
   echo.
-  echo.set "GIT.WCROOT_DIR=gh~contools--Tools"
-  echo.set "GIT2.WCROOT_DIR=bb~contools--Tools"
+  echo.set "GIT.WCROOT_DIR=gh~git~contools--Tools"
+  echo.set "GIT2.WCROOT_DIR=bb~git~contools--Tools"
   echo.
 ) > "%~dp0configure.user.bat"
 
