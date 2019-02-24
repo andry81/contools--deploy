@@ -8,6 +8,7 @@ projects/_root/3dparty/dev/gl~git~pull_all.bat -text
 projects/_root/3dparty/dev/gl~git~reset_all.bat -text
 projects/_root/3dparty/dev/gl~git~svn_fetch.bat -text
 projects/_root/3dparty/dev/gl~git~svn_sync_all.bat -text
+projects/_root/3dparty/scripts/__init__.bat -text
 projects/_root/3dparty/scripts/configure.bat -text
 projects/_root/3dparty/scripts/gl~git~init.bat -text
 projects/_root/3dparty/scripts/gl~git~pull_all.bat -text

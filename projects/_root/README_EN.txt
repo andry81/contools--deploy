@@ -1,5 +1,5 @@
 * README_EN.txt
-* 2019.02.23
+* 2019.02.24
 * deploy/projects/_root
 
 1. DESCRIPTION
@@ -51,7 +51,7 @@ The default directory structure is this:
 4. USAGE
 -------------------------------------------------------------------------------
 Any deploy script format:
-  `<HubAbbrivatedName>~<RepositoryOperation>.bat`, where:
+  `<HubAbbrivatedName>~<ScmName>~<CommandOperation>.bat`, where:
 
   `HubAbbrivatedName` - abbrivated hub name.
   `ScmName`           - version source control name on a hub.
