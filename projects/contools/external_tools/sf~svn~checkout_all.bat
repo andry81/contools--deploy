@@ -6,17 +6,7 @@ if not defined NEST_LVL set NEST_LVL=0
 
 set /A NEST_LVL+=1
 
-if not exist "%~dp0..\..\configure_private.user.bat" ( call "%%~dp0..\..\configure_private.bat" || goto :EOF )
-if not exist "%~dp0..\configure.user.bat" ( call "%%~dp0..\configure.bat" || goto :EOF )
-if not exist "%~dp0configure.user.bat" ( call "%%~dp0configure.bat" || goto :EOF )
-
-call "%%~dp0..\..\configure_private.user.bat" || goto :EOF
-call "%%~dp0..\configure.user.bat" || goto :EOF
-call "%%~dp0configure.user.bat" || goto :EOF
-
-rem extract name of sync directory from name of the script
-set "?~nx0=%~nx0"
-set "?~n0=%~n0"
+call "%%~dp0__init__.bat" || exit /b
 
 set "WCROOT=%SVN.WCROOT_DIR%"
 if not defined WCROOT ( call :EXIT_B -254 & goto EXIT )

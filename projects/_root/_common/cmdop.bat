@@ -12,19 +12,16 @@ set "CMD_SCRIPT_FILE_NAME=%~1"
 
 call "%%CONFIGURE_ROOT%%\_common\parse_cmd_script_name.bat" "%%CMD_SCRIPT_FILE_NAME%%" || exit /b
 
-set "?~n0=%~n0"
-set "?~nx0=%~nx0"
-
 if not defined CMD_NAME (
-  echo.%?~nx0%: error: CMD_NAME is not set.
+  echo.%~nx0: error: CMD_NAME is not set.
   exit /b 1
 ) >&2
 if not defined HUB_ABBR (
-  echo.%?~nx0%: error: HUB_ABBR is not set.
+  echo.%~nx0: error: HUB_ABBR is not set.
   exit /b 2
 ) >&2
 if not defined SCM_NAME (
-  echo.%?~nx0%: error: SCM_NAME is not set.
+  echo.%~nx0: error: SCM_NAME is not set.
   exit /b 3
 ) >&2
 

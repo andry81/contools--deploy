@@ -1,5 +1,7 @@
 * text=auto !eol
+projects/_root/3dparty/__init__.bat -text
 projects/_root/3dparty/configure.bat -text
+projects/_root/3dparty/dev/__init__.bat -text
 projects/_root/3dparty/dev/configure.bat -text
 projects/_root/3dparty/dev/gl~git~init.bat -text
 projects/_root/3dparty/dev/gl~git~pull_all.bat -text
@@ -37,6 +39,7 @@ projects/_root/gl~git~svn_fetch.bat -text
 projects/_root/gl~git~svn_sync_all.bat -text
 projects/_root/sf~svn~checkout_all.bat -text
 projects/_root/sf~svn~update_all.bat -text
+projects/contools/3dparty/__init__.bat -text
 projects/contools/3dparty/bb~git~init.bat -text
 projects/contools/3dparty/bb~git~pull_all.bat -text
 projects/contools/3dparty/bb~git~reset_all.bat -text
@@ -50,6 +53,7 @@ projects/contools/3dparty/gh~git~svn_fetch.bat -text
 projects/contools/3dparty/gh~git~svn_sync_all.bat -text
 projects/contools/3dparty/sf~svn~checkout_all.bat -text
 projects/contools/3dparty/sf~svn~update_all.bat -text
+projects/contools/3dparty_scripts/__init__.bat -text
 projects/contools/3dparty_scripts/bb~git~init.bat -text
 projects/contools/3dparty_scripts/bb~git~pull_all.bat -text
 projects/contools/3dparty_scripts/bb~git~reset_all.bat -text
@@ -64,6 +68,7 @@ projects/contools/3dparty_scripts/gh~git~svn_sync_all.bat -text
 projects/contools/3dparty_scripts/sf~svn~checkout_all.bat -text
 projects/contools/3dparty_scripts/sf~svn~update_all.bat -text
 projects/contools/README_EN.txt -text
+projects/contools/Tools/__init__.bat -text
 projects/contools/Tools/bb~git~init.bat -text
 projects/contools/Tools/bb~git~pull_all.bat -text
 projects/contools/Tools/bb~git~reset_all.bat -text
@@ -75,6 +80,8 @@ projects/contools/Tools/gh~git~pull_all.bat -text
 projects/contools/Tools/gh~git~reset_all.bat -text
 projects/contools/Tools/gh~git~svn_fetch.bat -text
 projects/contools/Tools/gh~git~svn_sync_all.bat -text
+projects/contools/__init__.bat -text
+projects/contools/bittools/__init__.bat -text
 projects/contools/bittools/bb~git~init.bat -text
 projects/contools/bittools/bb~git~pull_all.bat -text
 projects/contools/bittools/bb~git~reset_all.bat -text
@@ -94,6 +101,7 @@ projects/contools/bittools/gl~git~svn_sync_all.bat -text
 projects/contools/bittools/sf~svn~checkout_all.bat -text
 projects/contools/bittools/sf~svn~update_all.bat -text
 projects/contools/configure.bat -text
+projects/contools/contools/__init__.bat -text
 projects/contools/contools/bb~git~init.bat -text
 projects/contools/contools/bb~git~pull_all.bat -text
 projects/contools/contools/bb~git~reset_all.bat -text
@@ -107,6 +115,7 @@ projects/contools/contools/gh~git~svn_fetch.bat -text
 projects/contools/contools/gh~git~svn_sync_all.bat -text
 projects/contools/contools/sf~svn~checkout_all.bat -text
 projects/contools/contools/sf~svn~update_all.bat -text
+projects/contools/debug/__init__.bat -text
 projects/contools/debug/bb~git~init.bat -text
 projects/contools/debug/bb~git~pull_all.bat -text
 projects/contools/debug/bb~git~reset_all.bat -text
@@ -120,6 +129,7 @@ projects/contools/debug/gh~git~svn_fetch.bat -text
 projects/contools/debug/gh~git~svn_sync_all.bat -text
 projects/contools/debug/sf~svn~checkout_all.bat -text
 projects/contools/debug/sf~svn~update_all.bat -text
+projects/contools/deploy/__init__.bat -text
 projects/contools/deploy/bb~git~init.bat -text
 projects/contools/deploy/bb~git~pull_all.bat -text
 projects/contools/deploy/bb~git~reset_all.bat -text
@@ -133,6 +143,7 @@ projects/contools/deploy/gh~git~svn_fetch.bat -text
 projects/contools/deploy/gh~git~svn_sync_all.bat -text
 projects/contools/deploy/sf~svn~checkout_all.bat -text
 projects/contools/deploy/sf~svn~update_all.bat -text
+projects/contools/external_tools/__init__.bat -text
 projects/contools/external_tools/bb~git~init.bat -text
 projects/contools/external_tools/bb~git~pull_all.bat -text
 projects/contools/external_tools/bb~git~reset_all.bat -text

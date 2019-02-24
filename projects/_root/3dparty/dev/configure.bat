@@ -11,7 +11,7 @@ set /A NEST_LVL+=1
 (
   echo.@echo off
   echo.
-  echo.set "GIT3.WCROOT_DIR=gl~3dparty--dev"
+  echo.set "GIT3.WCROOT_DIR=gl~git~3dparty--dev"
   echo.
 ) > "%~dp0configure.user.bat"
 

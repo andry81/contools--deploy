@@ -6,17 +6,7 @@ if not defined NEST_LVL set NEST_LVL=0
 
 set /A NEST_LVL+=1
 
-if not exist "%~dp0..\..\configure_private.user.bat" ( call "%%~dp0..\..\configure_private.bat" || goto :EOF )
-if not exist "%~dp0..\configure.user.bat" ( call "%%~dp0..\configure.bat" || goto :EOF )
-if not exist "%~dp0configure.user.bat" ( call "%%~dp0configure.bat" || goto :EOF )
-
-call "%%~dp0..\..\configure_private.user.bat" || goto :EOF
-call "%%~dp0..\configure.user.bat" || goto :EOF
-call "%%~dp0configure.user.bat" || goto :EOF
-
-rem extract name of sync directory from name of the script
-set "?~nx0=%~nx0"
-set "?~n0=%~n0"
+call "%%~dp0__init__.bat" || exit /b
 
 set "DATETIME_VALUE="
 for /F "usebackq eol=	 tokens=1,2 delims==" %%i in (`wmic os get LocalDateTime /VALUE 2^>NUL`) do if "%%i" == "LocalDateTime" set "DATETIME_VALUE=%%j"
@@ -26,14 +16,14 @@ if not "%DATETIME_VALUE%" == "" set "DATETIME_VALUE=%DATETIME_VALUE:~0,18%"
 set "TEMP_DATE=%DATETIME_VALUE:~0,4%_%DATETIME_VALUE:~4,2%_%DATETIME_VALUE:~6,2%"
 set "TEMP_TIME=%DATETIME_VALUE:~8,2%_%DATETIME_VALUE:~10,2%_%DATETIME_VALUE:~12,2%_%DATETIME_VALUE:~15,3%"
 
-set "TEMP_FILE_OUTTER_DIR=%TEMP%\%?~n0%.%TEMP_DATE%.%TEMP_TIME%"
+set "TEMP_FILE_OUTTER_DIR=%TEMP%\%~n0.%TEMP_DATE%.%TEMP_TIME%"
 
 set "STDOUT_FILE_TMP=%TEMP_FILE_OUTTER_DIR%\stdout.txt"
 set "STDERR_FILE_TMP=%TEMP_FILE_OUTTER_DIR%\stderr.txt"
 
 rem create temporary files to store local context output
 if exist "%TEMP_FILE_OUTTER_DIR%\" (
-  echo.%?~nx0%: error: temporary generated directory TEMP_FILE_OUTTER_DIR is already exist: "%TEMP_FILE_OUTTER_DIR%"
+  echo.%~nx0: error: temporary generated directory TEMP_FILE_OUTTER_DIR is already exist: "%TEMP_FILE_OUTTER_DIR%"
   exit /b -255
 ) >&2
 
@@ -93,17 +83,17 @@ call :CMD_W_STDIO git svn init %%* || goto GIT_SVN_RESET_CONFIG_URL
 rem test on assertion (where empty url: [svn-remote "svn"]	url = )
 rem `assertion "type != type_uri" failed: file "subversion/libsvn_subr/dirent_uri.c", line 312, function: canonicalize`
 rem `      0 [main] perl 15212 cygwin_exception::open_stackdumpfile: Dumping stack trace to perl.exe.stackdump`
-if "!STDERR_VALUE!" == "" goto :EOF
-if not "!STDERR_VALUE:~0,10!" == "assertion " goto :EOF
+if "!STDERR_VALUE!" == "" exit /b
+if not "!STDERR_VALUE:~0,10!" == "assertion " exit /b
 
 :GIT_SVN_RESET_CONFIG_URL
 rem reset svn-remote.svn.url
-call :CMD git config --local --replace-all svn-remote.svn.url %%* || goto :EOF
+call :CMD git config --local --replace-all svn-remote.svn.url %%* || exit /b
 
 rem create git-svn reference
 if not exist ".git\refs\remotes\git-svn" if exist ".git\refs\remotes\" (
   if exist ".git\refs\heads\master" (
-    call :CMD git update-ref refs/remotes/git-svn master || goto :EOF
+    call :CMD git update-ref refs/remotes/git-svn master || exit /b
   )
 )
 
