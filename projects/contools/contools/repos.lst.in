@@ -1,0 +1,8 @@
+# <scm_token>|<branch_type>|<remote_name>|<remote_url>|<local_branch>|<remote_branch>|<path_prefix>|<git_remote_add_cmdline>|<git_subtree_cmdline>
+GIT|root|origin|%CONTOOLS_ROOT.GIT.ORIGIN%|master|trunk|.|.|.
+GIT|subtree|tools|%CONTOOLS_TOOLS.GIT.ORIGIN%|master|master|Scripts/Tools|.|.
+GIT|subtree|tools-svn|%CONTOOLS_TOOLS_SVN.GIT.ORIGIN%|master|master|Scripts/Tools/scm/svn|.|--squash
+
+GIT2|root|origin|%CONTOOLS_ROOT.GIT2.ORIGIN%|master|trunk|.|.|.
+GIT2|subtree|tools|%CONTOOLS_TOOLS.GIT2.ORIGIN%|master|master|Scripts/Tools|.|.
+GIT2|subtree|tools-svn|%CONTOOLS_TOOLS_SVN.GIT2.ORIGIN%|master|master|Scripts/Tools/scm/svn|.|--squash

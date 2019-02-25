@@ -1,0 +1,4 @@
+# <scm_token>|<branch_type>|<remote_name>|<remote_url>|<local_branch>|<remote_branch>|<path_prefix>|<git_remote_add_cmdline>|<git_subtree_cmdline>
+GIT|root|origin|%CONTOOLS_BITTOOLS.GIT.ORIGIN%|master|master|.|.|.
+GIT2|root|origin|%CONTOOLS_BITTOOLS.GIT2.ORIGIN%|master|master|.|.|.
+#GIT3|root|origin|%CONTOOLS_BITTOOLS.GIT3.ORIGIN%|master|master|.|.|.

@@ -1,0 +1,2 @@
+# <scm_token>|<branch_type>|<remote_name>|<remote_url>|<local_branch>|<remote_branch>|<path_prefix>|<git_remote_add_cmdline>|<git_subtree_cmdline>
+GIT3|root|origin|%_3DPARTY_DEV.GIT3.ORIGIN%|master|master|.|.|.

@@ -2,35 +2,5 @@
 
 setlocal
 
-if not defined NEST_LVL set NEST_LVL=0
-
-set /A NEST_LVL+=1
-
 call "%%~dp0__init__.bat" || exit /b
-
-set "WCROOT=%GIT3.WCROOT_DIR%"
-if not defined WCROOT ( call :EXIT_B -254 & goto EXIT )
-
-if not "%WCROOT_OFFSET%" == "" set "WCROOT=%WCROOT_OFFSET%/%WCROOT%"
-
-pushd "%~dp0%WCROOT%" && (
-  call :CMD git svn fetch %%* || ( popd & goto EXIT )
-  popd
-)
-
-goto EXIT
-
-:EXIT_B
-exit /b %*
-
-:EXIT
-set /A NEST_LVL-=1
-
-if %NEST_LVL% LEQ 0 pause
-
-exit /b
-
-:CMD
-echo.^>%*
-(%*)
-echo.
+call "%%CONFIGURE_ROOT%%\_common\git\git~svn_fetch.bat" GIT3 "%%~dp0config.vars" "%%~dp0repos.lst" %%* || exit /b

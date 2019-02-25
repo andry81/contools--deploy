@@ -1,5 +1,5 @@
 * README_EN.txt
-* 2019.02.24
+* 2019.02.25
 * deploy/projects/_root
 
 1. DESCRIPTION
@@ -12,9 +12,7 @@
 -------------------------------------------------------------------------------
 1. DESCRIPTION
 -------------------------------------------------------------------------------
-The SVN and GIT deploy scripts for respective project repositories.
-
-Currently implemented merging or mirroring ONLY from svn into git.
+From SVN into GIT mirroring scripts for respective project repositories.
 
 -------------------------------------------------------------------------------
 2. DIRECTORY DEPLOY STRUCTURE

@@ -12,7 +12,7 @@ set /A NEST_LVL+=1
   echo.@echo off
   echo.
   echo.set PROJECT_NAME=3dparty
-  echo.set "WCROOT_OFFSET=../../../../_%%PROJECT_NAME%%"
+  echo.set "WCROOT_OFFSET=%%CONFIGURE_ROOT%%/../../_%%PROJECT_NAME%%"
   echo.
   echo.set "_3DPARTY_DEV.SVN.REPOROOT=https://%%SVN.HUB_ROOT%%/contools/3dparty"
   echo.set "_3DPARTY_SCRIPTS.SVN.REPOROOT=https://%%SVN.HUB_ROOT%%/contools/3dparty_scripts"

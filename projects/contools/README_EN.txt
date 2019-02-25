@@ -1,5 +1,5 @@
 * README_EN.txt
-* 2018.07.28
+* 2019.02.25
 * deploy/projects/contools
 
 1. DESCRIPTION
@@ -12,7 +12,7 @@
 -------------------------------------------------------------------------------
 1. DESCRIPTION
 -------------------------------------------------------------------------------
-The SVN and GIT deploy scripts for respective project repositories.
+From SVN into GIT mirroring scripts for respective project repositories.
 
 -------------------------------------------------------------------------------
 2. DIRECTORY DEPLOY STRUCTURE
@@ -44,33 +44,36 @@ The default directory structure is this:
 -------------------------------------------------------------------------------
 4. USAGE
 -------------------------------------------------------------------------------
-The solution root deploy scripts format:
-  `<HubAbbrivatedName>~<RepositoryOperation>.bat`, where:
+Any deploy script format:
+  `<HubAbbrivatedName>~<ScmName>~<CommandOperation>.bat`, where:
+
+  `HubAbbrivatedName` - abbrivated hub name.
+  `ScmName`           - version source control name on a hub.
+  `CommandOperation`  - command operation to request from scm.
 
   `HubAbbrivatedName` can be:
     `sf` - SourceForge
+    `gl` - GitLab
     `gh` - GitHub
     `bb` - BitBucket
-    `gl` - GitLab
 
-  `RepositoryOperation` can be:
-    `git_init` - create and initialize local git working copy directory
-    `svn_to_git_fetch` - fetch svn repostory into git working copy
-    `git_pull_all` - pull remote git repository including `git svn fetch` and
+  `ScmName` can be:
+    `git` - git source control
+    `svn` - svn source control
+
+  `CommandOperation` can be:
+  [ScmName=git]
+    `init`      - create and initialize local git working copy directory
+    `svn_fetch` - fetch svn repostory into git working copy
+    `pull_all`  - pull remote git repository including `git svn fetch` and
         `git svn rebase` and pull all subtrees
-    `git_reset_all` - reset local working copy
-    `svn_to_git_sync_all` - same as `pull_all` plus push to remote repository
-    `svn_checkout_all` - checkout svn repository into new svn working copy
+    `reset_all` - reset local working copy
+    `svn_sync_all` - same as `pull_all` plus push to remote <ScmName>
+        repository
+  [ScmName=svn]
+    `checkout_all` - checkout svn repository into new svn working copy
         directory
-    `svn_update_all` - update svn working copy directory
-
-Projects deploy scripts format:
-  `<RepositoryName>/<HubAbbrivatedName>~<RepositoryOperation>.bat`, where:
-
-  `HubAbbrivatedName` - the same as for the root solution deploy scripts.
-  `RepositoryName` - is a local reporesentation of the repository name allocated
-      for the particular hub (can be different in each hub).
-  `RepositoryOperation` - the same as for the root solution deploy scripts.
+    `update_all` - update svn working copy directory
 
 -------------------------------------------------------------------------------
 4.1. Mirroring (merging) from SVN to GIT
@@ -78,20 +81,20 @@ Projects deploy scripts format:
 To do a fetch from the svn REMOTE repository to the git LOCAL repository, then
 these scripts must be issued:
 
-1. `git_init` (required only if not inited yet)
-2. `svn_to_git_fetch`
+1. `git~init` (required only if not inited yet)
+2. `git~svn_fetch`
 
 To do a merge from the svn REMOTE repository to the git LOCAL repository, then
 these scripts must be issued:
 
-1. `git_init` (required only if not inited yet)
-2. `git_pull_all`
+1. `git~init` (required only if not inited yet)
+2. `git~pull_all`
 
 To do a merge from svn REMOTE repository to git REMOTE repository (through
 a LOCAL repository), then these scripts must be issued:
 
-1. `git_init` (required only if not inited yet)
-2. `svn_to_git_sync_all`
+1. `git~init` (required only if not inited yet)
+2. `git~svn_sync_all`
 
 -------------------------------------------------------------------------------
 5. AUTHOR EMAIL

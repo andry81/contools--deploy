@@ -1,3 +1,6 @@
+2019.02.25:
+* changed: finished simplification of scripts
+
 2019.02.24:
 * changed: continue simplification of scripts
 
