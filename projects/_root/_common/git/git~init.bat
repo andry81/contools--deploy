@@ -35,7 +35,12 @@ for /F "usebackq eol=# tokens=* delims=" %%i in ("%CONFIG_VARS_FILE_PATH%") do (
 set "DATETIME_VALUE="
 for /F "usebackq eol=	 tokens=1,2 delims==" %%i in (`wmic os get LocalDateTime /VALUE 2^>NUL`) do if "%%i" == "LocalDateTime" set "DATETIME_VALUE=%%j"
 
-if not "%DATETIME_VALUE%" == "" set "DATETIME_VALUE=%DATETIME_VALUE:~0,18%"
+if not defined DATETIME_VALUE (
+  echo.%~nx0: error: could not retrieve a date time value to create unique temporary directory.
+  exit /b -128
+) >&2
+
+set "DATETIME_VALUE=%DATETIME_VALUE:~0,18%"
 
 set "TEMP_DATE=%DATETIME_VALUE:~0,4%_%DATETIME_VALUE:~4,2%_%DATETIME_VALUE:~6,2%"
 set "TEMP_TIME=%DATETIME_VALUE:~8,2%_%DATETIME_VALUE:~10,2%_%DATETIME_VALUE:~12,2%_%DATETIME_VALUE:~15,3%"
