@@ -45,24 +45,24 @@ set "DATETIME_VALUE=%DATETIME_VALUE:~0,18%"
 set "TEMP_DATE=%DATETIME_VALUE:~0,4%_%DATETIME_VALUE:~4,2%_%DATETIME_VALUE:~6,2%"
 set "TEMP_TIME=%DATETIME_VALUE:~8,2%_%DATETIME_VALUE:~10,2%_%DATETIME_VALUE:~12,2%_%DATETIME_VALUE:~15,3%"
 
-set "TEMP_FILE_OUTTER_DIR=%TEMP%\%~n0.%TEMP_DATE%.%TEMP_TIME%"
+set "TEMP_OUTPUT_DIR=%TEMP%\%~n0.%TEMP_DATE%.%TEMP_TIME%"
 
-set "STDOUT_FILE_TMP=%TEMP_FILE_OUTTER_DIR%\stdout.txt"
-set "STDERR_FILE_TMP=%TEMP_FILE_OUTTER_DIR%\stderr.txt"
+set "STDOUT_FILE_TMP=%TEMP_OUTPUT_DIR%\stdout.txt"
+set "STDERR_FILE_TMP=%TEMP_OUTPUT_DIR%\stderr.txt"
 
 rem create temporary files to store local context output
-if exist "%TEMP_FILE_OUTTER_DIR%\" (
-  echo.%~nx0: error: temporary generated directory TEMP_FILE_OUTTER_DIR is already exist: "%TEMP_FILE_OUTTER_DIR%"
+if exist "%TEMP_OUTPUT_DIR%\" (
+  echo.%~nx0: error: temporary generated directory TEMP_OUTPUT_DIR is already exist: "%TEMP_OUTPUT_DIR%"
   exit /b -255
 ) >&2
 
-mkdir "%TEMP_FILE_OUTTER_DIR%"
+mkdir "%TEMP_OUTPUT_DIR%"
 
 call :MAIN
 set LASTERROR=%ERRORLEVEL%
 
 rem cleanup temporary files
-rmdir /S /Q "%TEMP_FILE_OUTTER_DIR%"
+rmdir /S /Q "%TEMP_OUTPUT_DIR%"
 
 call :EXIT_B %%LASTERROR%%
 
