@@ -29,7 +29,7 @@ call "%%~dp0__init__.bat" || goto EXIT
 
 rem load configuration file
 for /F "usebackq eol=# tokens=* delims=" %%i in ("%CONFIG_VARS_FILE_PATH%") do (
-  set %%i
+  call set %%i
 )
 
 set "DATETIME_VALUE="
@@ -93,8 +93,11 @@ call set "GIT_EMAIL=%%%SCM_TOKEN%.USER%%"
 echo."%WCROOT%"...
 
 pushd "%WCROOT%" && (
+  rem generate `--ignore_paths` from subtrees
+  call :GIT_SVN_INIT_GENERATE_IGNORE_PATHS_REGEX || ( popd & exit /b )
+
   rem reinit git svn
-  call :GIT_SVN_INIT %GIT_SVN_INIT_CMDLINE% || ( popd & exit /b )
+  call :GIT_SVN_INIT "%%SVN.REPOROOT%%" %%GIT_SVN_INIT_CMDLINE%% || ( popd & exit /b )
 
   call :CMD git config user.name "%%GIT_USER%%" || ( popd & exit /b )
   call :CMD git config user.email "%%GIT_EMAIL%%" || ( popd & exit /b )
@@ -146,13 +149,60 @@ if not "!STDERR_VALUE:~0,10!" == "assertion " exit /b
 
 :GIT_SVN_RESET_CONFIG_URL
 rem reset svn-remote.svn.url
-call :CMD git config --local --replace-all svn-remote.svn.url %%* || exit /b
+call :CMD git config --local --replace-all svn-remote.svn.url "%SVN.REPOROOT%" || exit /b
 
 rem create git-svn reference
 if not exist ".git\refs\remotes\git-svn" if exist ".git\refs\remotes\" (
   if exist ".git\refs\heads\master" (
     call :CMD git update-ref refs/remotes/git-svn master || exit /b
   )
+)
+
+exit /b
+
+:GIT_SVN_INIT_GENERATE_IGNORE_PATHS_REGEX
+
+set "GIT_SVN_INIT_IGNORE_PATHS_REGEX="
+
+rem <scm_token>|<branch_type>|<remote_name>|<remote_url>|<local_branch>|<remote_branch>|<path_prefix>|<git_remote_add_cmdline>|<git_subtree_cmdline>
+for /F "usebackq eol=# tokens=1,2,7 delims=|" %%i in ("%REPOS_LIST_FILE_PATH%") do (
+  set "CONFIG_BRANCH_TYPE=%%j"
+  set "CONFIG_PATH_PREFIX=%%k"
+  if /i "%SCM_TOKEN%" == "%%i" if /i not "root" == "%%j" call :GIT_SVN_ADD_IGNORE_PATH
+)
+
+if defined GIT_SVN_INIT_IGNORE_PATHS_REGEX (
+  rem safe variable set
+  setlocal ENABLEDELAYEDEXPANSION
+  for /F "eol=| tokens=* delims=" %%i in ("!GIT_SVN_INIT_CMDLINE!") do (
+    endlocal
+    if defined GIT_SVN_INIT_IGNORE_PATHS_REGEX (
+      set GIT_SVN_INIT_CMDLINE=--ignore-paths="%GIT_SVN_INIT_IGNORE_PATHS_REGEX%" %%i
+    )
+  )
+)
+
+exit /b
+
+:GIT_SVN_ADD_IGNORE_PATH
+
+rem escape all regexp characters
+set "CONFIG_PATH_PREFIX=%CONFIG_PATH_PREFIX:\=/%"
+set "CONFIG_PATH_PREFIX=%CONFIG_PATH_PREFIX:^=\^%"
+set "CONFIG_PATH_PREFIX=%CONFIG_PATH_PREFIX:$=\$%"
+set "CONFIG_PATH_PREFIX=%CONFIG_PATH_PREFIX:.=\.%"
+set "CONFIG_PATH_PREFIX=%CONFIG_PATH_PREFIX:+=\+%"
+set "CONFIG_PATH_PREFIX=%CONFIG_PATH_PREFIX:[=\[%"
+set "CONFIG_PATH_PREFIX=%CONFIG_PATH_PREFIX:]=\]%"
+set "CONFIG_PATH_PREFIX=%CONFIG_PATH_PREFIX:(=\(%"
+set "CONFIG_PATH_PREFIX=%CONFIG_PATH_PREFIX:)=\)%"
+set "CONFIG_PATH_PREFIX=%CONFIG_PATH_PREFIX:{=\{%"
+set "CONFIG_PATH_PREFIX=%CONFIG_PATH_PREFIX:}=\}%"
+
+if defined GIT_SVN_INIT_IGNORE_PATHS_REGEX (
+  set "GIT_SVN_INIT_IGNORE_PATHS_REGEX=%GIT_SVN_INIT_IGNORE_PATHS_REGEX%|^[^/]+/%CONFIG_PATH_PREFIX%(?:/|$)"
+) else (
+  set "GIT_SVN_INIT_IGNORE_PATHS_REGEX=^[^/]+/%CONFIG_PATH_PREFIX%(?:/|$)"
 )
 
 exit /b

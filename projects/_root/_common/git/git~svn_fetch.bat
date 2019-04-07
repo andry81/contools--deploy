@@ -29,9 +29,13 @@ call "%%~dp0__init__.bat" || goto EXIT
 
 rem load configuration file
 for /F "usebackq eol=# tokens=* delims=" %%i in ("%CONFIG_VARS_FILE_PATH%") do (
-  set %%i
+  call set %%i
 )
 
+call :MAIN %~4 %~5 %~6 %~7 %~8 %~9
+exit /b
+
+:MAIN
 call set "WCROOT_DIR=%%%SCM_TOKEN%.WCROOT_DIR%%"
 if not defined WCROOT_DIR ( call :EXIT_B -254 & goto EXIT )
 if not defined WCROOT_OFFSET ( call :EXIT_B -253 & goto EXIT )
@@ -51,7 +55,7 @@ pushd "%WCROOT%" && (
 
   call :IF_ %%HAS_AT_LEAST_ONE_REMOTE%% EQU 0 && ( popd & call :EXIT_B -128 & goto EXIT )
 
-  call :CMD git svn fetch || ( popd & goto EXIT )
+  call :CMD git svn fetch %%* || ( popd & goto EXIT )
 
   popd
 )

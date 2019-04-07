@@ -29,7 +29,7 @@ call "%%~dp0__init__.bat" || goto EXIT
 
 rem load configuration file
 for /F "usebackq eol=# tokens=* delims=" %%i in ("%CONFIG_VARS_FILE_PATH%") do (
-  set %%i
+  call set %%i
 )
 
 call set "WCROOT_DIR=%%%SCM_TOKEN%.WCROOT_DIR%%"

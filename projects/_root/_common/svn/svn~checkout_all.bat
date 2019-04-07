@@ -32,12 +32,12 @@ if not defined WCROOT_OFFSET ( call :EXIT_B -253 & goto EXIT )
 
 call :GETWCROOT "%WCROOT_OFFSET%/%WCROOT_DIR%"
 
-call set "SVN_CHECKOUT_URL=%%%SCM_TOKEN%.CHECKOUT_URL%%"
+call set "SVN.CHECKOUT_URL=%%%SCM_TOKEN%.CHECKOUT_URL%%"
 
 echo."%WCROOT%"...
 
 if not exist "%WCROOT%\" mkdir "%WCROOT%"
-if not exist "%WCROOT%\.svn" ( call :CMD svn co "%SVN_CHECKOUT_URL%" "%%WCROOT%%" || goto EXIT )
+if not exist "%WCROOT%\.svn" ( call :CMD svn co "%SVN.CHECKOUT_URL%" "%%WCROOT%%" || goto EXIT )
 
 goto EXIT
 

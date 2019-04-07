@@ -1,3 +1,18 @@
+TODO:
+* fix: unauthentic commit history in git repos versus main svn repo which is used as a source to mirror; is used a single revision fetch from the SVN at a time before the rebase and the push into the GIT in all repos to make authentic commit history in snv-to-git repos (any taken working copy in the GIT is exact to the associated SVN revision) and in git-by-git repos (the same hashes for a single SVN revision in all git repos which are mirrored from the same svn repo)
+* fix: generated commit e-mail address from the SVN revision in the GIT like `user@<repo-guid>` is replaced by a real user commit e-mail has declared in the config; now a git hub can generate correct commit statistic based on actual commit e-mail
+#
+# As a result of the fixes above all git repositories addressed in all scripts has to be recreated/regenerated from the scratch to apply the changes.
+# CAUTION:
+#   Because many git hubs has repo based project system instead of standalone
+#   project system, then that might involve a loss of information attached to a
+#   git repository like favorites/forks and other information after erasing a
+#   git repository!
+#
+
+2019.04.07:
+* fixed: subtrees were involved in accidental merge with the parent, the `--ignore-paths` would be used to avoid any merge of unrelated histories in chain of parent-child trees
+
 2019.02.28:
 * minor fix
 
