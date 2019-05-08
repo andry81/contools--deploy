@@ -10,6 +10,9 @@ TODO:
 #   git repository!
 #
 
+2019.05.08:
+* fixed: typo
+
 2019.04.07:
 * fixed: subtrees were involved in accidental merge with the parent, the `--ignore-paths` would be used to avoid any merge of unrelated histories in chain of parent-child trees
 

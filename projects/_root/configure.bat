@@ -16,7 +16,7 @@ set /A NEST_LVL+=1
   echo.  tacklelib\deploy ^^
   echo.  contools\deploy nsisplus\deploy svncmd\deploy ^^
   echo.  orbittools\orbittools orbittools\sgp4 orbittools\qd ^^
-  echo.  tacklelib\tacklelib tacklelib\cmake tacklelib\script tacklelib\examples ^^
+  echo.  tacklelib\tacklelib tacklelib\cmake tacklelib\scripts tacklelib\examples ^^
   echo.  contools\debug contools\3dparty contools\3dparty_scripts ^^
   echo.  contools\external_tools contools\contools svncmd\svncmd ^^
   echo.  contools\bittools ^^
