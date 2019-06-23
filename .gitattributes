@@ -43,9 +43,10 @@ projects/_root/bb~git~reset_all.bat -text
 projects/_root/bb~git~svn_fetch.bat -text
 projects/_root/bb~git~sync_svn_to_git.bat -text
 projects/_root/changelog.txt -text
+projects/_root/config.private.vars.in -text
 projects/_root/config.vars.in -text
 projects/_root/configure.bat -text
-projects/_root/configure_private.bat -text
+projects/_root/configure.private.bat -text
 projects/_root/gh~git~init.bat -text
 projects/_root/gh~git~pull_all.bat -text
 projects/_root/gh~git~reset_all.bat -text
