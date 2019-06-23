@@ -1,5 +1,6 @@
 * text=auto !eol
 projects/_root/3dparty/__init__.bat -text
+projects/_root/3dparty/config.vars.in -text
 projects/_root/3dparty/configure.bat -text
 projects/_root/3dparty/dev/__init__.bat -text
 projects/_root/3dparty/dev/config.vars.in -text
@@ -23,12 +24,15 @@ projects/_root/README_EN.txt -text
 projects/_root/__init__.bat -text
 projects/_root/_common/__init__.bat -text
 projects/_root/_common/cmdop.bat -text
+projects/_root/_common/configure_directory.bat -text
+projects/_root/_common/configure_project.bat -text
 projects/_root/_common/git/__init__.bat -text
 projects/_root/_common/git/git~init.bat -text
 projects/_root/_common/git/git~pull_all.bat -text
 projects/_root/_common/git/git~reset_all.bat -text
 projects/_root/_common/git/git~svn_fetch.bat -text
 projects/_root/_common/git/git~sync_svn_to_git.bat -text
+projects/_root/_common/load_config.bat -text
 projects/_root/_common/parse_cmd_script_name.bat -text
 projects/_root/_common/svn/__init__.bat -text
 projects/_root/_common/svn/svn~checkout_all.bat -text
@@ -39,6 +43,7 @@ projects/_root/bb~git~reset_all.bat -text
 projects/_root/bb~git~svn_fetch.bat -text
 projects/_root/bb~git~sync_svn_to_git.bat -text
 projects/_root/changelog.txt -text
+projects/_root/config.vars.in -text
 projects/_root/configure.bat -text
 projects/_root/configure_private.bat -text
 projects/_root/gh~git~init.bat -text
@@ -122,6 +127,7 @@ projects/contools/bittools/gl~git~sync_svn_to_git.bat -text
 projects/contools/bittools/repos.lst.in -text
 projects/contools/bittools/sf~svn~checkout_all.bat -text
 projects/contools/bittools/sf~svn~update_all.bat -text
+projects/contools/config.vars.in -text
 projects/contools/configure.bat -text
 projects/contools/contools/__init__.bat -text
 projects/contools/contools/bb~git~init.bat -text

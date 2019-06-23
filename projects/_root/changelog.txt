@@ -10,6 +10,14 @@ TODO:
 #   git repository!
 #
 
+2019.06.23:
+* new: _common: `configure_directory.bat` script to configure directory of projects
+* new: _common: `configure_project.bat` script to configure particular project
+* changed: `configure.bat` changed to generate variables from `config.private.vars.in`/`config.vars.in` files
+* changed: `configure.user.bat`/`configure_private.user.bat` replaced by `config.private.vars.in`/`config.vars.in` files
+* refactor: reduced all `configure.private.bat`/`configure.bat` scripts
+* refactor: minor refactor
+
 2019.05.08:
 * fixed: typo
 

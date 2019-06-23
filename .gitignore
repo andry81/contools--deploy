@@ -1,11 +1,10 @@
-projects/_root/3dparty/configure.user.bat
-projects/_root/3dparty/configure_private.user.bat
+projects/_root/*.vars
+projects/_root/3dparty/*.vars
 projects/_root/3dparty/dev/*.lst
 projects/_root/3dparty/dev/*.vars
 projects/_root/3dparty/scripts/*.lst
 projects/_root/3dparty/scripts/*.vars
-projects/_root/configure.user.bat
-projects/_root/configure_private.user.bat
+projects/contools/*.vars
 projects/contools/3dparty/*.lst
 projects/contools/3dparty/*.vars
 projects/contools/3dparty_scripts/*.lst
@@ -14,8 +13,6 @@ projects/contools/Tools/*.lst
 projects/contools/Tools/*.vars
 projects/contools/bittools/*.lst
 projects/contools/bittools/*.vars
-projects/contools/configure.user.bat
-projects/contools/configure_private.user.bat
 projects/contools/contools/*.lst
 projects/contools/contools/*.vars
 projects/contools/debug/*.lst

@@ -175,9 +175,9 @@ if defined GIT_SVN_INIT_IGNORE_PATHS_REGEX (
   rem safe variable set
   setlocal ENABLEDELAYEDEXPANSION
   for /F "eol=| tokens=* delims=" %%i in ("!GIT_SVN_INIT_CMDLINE!") do (
-    endlocal
-    if defined GIT_SVN_INIT_IGNORE_PATHS_REGEX (
-      set GIT_SVN_INIT_CMDLINE=--ignore-paths="%GIT_SVN_INIT_IGNORE_PATHS_REGEX%" %%i
+    for /F "eol=| tokens=* delims=" %%j in ("!GIT_SVN_INIT_IGNORE_PATHS_REGEX!") do (
+      endlocal
+      set GIT_SVN_INIT_CMDLINE=--ignore-paths="%%j" %%i
     )
   )
 )
