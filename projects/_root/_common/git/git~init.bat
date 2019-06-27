@@ -3,22 +3,16 @@
 setlocal
 
 set "SCM_TOKEN=%~1"
-set "CONFIG_VARS_FILE_PATH=%~2"
-set "REPOS_LIST_FILE_PATH=%~3"
+set "REPOS_LIST_FILE_PATH=%~2"
 
 if not defined SCM_TOKEN (
   echo.%~nx0: error: SCM_TOKEN is not defined.
   exit /b 1
 ) >&2
 
-if not exist "%CONFIG_VARS_FILE_PATH%" (
-  echo.%~nx0: error: CONFIG_VARS_FILE_PATH is not exist: "%CONFIG_VARS_FILE_PATH%"
-  exit /b 2
-) >&2
-
 if not exist "%REPOS_LIST_FILE_PATH%" (
   echo.%~nx0: error: REPOS_LIST_FILE_PATH is not exist: "%REPOS_LIST_FILE_PATH%"
-  exit /b 3
+  exit /b 2
 ) >&2
 
 if not defined NEST_LVL set NEST_LVL=0
@@ -26,11 +20,6 @@ if not defined NEST_LVL set NEST_LVL=0
 set /A NEST_LVL+=1
 
 call "%%~dp0__init__.bat" || goto EXIT
-
-rem load configuration file
-for /F "usebackq eol=# tokens=* delims=" %%i in ("%CONFIG_VARS_FILE_PATH%") do (
-  call set %%i
-)
 
 set "DATETIME_VALUE="
 for /F "usebackq eol=	 tokens=1,2 delims==" %%i in (`wmic os get LocalDateTime /VALUE 2^>NUL`) do if "%%i" == "LocalDateTime" set "DATETIME_VALUE=%%j"
@@ -102,8 +91,8 @@ pushd "%WCROOT%" && (
   call :CMD git config user.name "%%GIT_USER%%" || ( popd & exit /b )
   call :CMD git config user.email "%%GIT_EMAIL%%" || ( popd & exit /b )
 
-  rem <scm_token>|<branch_type>|<remote_name>|<remote_url>|<local_branch>|<remote_branch>|<path_prefix>|<git_remote_add_cmdline>|<git_subtree_cmdline>
-  for /F "usebackq eol=# tokens=1,3,4,8 delims=|" %%i in ("%REPOS_LIST_FILE_PATH%") do (
+  rem # <scm_token>|<branch_type>|<remote_name>|<remote_url>|<local_branch>|<remote_branch>|<git_path_prefix>|<svn_path_prefix>|<git_remote_add_cmdline>|<git_subtree_cmdline>
+  for /F "usebackq eol=# tokens=1,3,4,9 delims=|" %%i in ("%REPOS_LIST_FILE_PATH%") do (
     set "CONFIG_REMOTE_URL_NAME=%%j"
     set "CONFIG_REMOTE_URL=%%k"
     set "CONFIG_REMOTE_URL_ADD_CMDLINE=%%l"
@@ -120,7 +109,7 @@ set "WCROOT=%~dpf1"
 exit /b
 
 :GIT_REGISTER_REMOTE_URL
-if "%CONFIG_REMOTE_URL_ADD_CMDLINE%" == "." set "CONFIG_REMOTE_URL_ADD_CMDLINE="
+if defined CONFIG_REMOTE_URL_ADD_CMDLINE if "%CONFIG_REMOTE_URL_ADD_CMDLINE%" == "." set "CONFIG_REMOTE_URL_ADD_CMDLINE="
 
 (
   git remote get-url "%CONFIG_REMOTE_URL_NAME%" > nul 2> nul && call :CMD git remote set-url "%%CONFIG_REMOTE_URL_NAME%%" "%CONFIG_REMOTE_URL%"
@@ -164,11 +153,11 @@ exit /b
 
 set "GIT_SVN_INIT_IGNORE_PATHS_REGEX="
 
-rem <scm_token>|<branch_type>|<remote_name>|<remote_url>|<local_branch>|<remote_branch>|<path_prefix>|<git_remote_add_cmdline>|<git_subtree_cmdline>
-for /F "usebackq eol=# tokens=1,2,7 delims=|" %%i in ("%REPOS_LIST_FILE_PATH%") do (
+rem # <scm_token>|<branch_type>|<remote_name>|<remote_url>|<local_branch>|<remote_branch>|<git_path_prefix>|<svn_path_prefix>|<git_remote_add_cmdline>|<git_subtree_cmdline>
+for /F "usebackq eol=# tokens=1,2,8 delims=|" %%i in ("%REPOS_LIST_FILE_PATH%") do (
   set "CONFIG_BRANCH_TYPE=%%j"
-  set "CONFIG_PATH_PREFIX=%%k"
-  if /i "%SCM_TOKEN%" == "%%i" if /i not "root" == "%%j" call :GIT_SVN_ADD_IGNORE_PATH
+  set "CONFIG_SVN_PATH_PREFFIX=%%k"
+  if /i "%SCM_TOKEN%" == "%%i" if /i not "root" == "%%j" if not "." == "%%k" call :GIT_SVN_ADD_IGNORE_PATH
 )
 
 if defined GIT_SVN_INIT_IGNORE_PATHS_REGEX (
@@ -187,22 +176,24 @@ exit /b
 :GIT_SVN_ADD_IGNORE_PATH
 
 rem escape all regexp characters
-set "CONFIG_PATH_PREFIX=%CONFIG_PATH_PREFIX:\=/%"
-set "CONFIG_PATH_PREFIX=%CONFIG_PATH_PREFIX:^=\^%"
-set "CONFIG_PATH_PREFIX=%CONFIG_PATH_PREFIX:$=\$%"
-set "CONFIG_PATH_PREFIX=%CONFIG_PATH_PREFIX:.=\.%"
-set "CONFIG_PATH_PREFIX=%CONFIG_PATH_PREFIX:+=\+%"
-set "CONFIG_PATH_PREFIX=%CONFIG_PATH_PREFIX:[=\[%"
-set "CONFIG_PATH_PREFIX=%CONFIG_PATH_PREFIX:]=\]%"
-set "CONFIG_PATH_PREFIX=%CONFIG_PATH_PREFIX:(=\(%"
-set "CONFIG_PATH_PREFIX=%CONFIG_PATH_PREFIX:)=\)%"
-set "CONFIG_PATH_PREFIX=%CONFIG_PATH_PREFIX:{=\{%"
-set "CONFIG_PATH_PREFIX=%CONFIG_PATH_PREFIX:}=\}%"
+set "CONFIG_IGNORE_PATH_REGEX=%CONFIG_SVN_PATH_PREFFIX%"
+
+set "CONFIG_IGNORE_PATH_REGEX=%CONFIG_IGNORE_PATH_REGEX:\=/%"
+rem set "CONFIG_IGNORE_PATH_REGEX=%CONFIG_IGNORE_PATH_REGEX:^=\^%"
+set "CONFIG_IGNORE_PATH_REGEX=%CONFIG_IGNORE_PATH_REGEX:$=\$%"
+set "CONFIG_IGNORE_PATH_REGEX=%CONFIG_IGNORE_PATH_REGEX:.=\.%"
+rem set "CONFIG_IGNORE_PATH_REGEX=%CONFIG_IGNORE_PATH_REGEX:+=\+%"
+rem set "CONFIG_IGNORE_PATH_REGEX=%CONFIG_IGNORE_PATH_REGEX:[=\[%"
+rem set "CONFIG_IGNORE_PATH_REGEX=%CONFIG_IGNORE_PATH_REGEX:]=\]%"
+set "CONFIG_IGNORE_PATH_REGEX=%CONFIG_IGNORE_PATH_REGEX:(=\(%"
+set "CONFIG_IGNORE_PATH_REGEX=%CONFIG_IGNORE_PATH_REGEX:)=\)%"
+set "CONFIG_IGNORE_PATH_REGEX=%CONFIG_IGNORE_PATH_REGEX:{=\{%"
+set "CONFIG_IGNORE_PATH_REGEX=%CONFIG_IGNORE_PATH_REGEX:}=\}%"
 
 if defined GIT_SVN_INIT_IGNORE_PATHS_REGEX (
-  set "GIT_SVN_INIT_IGNORE_PATHS_REGEX=%GIT_SVN_INIT_IGNORE_PATHS_REGEX%|^[^/]+/%CONFIG_PATH_PREFIX%(?:/|$)"
+  set "GIT_SVN_INIT_IGNORE_PATHS_REGEX=%GIT_SVN_INIT_IGNORE_PATHS_REGEX%|%CONFIG_IGNORE_PATH_REGEX%(?:/|$)"
 ) else (
-  set "GIT_SVN_INIT_IGNORE_PATHS_REGEX=^[^/]+/%CONFIG_PATH_PREFIX%(?:/|$)"
+  set "GIT_SVN_INIT_IGNORE_PATHS_REGEX=%CONFIG_IGNORE_PATH_REGEX%(?:/|$)"
 )
 
 exit /b

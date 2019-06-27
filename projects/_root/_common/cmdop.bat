@@ -10,7 +10,7 @@ call "%%~dp0__init__.bat" || exit /b
 
 set "CMD_SCRIPT_FILE_NAME=%~1"
 
-call "%%CONFIGURE_ROOT%%\_common\parse_cmd_script_name.bat" "%%CMD_SCRIPT_FILE_NAME%%" || exit /b
+call "%%BASE_SCRIPTS_ROOT%%\parse_cmd_script_name.bat" "%%CMD_SCRIPT_FILE_NAME%%" || exit /b
 
 if not defined CMD_NAME (
   echo.%~nx0: error: CMD_NAME is not set.

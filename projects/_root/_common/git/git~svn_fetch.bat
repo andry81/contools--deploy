@@ -3,22 +3,16 @@
 setlocal
 
 set "SCM_TOKEN=%~1"
-set "CONFIG_VARS_FILE_PATH=%~2"
-set "REPOS_LIST_FILE_PATH=%~3"
+set "REPOS_LIST_FILE_PATH=%~2"
 
 if not defined SCM_TOKEN (
   echo.%~nx0: error: SCM_TOKEN is not defined.
   exit /b 1
 ) >&2
 
-if not exist "%CONFIG_VARS_FILE_PATH%" (
-  echo.%~nx0: error: CONFIG_VARS_FILE_PATH is not exist: "%CONFIG_VARS_FILE_PATH%"
-  exit /b 2
-) >&2
-
 if not exist "%REPOS_LIST_FILE_PATH%" (
   echo.%~nx0: error: REPOS_LIST_FILE_PATH is not exist: "%REPOS_LIST_FILE_PATH%"
-  exit /b 3
+  exit /b 2
 ) >&2
 
 if not defined NEST_LVL set NEST_LVL=0
@@ -26,11 +20,6 @@ if not defined NEST_LVL set NEST_LVL=0
 set /A NEST_LVL+=1
 
 call "%%~dp0__init__.bat" || goto EXIT
-
-rem load configuration file
-for /F "usebackq eol=# tokens=* delims=" %%i in ("%CONFIG_VARS_FILE_PATH%") do (
-  call set %%i
-)
 
 call :MAIN %~4 %~5 %~6 %~7 %~8 %~9
 exit /b
@@ -48,7 +37,7 @@ set FIRST_TIME_SYNC=0
 echo."%WCROOT%"...
 
 pushd "%WCROOT%" && (
-  rem <scm_token>|<branch_type>|<remote_name>|<remote_url>|<local_branch>|<remote_branch>|<path_prefix>|<git_remote_add_cmdline>|<git_subtree_cmdline>
+  rem # <scm_token>|<branch_type>|<remote_name>|<remote_url>|<local_branch>|<remote_branch>|<git_path_prefix>|<svn_path_prefix>|<git_remote_add_cmdline>|<git_subtree_cmdline>
   for /F "usebackq eol=# tokens=1,2 delims=|" %%i in ("%REPOS_LIST_FILE_PATH%") do (
     if /i "%SCM_TOKEN%" == "%%i" if /i "root" == "%%j" set HAS_AT_LEAST_ONE_REMOTE=1
   )

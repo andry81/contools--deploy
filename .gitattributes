@@ -37,6 +37,8 @@ projects/_root/_common/parse_cmd_script_name.bat -text
 projects/_root/_common/svn/__init__.bat -text
 projects/_root/_common/svn/svn~checkout_all.bat -text
 projects/_root/_common/svn/svn~update_all.bat -text
+projects/_root/_common/tools/get_datetime.bat -text
+projects/_root/_common/tools/wtee.exe -text
 projects/_root/bb~git~init.bat -text
 projects/_root/bb~git~pull_all.bat -text
 projects/_root/bb~git~reset_all.bat -text

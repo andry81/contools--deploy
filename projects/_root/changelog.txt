@@ -10,6 +10,11 @@ TODO:
 #   git repository!
 #
 
+2019.06.27:
+* new: log all output into local `.log` directory (`wtee.exe`, `get_datetime.bat`)
+* refactor: standalone `BASE_SCRIPTS_ROOT` and `CONTOOLS_ROOT` variables
+* refactor: configuration files load
+
 2019.06.23:
 * new: _common: `configure_directory.bat` script to configure directory of projects
 * new: _common: `configure_project.bat` script to configure particular project

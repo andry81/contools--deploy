@@ -2,7 +2,7 @@
 
 setlocal
 
-if not defined NEST_LVL set NEST_LVL=0
+call "%%~dp0__init__.bat" || exit /b
 
 set /A NEST_LVL+=1
 

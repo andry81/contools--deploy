@@ -3,22 +3,16 @@
 setlocal
 
 set "SCM_TOKEN=%~1"
-set "CONFIG_VARS_FILE_PATH=%~2"
-set "REPOS_LIST_FILE_PATH=%~3"
+set "REPOS_LIST_FILE_PATH=%~2"
 
 if not defined SCM_TOKEN (
   echo.%~nx0: error: SCM_TOKEN is not defined.
   exit /b 1
 ) >&2
 
-if not exist "%CONFIG_VARS_FILE_PATH%" (
-  echo.%~nx0: error: CONFIG_VARS_FILE_PATH is not exist: "%CONFIG_VARS_FILE_PATH%"
-  exit /b 2
-) >&2
-
 if not exist "%REPOS_LIST_FILE_PATH%" (
   echo.%~nx0: error: REPOS_LIST_FILE_PATH is not exist: "%REPOS_LIST_FILE_PATH%"
-  exit /b 3
+  exit /b 2
 ) >&2
 
 if not defined NEST_LVL set NEST_LVL=0
@@ -26,11 +20,6 @@ if not defined NEST_LVL set NEST_LVL=0
 set /A NEST_LVL+=1
 
 call "%%~dp0__init__.bat" || goto EXIT
-
-rem load configuration file
-for /F "usebackq eol=# tokens=* delims=" %%i in ("%CONFIG_VARS_FILE_PATH%") do (
-  call set %%i
-)
 
 call set "WCROOT_DIR=%%%SCM_TOKEN%.WCROOT_DIR%%"
 if not defined WCROOT_DIR ( call :EXIT_B -254 & goto EXIT )
@@ -44,7 +33,7 @@ set FIRST_TIME_SYNC=0
 echo."%WCROOT%"...
 
 pushd "%WCROOT%" && (
-  rem <scm_token>|<branch_type>|<remote_name>|<remote_url>|<local_branch>|<remote_branch>|<path_prefix>|<git_remote_add_cmdline>|<git_subtree_cmdline>
+  rem # <scm_token>|<branch_type>|<remote_name>|<remote_url>|<local_branch>|<remote_branch>|<git_path_prefix>|<svn_path_prefix>|<git_remote_add_cmdline>|<git_subtree_cmdline>
   for /F "usebackq eol=# tokens=1,2,3,4,5,6 delims=|" %%i in ("%REPOS_LIST_FILE_PATH%") do (
     set "CONFIG_REMOTE_URL_NAME=%%k"
     set "CONFIG_REMOTE_URL=%%l"
@@ -60,8 +49,8 @@ pushd "%WCROOT%" && (
 
   call :FIRST_TIME_CLEANUP
 
-  rem <scm_token>|<branch_type>|<remote_name>|<remote_url>|<local_branch>|<remote_branch>|<path_prefix>|<git_remote_add_cmdline>|<git_subtree_cmdline>
-  for /F "usebackq eol=# tokens=1,2,3,4,5,6,7,9 delims=|" %%i in ("%REPOS_LIST_FILE_PATH%") do (
+  rem # <scm_token>|<branch_type>|<remote_name>|<remote_url>|<local_branch>|<remote_branch>|<git_path_prefix>|<svn_path_prefix>|<git_remote_add_cmdline>|<git_subtree_cmdline>
+  for /F "usebackq eol=# tokens=1,2,3,4,5,6,7,10 delims=|" %%i in ("%REPOS_LIST_FILE_PATH%") do (
     set "CONFIG_REMOTE_URL_NAME=%%k"
     set "CONFIG_REMOTE_URL=%%l"
     set "CONFIG_LOCAL_BRANCH=%%m"
@@ -90,7 +79,7 @@ if not defined PULL_BRANCH_TOKEN (
 if not "%CONFIG_REMOTE_BRANCH%" == "%CONFIG_LOCAL_BRANCH%" set "PULL_BRANCH_TOKEN=%CONFIG_REMOTE_BRANCH%:%PULL_BRANCH_TOKEN%"
 )
 
-if defined CONFIG_SUBTREE_CMDLINE if "%CONFIG_SUBTREE_CMDLINE:~0,1%" == "." set "CONFIG_SUBTREE_CMDLINE="
+if defined CONFIG_SUBTREE_CMDLINE if "%CONFIG_SUBTREE_CMDLINE%" == "." set "CONFIG_SUBTREE_CMDLINE="
 
 call :CMD git subtree add --prefix="%%CONFIG_PATH_PREFIX%%" %CONFIG_SUBTREE_CMDLINE% "%%CONFIG_REMOTE_URL_NAME%%" "%%PULL_BRANCH_TOKEN%%" || (
   call :CMD git subtree pull --prefix="%%CONFIG_PATH_PREFIX%%" %CONFIG_SUBTREE_CMDLINE% "%%CONFIG_REMOTE_URL_NAME%%" "%%PULL_BRANCH_TOKEN%%" || exit /b
