@@ -23,10 +23,15 @@ projects/_root/3dparty/scripts/repos.lst.in -text
 projects/_root/README_EN.txt -text
 projects/_root/__init__.bat -text
 projects/_root/_common/__init__.bat -text
+projects/_root/_common/_impl/configure.bat -text
 projects/_root/_common/cmdop.bat -text
-projects/_root/_common/configure_directory.bat -text
-projects/_root/_common/configure_project.bat -text
+projects/_root/_common/configure.bat -text
 projects/_root/_common/git/__init__.bat -text
+projects/_root/_common/git/_impl/git~init.bat -text
+projects/_root/_common/git/_impl/git~pull_all.bat -text
+projects/_root/_common/git/_impl/git~reset_all.bat -text
+projects/_root/_common/git/_impl/git~svn_fetch.bat -text
+projects/_root/_common/git/_impl/git~sync_svn_to_git.bat -text
 projects/_root/_common/git/git~init.bat -text
 projects/_root/_common/git/git~pull_all.bat -text
 projects/_root/_common/git/git~reset_all.bat -text
@@ -35,6 +40,8 @@ projects/_root/_common/git/git~sync_svn_to_git.bat -text
 projects/_root/_common/load_config.bat -text
 projects/_root/_common/parse_cmd_script_name.bat -text
 projects/_root/_common/svn/__init__.bat -text
+projects/_root/_common/svn/_impl/svn~checkout_all.bat -text
+projects/_root/_common/svn/_impl/svn~update_all.bat -text
 projects/_root/_common/svn/svn~checkout_all.bat -text
 projects/_root/_common/svn/svn~update_all.bat -text
 projects/_root/_common/tools/get_datetime.bat -text

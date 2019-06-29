@@ -16,10 +16,6 @@ if not exist "%__CONFIGURE_DIR%\" (
   exit /b 2
 ) >&2
 
-if not defined NEST_LVL set NEST_LVL=0
-
-set /A NEST_LVL+=1
-
 (
   type "%__CONFIGURE_DIR%\config.vars.in" || exit /b 255
 ) > "%__CONFIGURE_DIR%\config.vars"
@@ -29,15 +25,20 @@ for /F "usebackq eol=	 tokens=* delims=" %%i in (`dir /A:D /B "%__CONFIGURE_DIR%
   call :PROCESS_DIR
 )
 
-set /A NEST_LVL-=1
-
-if %NEST_LVL% LEQ 0 pause
+if exist "%__CONFIGURE_DIR%\repos.lst.in" (
+  (
+    type "%__CONFIGURE_DIR%\repos.lst.in" || exit /b 255
+  ) > "%__CONFIGURE_DIR%\repos.lst"
+)
 
 exit /b 0
 
 :PROCESS_DIR
 rem ignore directories beginning by `.`
 if "%DIR:~0,1%" == "." exit /b 0
+
+rem ignore directories w/o config.vars.in
+if not exist "%__CONFIGURE_DIR%\%DIR%\config.vars.in" exit /b 0
 
 if exist "%__CONFIGURE_DIR%\%DIR%\configure.bat" call :CMD "%%__CONFIGURE_DIR%%\%%DIR%%\configure.bat"
 

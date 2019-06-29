@@ -2,49 +2,32 @@
 
 setlocal
 
-set "SCM_TOKEN=%~1"
-
-if not defined SCM_TOKEN (
-  echo.%~nx0: error: SCM_TOKEN is not defined.
-  exit /b 1
-) >&2
-
-if not defined NEST_LVL set NEST_LVL=0
+call "%%~dp0__init__.bat" || exit /b
 
 set /A NEST_LVL+=1
 
-call "%%~dp0__init__.bat" || goto EXIT
+if %NEST_LVL%0 EQU 0 goto WITH_LOGGING
 
-call set "WCROOT_DIR=%%%SCM_TOKEN%.WCROOT_DIR%%"
-if not defined WCROOT_DIR ( call :EXIT_B -254 & goto EXIT )
-if not defined WCROOT_OFFSET ( call :EXIT_B -253 & goto EXIT )
+rem no local logging if nested call
+call "%%~dp0_impl\%%~nx0" %%* || goto EXIT
 
-call :GETWCROOT "%WCROOT_OFFSET%/%WCROOT_DIR%"
+exit /b 0
 
-echo."%WCROOT%"...
+:WITH_LOGGING
+rem logging for all output if not nested call
+call "%%CONTOOLS_ROOT%%\get_datetime.bat"
+set "LOG_FILE_NAME_SUFFIX=%RETURN_VALUE:~0,4%_%RETURN_VALUE:~4,2%_%RETURN_VALUE:~6,2%_%RETURN_VALUE:~8,2%_%RETURN_VALUE:~10,2%_%RETURN_VALUE:~12,2%_%RETURN_VALUE:~15,3%"
 
-pushd "%WCROOT%" && (
-  call :CMD svn up || ( popd & goto EXIT )
-  popd
-)
-
-goto EXIT
-
-:GETWCROOT
-set "WCROOT=%~dpf1"
-exit /b
-
-:EXIT_B
-exit /b %*
+(
+  call "%%~dp0_impl\%%~nx0" %* || goto EXIT
+) 2>&1 | "%CONTOOLS_ROOT%\wtee.exe" "%CONFIGURE_DIR%\.log\%~n0_%LOG_NAME%.%LOG_FILE_NAME_SUFFIX%.log"
 
 :EXIT
+if defined LASTERROR set LASTERROR=%ERRORLEVEL%
+
+rem to prevent pause call under logging
 set /A NEST_LVL-=1
 
 if %NEST_LVL% LEQ 0 pause
 
-exit /b
-
-:CMD
-echo.^>%*
-(%*)
-echo.
+exit /b %LASTERROR%

@@ -10,6 +10,10 @@ TODO:
 #   git repository!
 #
 
+2019.06.29:
+* changed: all user scripts auto self logging
+* refactor: configure.bat script
+
 2019.06.27:
 * new: log all output into local `.log` directory (`wtee.exe`, `get_datetime.bat`)
 * refactor: standalone `BASE_SCRIPTS_ROOT` and `CONTOOLS_ROOT` variables
