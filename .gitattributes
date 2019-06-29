@@ -23,6 +23,7 @@ projects/_root/3dparty/scripts/repos.lst.in -text
 projects/_root/README_EN.txt -text
 projects/_root/__init__.bat -text
 projects/_root/_common/__init__.bat -text
+projects/_root/_common/_impl/cmdop.bat -text
 projects/_root/_common/_impl/configure.bat -text
 projects/_root/_common/cmdop.bat -text
 projects/_root/_common/configure.bat -text

@@ -3,7 +3,7 @@
 setlocal
 
 set "SCM_TOKEN=%~1"
-set "REPOS_LIST_FILE_PATH=%~2"
+set "REPOS_LIST_FILE_PATH=%CONFIGURE_DIR%\repos.lst"
 
 if not defined SCM_TOKEN (
   echo.%~nx0: error: SCM_TOKEN is not defined.
