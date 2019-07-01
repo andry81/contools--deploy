@@ -16,19 +16,27 @@ if not exist "%__CONFIGURE_DIR%\" (
   exit /b 2
 ) >&2
 
-(
-  type "%__CONFIGURE_DIR%\config.vars.in" || exit /b 255
-) > "%__CONFIGURE_DIR%\config.vars"
+if exist "%__CONFIGURE_DIR%\config.vars.in" (
+  (
+    type "%__CONFIGURE_DIR%\config.vars.in" || exit /b 255
+  ) > "%__CONFIGURE_DIR%\config.vars"
+)
 
-for /F "usebackq eol=	 tokens=* delims=" %%i in (`dir /A:D /B "%__CONFIGURE_DIR%\*.*"`) do (
-  set "DIR=%%i"
-  call :PROCESS_DIR
+if exist "%__CONFIGURE_DIR%\config.yaml.in" (
+  (
+    type "%__CONFIGURE_DIR%\config.yaml.in" || exit /b 255
+  ) > "%__CONFIGURE_DIR%\config.yaml"
 )
 
 if exist "%__CONFIGURE_DIR%\repos.lst.in" (
   (
     type "%__CONFIGURE_DIR%\repos.lst.in" || exit /b 255
   ) > "%__CONFIGURE_DIR%\repos.lst"
+)
+
+for /F "usebackq eol=	 tokens=* delims=" %%i in (`dir /A:D /B "%__CONFIGURE_DIR%\*.*"`) do (
+  set "DIR=%%i"
+  call :PROCESS_DIR
 )
 
 exit /b 0

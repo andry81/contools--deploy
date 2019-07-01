@@ -1,3 +1,6 @@
+# must points the executable directly
+PYTHON_EXE_PATH=c:/python/x64/37/python.exe
+
 # it must be from leaf repositories to a root repository
 SVN.PROJECT_PATH_LIST=orbittools\deploy
 SVN.PROJECT_PATH_LIST=%SVN.PROJECT_PATH_LIST% tacklelib\deploy

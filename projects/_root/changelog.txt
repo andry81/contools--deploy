@@ -10,9 +10,19 @@ TODO:
 #   git repository!
 #
 
+2019.07.01:
+* new: partially switched to the `python` 3.x with the modules: `xonsh` (unix shell like environment, `.xsh` scripts) + `cmdix` (unix core utils implemented in the python)
+* new: `configure.xsh` script, calls from `configure.bat` interface scripts
+* new: `README_EN.known_issues.txt` file for known issues around the scripts
+* changed: partially disabled `configure.bat` script implementation (`configure.py.bat` script have has used instead)
+* changed: inner xonsh piping functionality is not used because is not stable yet (see the `README_EN.known_issues.txt` for the details)
+* changed: variables related to the python implementation extracted into `.yaml` configuration files (`repos.lst.in` files are left as is to the python csv parser)
+* changed: readme update
+
 2019.06.29:
 * changed: all user scripts auto self logging
-* refactor: configure.bat script
+* changed: `configure_directory.bat` and `configure_project.bat` scripts merged into single `configure.bat` script
+* refactor: `configure.bat` script
 
 2019.06.27:
 * new: log all output into local `.log` directory (`wtee.exe`, `get_datetime.bat`)

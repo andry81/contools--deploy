@@ -1,13 +1,15 @@
 * README_EN.txt
-* 2019.02.25
+* 2019.07.01
 * deploy/projects/_root
 
 1. DESCRIPTION
 2. DIRECTORY DEPLOY STRUCTURE
-3. INSTALLATION
-4. USAGE
-4.1. Mirroring (merging) from SVN to GIT
-5. AUTHOR EMAIL
+3. PREREQUISITES
+4. INSTALLATION
+5. USAGE
+5.1. Mirroring (merging) from SVN to GIT
+6. KNOWN ISSUES
+7. AUTHOR EMAIL
 
 -------------------------------------------------------------------------------
 1. DESCRIPTION
@@ -35,7 +37,40 @@ The default directory structure is this:
   ...
 
 -------------------------------------------------------------------------------
-3. INSTALLATION
+3. PREREQUISITES
+-------------------------------------------------------------------------------
+
+Currently tested these set of OS platforms, interpreters and modules to run
+from:
+
+1. OS platforms.
+
+* Windows 7 (`.bat` only)
+
+2. Interpreters:
+
+* python 3.7.3
+
+3. Modules
+
+* Python modules:
+
+**  xonsh/0.9.6
+    https://github.com/xonsh/xonsh
+    - to run .xsh scripts and shell like environment
+**  prompt-toolkit 2.0.9
+    - optional dependency to the Xonsh on the Windows
+**  cmdix 0.2.0
+    https://github.com/jaraco/cmdix
+    - extension to use Unix core utils within Python environment as plain
+      executable or python function
+**  win_unicode_console
+    - to enable unicode symbols support in the Windows console
+**  pyyaml 5.1.1
+    - to read `.yaml` files
+
+-------------------------------------------------------------------------------
+4. INSTALLATION
 -------------------------------------------------------------------------------
 1. run the solution root `configure.bat`
 2. run the `configure_private.bat` in all subdirectories if not done yet
@@ -46,7 +81,7 @@ The default directory structure is this:
    (will be showed in a merge info after a merge).
 
 -------------------------------------------------------------------------------
-4. USAGE
+5. USAGE
 -------------------------------------------------------------------------------
 Any deploy script format:
   `<HubAbbrivatedName>~<ScmName>~<CommandOperation>.bat`, where:
@@ -80,7 +115,7 @@ Any deploy script format:
     `update_all` - update svn working copy directory
 
 -------------------------------------------------------------------------------
-4.1. Mirroring (merging) from SVN to GIT
+5.1. Mirroring (merging) from SVN to GIT
 -------------------------------------------------------------------------------
 To do a fetch from the svn REMOTE repository to the git LOCAL repository, then
 these scripts must be issued:
@@ -100,7 +135,13 @@ a LOCAL repository), then these scripts must be issued:
 1. `git~init` (required only if not inited yet)
 2. `git~svn_sync_all`
 
+
 -------------------------------------------------------------------------------
-5. AUTHOR EMAIL
+6. KNOWN ISSUES
+-------------------------------------------------------------------------------
+See details in the `README_EN.known_issues.txt` file.
+
+-------------------------------------------------------------------------------
+7. AUTHOR EMAIL
 -------------------------------------------------------------------------------
 Andrey Dibrov (andry at inbox dot ru)
