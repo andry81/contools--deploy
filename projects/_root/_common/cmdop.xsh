@@ -123,8 +123,6 @@ def main(configure_root, configure_dir, scm_name, cmd_name):
 
   cmdop(configure_dir, scm_name, cmd_name)
 
-  #yaml_update_global_vars()
-
 # CAUTION:
 #   Temporary disabled because of issues in the python xonsh module.
 #   See details in the `README_EN.known_issues.txt` file.

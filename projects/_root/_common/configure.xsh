@@ -30,7 +30,7 @@ if not os.path.isdir(CONFIGURE_DIR):
 #  pass
 
 def configure(configure_dir):
-  print(">configure: {0}".format(configure_dir)
+  print(">configure: {0}".format(configure_dir))
 
   if configure_dir == '':
     print_err("{0}: error: configure directory is not defined.".format(sys.argv[0]))
@@ -46,6 +46,15 @@ def configure(configure_dir):
   try:
     if os.path.isfile(os.path.join(configure_dir, 'repos.lst.in')):
       shutil.copyfile(os.path.join(configure_dir, 'repos.lst.in'), os.path.join(configure_dir, 'repos.lst')),
+  except:
+    # `exit` with the parentheses to workaround the issue:
+    # `source` xsh file with try/except does hang`:
+    # https://github.com/xonsh/xonsh/issues/3301
+    exit(255)
+
+  try:
+    if os.path.isfile(os.path.join(configure_dir, 'config.yaml.in')):
+      shutil.copyfile(os.path.join(configure_dir, 'config.yaml.in'), os.path.join(configure_dir, 'config.yaml')),
   except:
     # `exit` with the parentheses to workaround the issue:
     # `source` xsh file with try/except does hang`:
@@ -68,8 +77,8 @@ def configure(configure_dir):
       #if not (os.path.isfile(os.path.join(dirpath, dir, 'config.vars.in')) and
       #   os.path.isfile(os.path.join(dirpath, dir, 'config.yaml.in'))):
       #  continue
-      if os.path.isfile(os.path.join(dirpath, dir, 'config.yaml')):
-        configure(os.path.join(dirpath, dir))
+      if os.path.isfile(os.path.join(dirpath, dir, 'config.yaml.in')):
+        configure(os.path.join(dirpath, dir).replace('\\', '/'))
     dirs.clear() # not recursively
 
 def main(configure_root, configure_dir):

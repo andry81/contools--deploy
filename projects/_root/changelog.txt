@@ -1,4 +1,8 @@
 2019.09.21:
+* fixed: configure.bat
+* changed: removed `__pycache__` directories generation
+
+2019.09.21:
 * new: svn update/checkout scripts conversion is completed
 
 2019.09.07:
