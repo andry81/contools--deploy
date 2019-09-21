@@ -1,14 +1,25 @@
-TODO:
-* fix: unauthentic commit history in git repos versus main svn repo which is used as a source to mirror; is used a single revision fetch from the SVN at a time before the rebase and the push into the GIT in all repos to make authentic commit history in snv-to-git repos (any taken working copy in the GIT is exact to the associated SVN revision) and in git-by-git repos (the same hashes for a single SVN revision in all git repos which are mirrored from the same svn repo)
-* fix: generated commit e-mail address from the SVN revision in the GIT like `user@<repo-guid>` is replaced by a real user commit e-mail has declared in the config; now a git hub can generate correct commit statistic based on actual commit e-mail
-#
-# As a result of the fixes above all git repositories addressed in all scripts has to be recreated/regenerated from the scratch to apply the changes.
-# CAUTION:
-#   Because many git hubs has repo based project system instead of standalone
-#   project system, then that might involve a loss of information attached to a
-#   git repository like favorites/forks and other information after erasing a
-#   git repository!
-#
+2019.09.21:
+* new: svn update/checkout scripts conversion is completed
+
+2019.09.07:
+* new: [initiated] scripts conversion into the python scripts based on the plumbum module language
+* changed: [important] aboarted scripts conversion into the python scripts based on the xonsh module language as not stable, not reliable and not complete:
+** Gosh, too many issues not addressed to anyone! Authors has chosen to use it as a terminal language in the first place and does not consider to use it as a shell replacement. So many issues in the scripting area is still not resolved and authors are not interested to resolve them.
+** Here is the list of the issues which I've got discovered just in the moment to begin a conversion (https://github.com/xonsh/xonsh/issues/created_by/andry81 ):
+*** https://github.com/xonsh/xonsh/issues/3302 : "hangs around `source` operator"
+*** https://github.com/xonsh/xonsh/issues/3301 : "`source` xsh file with try/except does hang"
+*** https://github.com/xonsh/xonsh/issues/3299 : "hangs after `source` of a script which has been already sourced"
+*** https://github.com/xonsh/xonsh/issues/3236 : "pipe from python function to an external executable does hang (Windows)"
+*** https://github.com/xonsh/xonsh/issues/3202 : "`print` order broken while piping"
+*** https://github.com/xonsh/xonsh/issues/3198 : "can not use log from xonsh on any arbitrary xonsh code"
+*** https://github.com/xonsh/xonsh/issues/3197 : "raw strings still expands"
+*** https://github.com/xonsh/xonsh/issues/3192 : "multiline python evaluation `@(...)` breaks the parser"
+*** https://github.com/xonsh/xonsh/issues/3190 : "module `cmdix` executables is not visible from the python `Scripts` directory"
+*** ... and others which I still consider as hindering issues to move to the xonsh language in the first place!
+
+2019.09.01:
+* fixed: multiple bug fixes and workarounds around xonsh scripts
+* new: _common: rest of _common scripts ported to the python xonsh (`.xsh`)
 
 2019.07.01:
 * new: partially switched to the `python` 3.x with the modules: `xonsh` (unix shell like environment, `.xsh` scripts) + `cmdix` (unix core utils implemented in the python)

@@ -1,4 +1,4 @@
 # <scm_token>|<branch_type>|<remote_name>|<remote_url>|<local_branch>|<remote_branch>|<git_path_prefix>|<svn_path_prefix>|<git_remote_add_cmdline>|<git_subtree_cmdline>
 #   <svn_path_prefix> - partially regex expression, where the only `^` control character can be used. All other control characters would be escaped.
-GIT|root|origin|%CONTOOLS_TOOLS.GIT.ORIGIN%|master|master|.|.|.|.
-GIT2|root|origin|%CONTOOLS_TOOLS.GIT2.ORIGIN%|master|master|.|.|.|.
+GIT|root|origin|${CONTOOLS_TOOLS.GIT.ORIGIN}|master|master|.|.|.|.
+GIT2|root|origin|${CONTOOLS_TOOLS.GIT2.ORIGIN}|master|master|.|.|.|.

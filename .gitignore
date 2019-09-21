@@ -1,7 +1,10 @@
+projects/_root/*.lst
 projects/_root/*.vars
 projects/_root/*.yaml
 projects/_root/.log
+projects/_root/3dparty/*.lst
 projects/_root/3dparty/*.vars
+projects/_root/3dparty/*.yaml
 projects/_root/3dparty/.log
 projects/_root/3dparty/dev/*.lst
 projects/_root/3dparty/dev/*.vars
@@ -11,7 +14,13 @@ projects/_root/3dparty/scripts/*.lst
 projects/_root/3dparty/scripts/*.vars
 projects/_root/3dparty/scripts/*.yaml
 projects/_root/3dparty/scripts/.log
+projects/_root/__pycache__
+projects/_root/_common/__pycache__
+projects/_root/_common/tools/cmdoplib/__pycache__
+projects/_root/_common/tools/tacklelib/__pycache__
+projects/contools/*.lst
 projects/contools/*.vars
+projects/contools/*.yaml
 projects/contools/.log
 projects/contools/3dparty/*.lst
 projects/contools/3dparty/*.vars

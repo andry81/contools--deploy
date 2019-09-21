@@ -1,8 +1,5 @@
 #%% version: 1
 
-%YAML 1.1
-
-# it must be from leaf repositories to a root repository
 SVN.PROJECT_PATH_LIST:
   - orbittools/deploy
   - tacklelib/deploy
@@ -24,7 +21,6 @@ SVN.PROJECT_PATH_LIST:
   - nsisplus/NsisSetupDev
   - nsisplus/NsisSetupSamples
 
-# it must be from leaf repositories to a root repository
 GIT.PROJECT_PATH_LIST:
   - orbittools/deploy
   - tacklelib/deploy

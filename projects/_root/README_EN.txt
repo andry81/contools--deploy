@@ -1,5 +1,5 @@
 * README_EN.txt
-* 2019.07.01
+* 2019.09.20
 * deploy/projects/_root
 
 1. DESCRIPTION
@@ -49,25 +49,31 @@ from:
 
 2. Interpreters:
 
-* python 3.7.3
+* python 3.7.4
 
 3. Modules
 
 * Python modules:
 
-**  xonsh/0.9.6
+**  plumbum 1.6.7
+    https://plumbum.readthedocs.io/en/latest/
+    - to run python scripts in a shell like environment (.xsh)
+**  win_unicode_console
+    - to enable unicode symbols support in the Windows console
+**  pyyaml 5.1.1
+    - to read yaml format files (.yaml, .yml)
+
+Temporary dropped usage:
+
+**  xonsh/0.9.11
     https://github.com/xonsh/xonsh
-    - to run .xsh scripts and shell like environment
+    - to run python scripts in a shell like environment (.xsh)
 **  prompt-toolkit 2.0.9
     - optional dependency to the Xonsh on the Windows
 **  cmdix 0.2.0
     https://github.com/jaraco/cmdix
     - extension to use Unix core utils within Python environment as plain
       executable or python function
-**  win_unicode_console
-    - to enable unicode symbols support in the Windows console
-**  pyyaml 5.1.1
-    - to read `.yaml` files
 
 -------------------------------------------------------------------------------
 4. INSTALLATION
@@ -86,9 +92,9 @@ from:
 Any deploy script format:
   `<HubAbbrivatedName>~<ScmName>~<CommandOperation>.bat`, where:
 
-  `HubAbbrivatedName` - abbrivated hub name.
-  `ScmName`           - version source control name on a hub.
-  `CommandOperation`  - command operation to request from scm.
+  `HubAbbrivatedName` - Hub abbrivated name to run a command for.
+  `ScmName`           - Version Source Control service name in a hub.
+  `CommandOperation`  - Command operation name to request.
 
   `HubAbbrivatedName` can be:
     `sf` - SourceForge
@@ -101,45 +107,46 @@ Any deploy script format:
     `svn` - svn source control
 
   `CommandOperation` can be:
+
+  CAUTION:
+    The fetch git command now is a subcommand or a composite in a complex
+    svn-to-git algorithm and can not be requested directly anymore as can
+    change the state of a local git commit tree.
+
   [ScmName=git]
     `init`      - create and initialize local git working copy directory
-    `svn_fetch` - fetch svn repostory into git working copy
-    `pull_all`  - pull remote git repository including `git svn fetch` and
-        `git svn rebase` and pull all subtrees
-    `reset_all` - reset local working copy
-    `svn_sync_all` - same as `pull_all` plus push to remote <ScmName>
+    `pull`      - pull remote git repository including pulls of all subtrees
+    `reset`     - reset local working copy
+    `sync_svn_to_git` - same as `pull` plus synchronizes local git working copy
+        with the remote svn repository and pushes it to the remote <ScmName>
         repository
   [ScmName=svn]
-    `checkout_all` - checkout svn repository into new svn working copy
-        directory
-    `update_all` - update svn working copy directory
+    `checkout`  - checks out an svn repository into new svn working copy
+                  directory
+    `update`    - updates svn working copy directory from the remote
 
 -------------------------------------------------------------------------------
 5.1. Mirroring (merging) from SVN to GIT
 -------------------------------------------------------------------------------
-To do a fetch from the svn REMOTE repository to the git LOCAL repository, then
-these scripts must be issued:
-
-1. `git~init` (required only if not inited yet)
-2. `git~svn_fetch`
 
 To do a merge from the svn REMOTE repository to the git LOCAL repository, then
 these scripts must be issued:
 
 1. `git~init` (required only if not inited yet)
-2. `git~pull_all`
+2. `git~pull`
 
 To do a merge from svn REMOTE repository to git REMOTE repository (through
 a LOCAL repository), then these scripts must be issued:
 
 1. `git~init` (required only if not inited yet)
-2. `git~svn_sync_all`
+2. `git~sync_svn_to_git`
 
 
 -------------------------------------------------------------------------------
 6. KNOWN ISSUES
 -------------------------------------------------------------------------------
-See details in the `README_EN.known_issues.txt` file.
+For the issues around python xonsh module see details in the
+`README_EN.python_xonsh.known_issues.txt` file.
 
 -------------------------------------------------------------------------------
 7. AUTHOR EMAIL
