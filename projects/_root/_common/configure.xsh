@@ -9,7 +9,7 @@ CONFIGURE_DIR = sys.argv[1].replace('\\', '/') if len(sys.argv) >= 2 else ''
 # portable import to the global space
 sys.path.append(SOURCE_DIR + '/tools/tacklelib')
 import tacklelib as tkl
-# all functions in the module have has a 'tkl_' prefix so we don't need a scope here
+# all functions in the module have has a 'tkl_' prefix, all classes begins by `Tackle`, so we don't need a scope here
 tkl.tkl_merge_module(tkl, globals())
 # cleanup
 tkl = None
@@ -44,8 +44,8 @@ def configure(configure_dir):
     exit(2)
 
   try:
-    if os.path.isfile(os.path.join(configure_dir, 'repos.lst.in')):
-      shutil.copyfile(os.path.join(configure_dir, 'repos.lst.in'), os.path.join(configure_dir, 'repos.lst')),
+    if os.path.isfile(os.path.join(configure_dir, 'git_repos.lst.in')):
+      shutil.copyfile(os.path.join(configure_dir, 'git_repos.lst.in'), os.path.join(configure_dir, 'git_repos.lst')),
   except:
     # `exit` with the parentheses to workaround the issue:
     # `source` xsh file with try/except does hang`:

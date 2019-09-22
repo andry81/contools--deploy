@@ -11,7 +11,7 @@ CMD_NAME = sys.argv[3] if len(sys.argv) >= 4 else ''
 # portable import to the global space
 sys.path.append(SOURCE_DIR + '/tools/tacklelib')
 import tacklelib as tkl
-# all functions in the module have has a 'tkl_' prefix so we don't need a scope here
+# all functions in the module have has a 'tkl_' prefix, all classes begins by `Tackle`, so we don't need a scope here
 tkl.tkl_merge_module(tkl, globals())
 # cleanup
 tkl = None
@@ -21,6 +21,7 @@ sys.path.pop()
 tkl_source_module(SOURCE_DIR, '__init__.xsh')
 
 tkl_import_module(CMDOPLIB_ROOT, 'cmdoplib.svn.xsh', 'cmdoplib')
+tkl_import_module(CMDOPLIB_ROOT, 'cmdoplib.git.xsh', 'cmdoplib')
 
 if not os.path.isdir(CONFIGURE_ROOT):
   raise Exception('CONFIGURE_ROOT directory does not exist: `{0}`'.format(CONFIGURE_ROOT))
@@ -90,15 +91,15 @@ def cmdop(configure_dir, scm_name, cmd_name):
       else:
         raise Exception('unknown command name: ' + str(cmd_name))
     elif scm_name[:3] == 'GIT':
-      #if cmd_name == 'init':
-      #  ret = cmdoplib.git_init(configure_dir, scm_name)
+      if cmd_name == 'init':
+        ret = cmdoplib.git_init(configure_dir, scm_name)
       #elif cmd_name == 'pull':
       #  ret = cmdoplib.git_pull(configure_dir, scm_name)
       #elif cmd_name == 'reset':
       #  ret = cmdoplib.git_reset(configure_dir, scm_name)
       #elif cmd_name == 'sync_svn_to_git':
       #  ret = cmdoplib.git_sync_from_svn(configure_dir, scm_name)
-      #else:
+      else:
         raise Exception('unknown command name: ' + str(cmd_name))
     else:
       raise Exception('unsupported scm name: ' + str(scm_name))
