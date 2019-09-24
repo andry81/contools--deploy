@@ -1,3 +1,6 @@
+2019.09.25:
+* new: python: cmdoplib: intermediate `git_pull` function
+
 2019.09.22:
 * new: python: tacklelib: `devnull` class
 * new: python: cmdoplib: cmdoplib.git.xsh` script (git_init)

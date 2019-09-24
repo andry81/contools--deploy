@@ -93,8 +93,8 @@ def cmdop(configure_dir, scm_name, cmd_name):
     elif scm_name[:3] == 'GIT':
       if cmd_name == 'init':
         ret = cmdoplib.git_init(configure_dir, scm_name)
-      #elif cmd_name == 'pull':
-      #  ret = cmdoplib.git_pull(configure_dir, scm_name)
+      elif cmd_name == 'pull':
+        ret = cmdoplib.git_pull(configure_dir, scm_name)
       #elif cmd_name == 'reset':
       #  ret = cmdoplib.git_reset(configure_dir, scm_name)
       #elif cmd_name == 'sync_svn_to_git':
