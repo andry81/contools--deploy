@@ -1,5 +1,3 @@
-SVN.REPOROOT:               ${CONTOOLS_3DPARTY.SVN.REPOROOT}
-
 SVN.WCROOT_DIR:             sf~svn~contools--3dparty
 GIT.WCROOT_DIR:             gh~git~contools--3dparty
 GIT2.WCROOT_DIR:            bb~git~contools--3dparty

@@ -1,5 +1,5 @@
 * README_EN.txt
-* 2019.09.20
+* 2019.10.06
 * deploy/projects/_root
 
 1. DESCRIPTION
@@ -108,14 +108,10 @@ Any deploy script format:
 
   `CommandOperation` can be:
 
-  CAUTION:
-    The fetch git command now is a subcommand or a composite in a complex
-    svn-to-git algorithm and can not be requested directly anymore as can
-    change the state of a local git commit tree.
-
   [ScmName=git]
     `init`      - create and initialize local git working copy directory
-    `pull`      - pull remote git repository including pulls of all subtrees
+    `fetch`     - fetch remote git repositories optionally does
+                  (by default is NOT) the fetch of all subtrees
     `reset`     - reset local working copy
     `sync_svn_to_git` - same as `pull` plus synchronizes local git working copy
         with the remote svn repository and pushes it to the remote <ScmName>
@@ -132,14 +128,14 @@ Any deploy script format:
 To do a merge from the svn REMOTE repository to the git LOCAL repository, then
 these scripts must be issued:
 
-1. `git~init` (required only if not inited yet)
-2. `git~pull`
+1. `<HubAbbrivatedName>~git~<>init` (required only if not inited yet)
+2. `<HubAbbrivatedName>~git~pull`
 
 To do a merge from svn REMOTE repository to git REMOTE repository (through
 a LOCAL repository), then these scripts must be issued:
 
-1. `git~init` (required only if not inited yet)
-2. `git~sync_svn_to_git`
+1. `<HubAbbrivatedName>~git~init` (required only if not inited yet)
+2. `<HubAbbrivatedName>~git~sync_svn_to_git`
 
 
 -------------------------------------------------------------------------------

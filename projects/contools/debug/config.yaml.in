@@ -1,5 +1,3 @@
-SVN.REPOROOT:               ${CONTOOLS_DEBUG.SVN.REPOROOT}
-
 SVN.WCROOT_DIR:             sf~svn~contools--debug
 GIT.WCROOT_DIR:             gh~git~contools--debug
 GIT2.WCROOT_DIR:            bb~git~contools--debug

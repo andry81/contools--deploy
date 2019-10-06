@@ -1,4 +1,4 @@
-import os, sys, inspect
+import os, sys, inspect, argparse
 #from datetime import datetime
 
 SOURCE_FILE = os.path.abspath(inspect.getsourcefile(lambda:0)).replace('\\','/')
@@ -21,7 +21,7 @@ sys.path.pop()
 tkl_source_module(SOURCE_DIR, '__init__.xsh')
 
 tkl_import_module(CMDOPLIB_ROOT, 'cmdoplib.svn.xsh', 'cmdoplib')
-tkl_import_module(CMDOPLIB_ROOT, 'cmdoplib.git.xsh', 'cmdoplib')
+tkl_import_module(CMDOPLIB_ROOT, 'cmdoplib.gitsvn.xsh', 'cmdoplib')
 
 if not os.path.isdir(CONFIGURE_ROOT):
   raise Exception('CONFIGURE_ROOT directory does not exist: `{0}`'.format(CONFIGURE_ROOT))
@@ -39,7 +39,7 @@ if not CMD_NAME:
 #except:
 #  pass
 
-def cmdop(configure_dir, scm_name, cmd_name):
+def cmdop(configure_dir, scm_name, cmd_name, fetch_subtrees_root = None, fetch_subtrees_builtin_root = False):
   print(">cmdop: {0}, {1}".format(scm_name, cmd_name))
 
   if configure_dir == '':
@@ -92,13 +92,15 @@ def cmdop(configure_dir, scm_name, cmd_name):
         raise Exception('unknown command name: ' + str(cmd_name))
     elif scm_name[:3] == 'GIT':
       if cmd_name == 'init':
-        ret = cmdoplib.git_init(configure_dir, scm_name)
-      elif cmd_name == 'pull':
-        ret = cmdoplib.git_pull(configure_dir, scm_name)
+        ret = cmdoplib.git_init(configure_dir, scm_name, fetch_subtrees_root = fetch_subtrees_root, fetch_subtrees_builtin_root = fetch_subtrees_builtin_root)
+      elif cmd_name == 'fetch':
+        ret = cmdoplib.git_fetch(configure_dir, scm_name, fetch_subtrees_root = fetch_subtrees_root, fetch_subtrees_builtin_root = fetch_subtrees_builtin_root)
+      #elif cmd_name == 'pull':
+      #  ret = cmdoplib.git_pull(configure_dir, scm_name, fetch_subtrees_root = fetch_subtrees_root, fetch_subtrees_builtin_root = fetch_subtrees_builtin_root)
       #elif cmd_name == 'reset':
       #  ret = cmdoplib.git_reset(configure_dir, scm_name)
       #elif cmd_name == 'sync_svn_to_git':
-      #  ret = cmdoplib.git_sync_from_svn(configure_dir, scm_name)
+      #  ret = cmdoplib.git_sync_from_svn(configure_dir, scm_name, fetch_subtrees_builtin_root = True)
       else:
         raise Exception('unknown command name: ' + str(cmd_name))
     else:
@@ -110,7 +112,7 @@ def cmdop(configure_dir, scm_name, cmd_name):
 
   return ret
 
-def main(configure_root, configure_dir, scm_name, cmd_name):
+def main(configure_root, configure_dir, scm_name, cmd_name, fetch_subtrees_root = None, fetch_subtrees_builtin_root = False):
   # load `config.yaml` from `configure_root` up to `configure_dir` (excluded) directory
   configure_relpath = os.path.relpath(configure_dir, configure_root).replace('\\', '/')
   configure_relpath_comps = configure_relpath.split('/')
@@ -122,7 +124,7 @@ def main(configure_root, configure_dir, scm_name, cmd_name):
       configure_parent_dir = os.path.join(configure_root, *configure_relpath_comps[:i+1]).replace('\\', '/')
       yaml_load_config(configure_parent_dir, 'config.yaml')
 
-  cmdop(configure_dir, scm_name, cmd_name)
+  cmdop(configure_dir, scm_name, cmd_name, fetch_subtrees_root = fetch_subtrees_root, fetch_subtrees_builtin_root = fetch_subtrees_builtin_root)
 
 # CAUTION:
 #   Temporary disabled because of issues in the python xonsh module.
@@ -134,4 +136,13 @@ def main(configure_root, configure_dir, scm_name, cmd_name):
 #   Logging is implemented externally to the python.
 #
 if __name__ == '__main__':
-  main(CONFIGURE_ROOT, CONFIGURE_DIR, SCM_NAME, CMD_NAME)
+  # parse arguments
+  arg_parser = argparse.ArgumentParser()
+  arg_parser.add_argument('--fetch_subtrees_root')
+  arg_parser.add_argument('-r', action='store_true')
+  args = arg_parser.parse_args(sys.argv[4:])
+
+  if not args.r is None and not args.fetch_subtrees_root is None:
+    raise Exception("Either -r or --fetch_subtrees_root must be used at a time")
+
+  main(CONFIGURE_ROOT, CONFIGURE_DIR, SCM_NAME, CMD_NAME, fetch_subtrees_root = args.fetch_subtrees_root, fetch_subtrees_builtin_root = (True if not args.r is None else False))

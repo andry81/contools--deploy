@@ -1,3 +1,12 @@
+2019.10.06:
+* new: tackelib: `tacklelib.url.py` and `tacklelib.csv.py` scripts
+* new: cmdoplib: `cmdoplib.url.xsh`, `cmdoplib.csv.xsh`, `cmdoplib.csvgit.xsh` and `cmdoplib.gitsvn.xsh` scripts (currently only `git_init` and `git_fetch` is implemented)
+* fixed: tackelib: fixed class copy up on the `tkl_import_module` call
+* fixed: tackelib: `SOURCE_DIR` and `SOURCE_FILE` builtin variables complete restore between calls
+* changed: `exec_guards` function argument moved from the `tkl_source_module` into the `tkl_import_module` function to guard the execution on lowest level
+* changed: readmes update
+* refactor: global refactor
+
 2019.09.25:
 * new: python: cmdoplib: intermediate `git_pull` function
 

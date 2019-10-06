@@ -6,9 +6,10 @@ CONTOOLS_DEBUG.SVN.REPOROOT:            https://${SVN.HUB_ROOT}/contools/debug
 CONTOOLS_3DPARTY.SVN.REPOROOT:          https://${SVN.HUB_ROOT}/contools/3dparty
 CONTOOLS_3DPARTY_SCRIPTS.SVN.REPOROOT:  https://${SVN.HUB_ROOT}/contools/3dparty_scripts
 CONTOOLS_ROOT.SVN.REPOROOT:             https://${SVN.HUB_ROOT}/contools/contools
-CONTOOLS_TOOLS.SVN.REPOROOT:            https://${SVN.HUB_ROOT}/contools/contools/trunk/Scripts/Tools
 EXTERNAL_TOOLS.SVN.REPOROOT:            https://${SVN.HUB_ROOT}/contools/external_tools
 CONTOOLS_BITTOOLS.SVN.REPOROOT:         https://${SVN.HUB_ROOT}/contools/bittools
+
+SVNCMD_ROOT.SVN.REPOROOT:               https://${SVN.HUB_ROOT}/svncmd/scripts
 
 CONTOOLS_DEPLOY.GIT.ORIGIN:             https://${GIT.USER}@${GIT.HUB_ROOT}/${GIT.REPO_OWNER}/contools--deploy.git
 CONTOOLS_DEBUG.GIT.ORIGIN:              https://${GIT.USER}@${GIT.HUB_ROOT}/${GIT.REPO_OWNER}/contools--debug.git

@@ -1,5 +1,4 @@
-# <scm_token>|<branch_type>|<remote_name>|<remote_url>|<local_branch>|<remote_branch>|<git_path_prefix>|<svn_path_prefix>|<git_remote_add_cmdline>|<git_subtree_cmdline>
-#   <svn_path_prefix> - partially regex expression, where the only `^` control character can be used. All other control characters would be escaped.
-GIT|root|origin|${CONTOOLS_BITTOOLS.GIT.ORIGIN}|master|master|.|.|.|.
-GIT2|root|origin|${CONTOOLS_BITTOOLS.GIT2.ORIGIN}|master|master|.|.|.|.
-#GIT3|root|origin|${CONTOOLS_BITTOOLS.GIT3.ORIGIN}|master|master|.|.|.|.
+# <scm_token>|<branch_type>|<remote_name>|<parent_remote_name>|<git_reporoot>|<svn_reporoot>|<local_branch>|<remote_branch>|<parent_git_path_prefix>|<svn_path_prefix>|<git_remote_add_cmdline>|<git_subtree_cmdline>
+GIT|root|origin|.|${CONTOOLS_BITTOOLS.GIT.ORIGIN}|${CONTOOLS_BITTOOLS.SVN.REPOROOT}|trunk|trunk|.|trunk|.|.
+GIT2|root|origin|.|${CONTOOLS_BITTOOLS.GIT2.ORIGIN}|${CONTOOLS_BITTOOLS.SVN.REPOROOT}|trunk|trunk|.|trunk|.|.
+#GIT3|root|origin|.|${CONTOOLS_BITTOOLS.GIT3.ORIGIN}|${CONTOOLS_BITTOOLS.SVN.REPOROOT}|trunk|trunk|.|trunk|.|.

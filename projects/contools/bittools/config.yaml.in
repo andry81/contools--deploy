@@ -1,5 +1,3 @@
-SVN.REPOROOT:               ${CONTOOLS_BITTOOLS.SVN.REPOROOT}
-
 SVN.WCROOT_DIR:             sf~svn~contools--bittools
 GIT.WCROOT_DIR:             gh~git~contools--bittools
 GIT2.WCROOT_DIR:            bb~git~contools--bittools
