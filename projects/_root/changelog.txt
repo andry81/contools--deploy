@@ -1,4 +1,7 @@
 2019.10.10:
+* changed: readmes update
+
+2019.10.10:
 * fixed: cmdoplib: `*.HUB_ROOT` and `*.WCROOT_DIR` variables proper check
 
 2019.10.06:

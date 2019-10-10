@@ -1,5 +1,5 @@
 * README_EN.txt
-* 2019.10.06
+* 2019.10.10
 * deploy/projects/_root
 
 1. DESCRIPTION
@@ -128,7 +128,7 @@ Any deploy script format:
 To do a merge from the svn REMOTE repository to the git LOCAL repository, then
 these scripts must be issued:
 
-1. `<HubAbbrivatedName>~git~<>init` (required only if not inited yet)
+1. `<HubAbbrivatedName>~git~init` (required only if not inited yet)
 2. `<HubAbbrivatedName>~git~pull`
 
 To do a merge from svn REMOTE repository to git REMOTE repository (through
