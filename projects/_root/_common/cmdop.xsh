@@ -53,6 +53,11 @@ def cmdop(configure_dir, scm_name, cmd_name, fetch_subtrees_root = None, fetch_s
     print_err("{0}: error: configure directory does not exist: `{1}`.".format(sys.argv[0], configure_dir))
     exit(2)
 
+  hab_root_var = scm_name + '.HUB_ROOT'
+  if not hasvar(hab_root_var):
+    print_err("{0}: error: hub root variable is not declared for the scm_name as prefix: `{1}`.".format(sys.argv[0], hab_root_var))
+    exit(3)
+
   # loads `config.yaml` from `configure_dir`
   yaml_global_vars_pushed = False
   if os.path.isfile(os.path.join(configure_dir, 'config.yaml')):
@@ -84,25 +89,27 @@ def cmdop(configure_dir, scm_name, cmd_name, fetch_subtrees_root = None, fetch_s
   # do action only in a leaf configure_dir
   if is_leaf_configure_dir:
     if scm_name[:3] == 'SVN':
-      if cmd_name == 'update':
-        ret = cmdoplib.svn_update(configure_dir, scm_name)
-      elif cmd_name == 'checkout':
-        ret = cmdoplib.svn_checkout(configure_dir, scm_name)
-      else:
-        raise Exception('unknown command name: ' + str(cmd_name))
+      if hasvar(scm_name + '.WCROOT_DIR'):
+        if cmd_name == 'update':
+          ret = cmdoplib.svn_update(configure_dir, scm_name)
+        elif cmd_name == 'checkout':
+          ret = cmdoplib.svn_checkout(configure_dir, scm_name)
+        else:
+          raise Exception('unknown command name: ' + str(cmd_name))
     elif scm_name[:3] == 'GIT':
-      if cmd_name == 'init':
-        ret = cmdoplib.git_init(configure_dir, scm_name, fetch_subtrees_root = fetch_subtrees_root, fetch_subtrees_builtin_root = fetch_subtrees_builtin_root)
-      elif cmd_name == 'fetch':
-        ret = cmdoplib.git_fetch(configure_dir, scm_name, fetch_subtrees_root = fetch_subtrees_root, fetch_subtrees_builtin_root = fetch_subtrees_builtin_root)
-      #elif cmd_name == 'pull':
-      #  ret = cmdoplib.git_pull(configure_dir, scm_name, fetch_subtrees_root = fetch_subtrees_root, fetch_subtrees_builtin_root = fetch_subtrees_builtin_root)
-      #elif cmd_name == 'reset':
-      #  ret = cmdoplib.git_reset(configure_dir, scm_name)
-      #elif cmd_name == 'sync_svn_to_git':
-      #  ret = cmdoplib.git_sync_from_svn(configure_dir, scm_name, fetch_subtrees_builtin_root = True)
-      else:
-        raise Exception('unknown command name: ' + str(cmd_name))
+      if hasvar(scm_name + '.WCROOT_DIR'):
+        if cmd_name == 'init':
+          ret = cmdoplib.git_init(configure_dir, scm_name, fetch_subtrees_root = fetch_subtrees_root, fetch_subtrees_builtin_root = fetch_subtrees_builtin_root)
+        elif cmd_name == 'fetch':
+          ret = cmdoplib.git_fetch(configure_dir, scm_name, fetch_subtrees_root = fetch_subtrees_root, fetch_subtrees_builtin_root = fetch_subtrees_builtin_root)
+        #elif cmd_name == 'pull':
+        #  ret = cmdoplib.git_pull(configure_dir, scm_name, fetch_subtrees_root = fetch_subtrees_root, fetch_subtrees_builtin_root = fetch_subtrees_builtin_root)
+        #elif cmd_name == 'reset':
+        #  ret = cmdoplib.git_reset(configure_dir, scm_name)
+        #elif cmd_name == 'sync_svn_to_git':
+        #  ret = cmdoplib.git_sync_from_svn(configure_dir, scm_name, fetch_subtrees_builtin_root = True)
+        else:
+          raise Exception('unknown command name: ' + str(cmd_name))
     else:
       raise Exception('unsupported scm name: ' + str(scm_name))
 

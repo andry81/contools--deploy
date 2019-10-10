@@ -1,3 +1,6 @@
+2019.10.10:
+* fixed: cmdoplib: `*.HUB_ROOT` and `*.WCROOT_DIR` variables proper check
+
 2019.10.06:
 * new: tackelib: `tacklelib.url.py` and `tacklelib.csv.py` scripts
 * new: cmdoplib: `cmdoplib.url.xsh`, `cmdoplib.csv.xsh`, `cmdoplib.csvgit.xsh` and `cmdoplib.gitsvn.xsh` scripts (currently only `git_init` and `git_fetch` is implemented)
