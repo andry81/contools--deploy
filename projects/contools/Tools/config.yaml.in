@@ -1,5 +1,2 @@
 GIT.WCROOT_DIR:             gh~git~contools--Tools
 GIT2.WCROOT_DIR:            bb~git~contools--Tools
-
-GIT.GIT_SVN_INIT_CMDLINE:   []
-GIT2.GIT_SVN_INIT_CMDLINE:  []
