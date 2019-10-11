@@ -1,8 +1,8 @@
 # <scm_token>|<branch_type>|<remote_name>|<parent_remote_name>|<git_reporoot>|<svn_reporoot>|<local_branch>|<remote_branch>|<parent_git_path_prefix>|<svn_path_prefix>|<git_svn_init_cmdline>|<git_remote_add_cmdline>|<parent_git_subtree_cmdline>|<git_subtree_cmdline>
 GIT|root|origin|.|${CONTOOLS_ROOT.GIT.ORIGIN}|${CONTOOLS_ROOT.SVN.REPOROOT}|trunk|trunk|.|trunk|--stdlayout|.|.|.
-GIT|subtree|tools|origin|${CONTOOLS_TOOLS.GIT.ORIGIN}|${CONTOOLS_ROOT.SVN.REPOROOT}|master|master|Scripts/Tools|trunk/Scripts/Tools|--stdlayout|.|--squash|.
-GIT|subtree|tools-svn|tools|${CONTOOLS_TOOLS_SVN.GIT.ORIGIN}|${SVNCMD_ROOT.SVN.REPOROOT}|master|master|scm/svn|trunk/Scripts|--stdlayout|.|--squash|.
+GIT|subtree|tools|origin|${CONTOOLS_TOOLS.GIT.ORIGIN}|${CONTOOLS_ROOT.SVN.REPOROOT}|master|master|Scripts/Tools|trunk/Scripts/Tools|.|.|--squash|.
+GIT|subtree|tools-svn|tools|${CONTOOLS_TOOLS_SVN.GIT.ORIGIN}|${SVNCMD_ROOT.SVN.REPOROOT}|master|master|scm/svn|trunk/Scripts|.|.|--squash|.
 
 GIT2|root|origin|.|${CONTOOLS_ROOT.GIT2.ORIGIN}|${CONTOOLS_ROOT.SVN.REPOROOT}|trunk|trunk|.|trunk|--stdlayout|.|.
-GIT2|subtree|tools|origin|${CONTOOLS_TOOLS.GIT2.ORIGIN}|${CONTOOLS_ROOT.SVN.REPOROOT}|master|master|Scripts/Tools|trunk/Scripts/Tools|--stdlayout|.|--squash|.
-GIT2|subtree|tools-svn|tools|${CONTOOLS_TOOLS_SVN.GIT2.ORIGIN}|${SVNCMD_ROOT.SVN.REPOROOT}|master|master|scm/svn|trunk/Scripts|--stdlayout|.|--squash|.
+GIT2|subtree|tools|origin|${CONTOOLS_TOOLS.GIT2.ORIGIN}|${CONTOOLS_ROOT.SVN.REPOROOT}|master|master|Scripts/Tools|trunk/Scripts/Tools|.|.|--squash|.
+GIT2|subtree|tools-svn|tools|${CONTOOLS_TOOLS_SVN.GIT2.ORIGIN}|${SVNCMD_ROOT.SVN.REPOROOT}|master|master|scm/svn|trunk/Scripts|.|.|--squash|.
