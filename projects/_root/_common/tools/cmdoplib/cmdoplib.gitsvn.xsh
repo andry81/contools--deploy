@@ -114,7 +114,7 @@ def get_git_fetch_first_commit_hash(remote_name, local_branch, remote_branch):
   if not first_commit_hash is None:
     print(first_commit_hash)
   if len(ret[2]) > 0:
-    print(ret[2])
+    print(ret[2].rstrip())
 
   return first_commit_hash.strip()
 """
@@ -180,8 +180,10 @@ def get_last_git_pushed_commit_hash(git_reporoot, git_local_ref_token):
   git_last_pushed_commit_hash = None
 
   ret = call_no_except('git', ['ls-remote', git_reporoot], stdout = None, stderr = None)
-  print(ret[1])
-  if len(ret[2]) > 0: print(ret[2])
+  if len(ret[1]) > 0:
+    print(ret[1].rstrip())
+  if len(ret[2]) > 0:
+    print(ret[2].rstrip())
 
   with GitLsRemoteListReader(ret[1]) as git_ls_remote_reader:
     for row in git_ls_remote_reader:
@@ -199,13 +201,13 @@ def get_last_git_fetched_commit_hash(git_remote_ref_token):
   with GitShowRefListReader(ret[1]) as git_show_ref_reader:
     for row in git_show_ref_reader:
       if row['ref'] == git_remote_ref_token:
-        git_last_fetched_commit_hash = row['hash']
+        git_last_fetched_commit_hash = row['hash'].rstrip()
         break
 
   if not git_last_fetched_commit_hash is None:
     print(git_last_fetched_commit_hash)
   if len(ret[2]):
-    print(ret[2])
+    print(ret[2].rstrip())
 
   return git_last_fetched_commit_hash
 
@@ -217,13 +219,13 @@ def get_git_head_commit_hash(git_local_ref_token):
   with GitShowRefListReader(ret[1]) as git_show_ref_reader:
     for row in git_show_ref_reader:
       if row['ref'] == git_local_ref_token:
-        git_head_commit_hash = row['hash']
+        git_head_commit_hash = row['hash'].rstrip()
         break
 
   if not git_head_commit_hash is None:
     print(git_head_commit_hash)
   if len(ret[2]):
-    print(ret[2])
+    print(ret[2].rstrip())
 
   return git_head_commit_hash
 
@@ -456,13 +458,28 @@ def git_init(configure_dir, scm_name, fetch_subtrees_root = None, fetch_subtrees
       if len(git_svn_init_ignore_paths_regex) > 0:
         root_git_svn_init_cmdline_list.insert(0, '--ignore-paths=' + git_svn_init_ignore_paths_regex)
 
-      if not os.path.exists(wcroot_path + '/.git/svn'):
-        # (re)init git svn
-        if '--stdlayout' not in root_git_svn_init_cmdline_list:
-          root_svn_url = root_svn_reporoot + '/' + root_svn_path_prefix
-        else:
-          root_svn_url = root_svn_reporoot
+      # (re)init root git svn
+      is_git_root_wcroot_exists = os.path.exists(wcroot_path + '/.git/svn')
+      if is_git_root_wcroot_exists:
+        ret = call_no_except('git', ['config', 'svn-remote.svn.url'], stdout = None, stderr = None)
 
+        if len(ret[1]) > 0:
+          print(ret[1].rstrip())
+        if len(ret[2]) > 0:
+          print(ret[2].rstrip())
+
+      if '--stdlayout' not in root_git_svn_init_cmdline_list:
+        root_svn_url = root_svn_reporoot + '/' + root_svn_path_prefix
+      else:
+        root_svn_url = root_svn_reporoot
+
+      # Reinit if:
+      #   1. git/svn wcroot is not found or
+      #   2. svn remote url is not registered or
+      #   3. svn remote url is different
+      #
+      root_svn_url_reg = ret[1].rstrip()
+      if not is_git_root_wcroot_exists or ret[0] or root_svn_url_reg != root_svn_url:
         call('git', ['svn', 'init', root_svn_url] + root_git_svn_init_cmdline_list)
 
       call('git', ['config', 'user.name', git_user])
@@ -494,7 +511,7 @@ def git_init(configure_dir, scm_name, fetch_subtrees_root = None, fetch_subtrees
             subtree_parent_git_path_prefix = yaml_expand_value(subtree_parent_git_path_prefix)
             subtree_svn_path_prefix = yaml_expand_value(subtree_row['svn_path_prefix'])
 
-            subtree_git_svn_init_cmdline = row['git_svn_init_cmdline']
+            subtree_git_svn_init_cmdline = subtree_row['git_svn_init_cmdline']
             if subtree_git_svn_init_cmdline == '.':
               subtree_git_svn_init_cmdline = ''
             else:
@@ -536,12 +553,27 @@ def git_init(configure_dir, scm_name, fetch_subtrees_root = None, fetch_subtrees
                   subtree_git_svn_init_cmdline_list.insert(0, '--ignore-paths=' + subtree_git_svn_init_ignore_paths_regex)
 
                 # (re)init subtree git svn
-                if not os.path.exists(subtree_git_wcroot + '/.git/svn'):
-                  if '--stdlayout' not in subtree_git_svn_init_cmdline_list:
-                    subtree_svn_url = subtree_svn_reporoot + '/' + subtree_svn_path_prefix
-                  else:
-                    subtree_svn_url = subtree_svn_reporoot
+                is_git_subtree_wcroot_exists = os.path.exists(subtree_git_wcroot + '/.git/svn')
+                if is_git_subtree_wcroot_exists:
+                  ret = call_no_except('git', ['config', 'svn-remote.svn.url'], stdout = None, stderr = None)
 
+                  if len(ret[1]) > 0:
+                    print(ret[1].rstrip())
+                  if len(ret[2]) > 0:
+                    print(ret[2].rstrip())
+
+                if '--stdlayout' not in subtree_git_svn_init_cmdline_list:
+                  subtree_svn_url = subtree_svn_reporoot + '/' + subtree_svn_path_prefix
+                else:
+                  subtree_svn_url = subtree_svn_reporoot
+
+                # Reinit if:
+                #   1. git/svn wcroot is not found or
+                #   2. svn remote url is not registered or
+                #   3. svn remote url is different
+                #
+                subtree_svn_url_reg = ret[1].rstrip()
+                if not is_git_subtree_wcroot_exists or ret[0] or subtree_svn_url_reg != subtree_svn_url:
                   call('git', ['svn', 'init', subtree_svn_url] + subtree_git_svn_init_cmdline_list)
 
                 call('git', ['config', 'user.name', git_user])
@@ -621,7 +653,6 @@ def git_fetch(configure_dir, scm_name, fetch_subtrees_root = None, fetch_subtree
         git_local_ref_token = get_git_local_ref_token(local_branch, remote_branch)
 
         """
-        # update HEAD ref
         with open('.git/HEAD', 'wt') as head_file:
           head_file.write('ref: ' + git_local_ref_token)
           head_file.close()
@@ -700,7 +731,6 @@ def git_fetch(configure_dir, scm_name, fetch_subtrees_root = None, fetch_subtree
             subtree_git_local_ref_token = get_git_local_ref_token(subtree_local_branch, subtree_remote_branch)
 
             """
-            # update HEAD ref
             with open('.git/HEAD', 'wt') as subtree_head_file:
               subtree_head_file.write('ref: ' + subtree_git_local_ref_token)
               subtree_head_file.close()

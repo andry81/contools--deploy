@@ -1,3 +1,8 @@
+2019.10.11:
+* fixed: cmdoplib: `git svn init ...` rerun in case of lack of network
+* fixed: cmdoplib: `git svn init ...` invalid command line
+* changed: cmdoplib: trailing not printable characters trim from the stdout/stderr
+
 2019.10.10:
 * fixed: cmdoplib: `--stdlayout` usage in the `git svn init ...` command
 * changed: cmdoplib: `git_svn_init_cmdline` parameter moved into `git_repos.lst.in` file
