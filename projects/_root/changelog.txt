@@ -1,4 +1,8 @@
 2019.10.11:
+* fixed: cmdoplib: git config `svn-remove.svn` section records duplication on `git svn init ...` rerun
+* fixed: cmdoplib: minor fixup
+
+2019.10.11:
 * fixed: cmdoplib: `git svn init ...` rerun in case of lack of network
 * fixed: cmdoplib: `git svn init ...` invalid command line
 * changed: cmdoplib: trailing not printable characters trim from the stdout/stderr

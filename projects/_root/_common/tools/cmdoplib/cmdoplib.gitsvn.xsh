@@ -478,8 +478,11 @@ def git_init(configure_dir, scm_name, fetch_subtrees_root = None, fetch_subtrees
       #   2. svn remote url is not registered or
       #   3. svn remote url is different
       #
-      root_svn_url_reg = ret[1].rstrip()
+      if is_git_root_wcroot_exists and not ret[0]:
+        root_svn_url_reg = ret[1].rstrip()
       if not is_git_root_wcroot_exists or ret[0] or root_svn_url_reg != root_svn_url:
+        # removing the git svn config section to avoid it's records duplication on reinit
+        call_no_except('git', ['config', '--remove-section', 'svn-remote.svn'])
         call('git', ['svn', 'init', root_svn_url] + root_git_svn_init_cmdline_list)
 
       call('git', ['config', 'user.name', git_user])
@@ -572,8 +575,11 @@ def git_init(configure_dir, scm_name, fetch_subtrees_root = None, fetch_subtrees
                 #   2. svn remote url is not registered or
                 #   3. svn remote url is different
                 #
-                subtree_svn_url_reg = ret[1].rstrip()
+                if is_git_subtree_wcroot_exists and not ret[0]:
+                  subtree_svn_url_reg = ret[1].rstrip()
                 if not is_git_subtree_wcroot_exists or ret[0] or subtree_svn_url_reg != subtree_svn_url:
+                  # removing the git svn config section to avoid it's records duplication on reinit
+                  call_no_except('git', ['config', '--remove-section', 'svn-remote.svn'])
                   call('git', ['svn', 'init', subtree_svn_url] + subtree_git_svn_init_cmdline_list)
 
                 call('git', ['config', 'user.name', git_user])
