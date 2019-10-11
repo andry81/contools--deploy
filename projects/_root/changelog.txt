@@ -1,3 +1,7 @@
+2019.10.12:
+* changed: cmdoplib: always use SVN repository root as a fetch base path, move a subdirectory reference into a particular fetch value in the `svn-remote.svn` config section, this would let the git to generate a commit hash based on a complete path from the SVN root
+* refactor: cmdoplib: minor refactor
+
 2019.10.11:
 * fixed: cmdoplib: git config `svn-remove.svn` section records duplication on `git svn init ...` rerun
 * fixed: cmdoplib: minor fixup
