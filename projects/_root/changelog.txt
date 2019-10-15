@@ -1,3 +1,10 @@
+2019.10.15:
+* fixed: cmdoplib: HEAD revert, including HEAD reassign to the FETCH_HEAD and the reference list cleanup after a bad `git svn fetch ...` call
+* fixed: cmdoplib: invalid remote-local reference search after the `git ls-remote ...` call
+* fixed: cmdoplib: other minor fixes and improvements
+* new: cmdoplib: `git_reset` function
+* refactor: cmdoplib: minor refactor
+
 2019.10.12:
 * changed: drop the usage of the `--stdlayout` flag for the not root git repositories (subtree repositories)
 

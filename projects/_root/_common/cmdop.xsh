@@ -39,8 +39,15 @@ if not CMD_NAME:
 #except:
 #  pass
 
-def cmdop(configure_dir, scm_name, cmd_name, fetch_subtrees_root = None, fetch_subtrees_builtin_root = False):
-  print(">cmdop: {0}, {1}".format(scm_name, cmd_name))
+def cmdop(configure_dir, scm_name, cmd_name, invoke_subtrees_root = None, root_only = False, reset_hard = False):
+  print(">cmdop: {0} -> {1}".format(scm_name, cmd_name))
+
+  if not invoke_subtrees_root is None:
+    print(' invoke_subtrees_root: ' + invoke_subtrees_root)
+  if root_only:
+    print(' root_only: ' + str(root_only))
+  if reset_hard:
+    print(' reset_hard: ' + str(reset_hard))
 
   if configure_dir == '':
     print_err("{0}: error: configure directory is not defined.".format(sys.argv[0]))
@@ -99,15 +106,20 @@ def cmdop(configure_dir, scm_name, cmd_name, fetch_subtrees_root = None, fetch_s
     elif scm_name[:3] == 'GIT':
       if hasvar(scm_name + '.WCROOT_DIR'):
         if cmd_name == 'init':
-          ret = cmdoplib.git_init(configure_dir, scm_name, fetch_subtrees_root = fetch_subtrees_root, fetch_subtrees_builtin_root = fetch_subtrees_builtin_root)
+          ret = cmdoplib.git_init(configure_dir, scm_name,
+            init_subtrees_root = invoke_subtrees_root, root_only = root_only)
         elif cmd_name == 'fetch':
-          ret = cmdoplib.git_fetch(configure_dir, scm_name, fetch_subtrees_root = fetch_subtrees_root, fetch_subtrees_builtin_root = fetch_subtrees_builtin_root)
+          ret = cmdoplib.git_fetch(configure_dir, scm_name,
+            fetch_subtrees_root = invoke_subtrees_root, root_only = root_only, reset_hard = reset_hard)
+        elif cmd_name == 'reset':
+          ret = cmdoplib.git_reset(configure_dir, scm_name,
+            reset_subtrees_root = invoke_subtrees_root, root_only = root_only, reset_hard = reset_hard)
         #elif cmd_name == 'pull':
-        #  ret = cmdoplib.git_pull(configure_dir, scm_name, fetch_subtrees_root = fetch_subtrees_root, fetch_subtrees_builtin_root = fetch_subtrees_builtin_root)
-        #elif cmd_name == 'reset':
-        #  ret = cmdoplib.git_reset(configure_dir, scm_name)
+        #  ret = cmdoplib.git_pull(configure_dir, scm_name,
+        #    pull_subtrees_root = invoke_subtrees_root, root_only = root_only)
         #elif cmd_name == 'sync_svn_to_git':
-        #  ret = cmdoplib.git_sync_from_svn(configure_dir, scm_name, fetch_subtrees_builtin_root = True)
+        #  ret = cmdoplib.git_sync_from_svn(configure_dir, scm_name,
+        #    sync_subtrees_root = invoke_subtrees_root, root_only = root_only)
         else:
           raise Exception('unknown command name: ' + str(cmd_name))
     else:
@@ -119,7 +131,7 @@ def cmdop(configure_dir, scm_name, cmd_name, fetch_subtrees_root = None, fetch_s
 
   return ret
 
-def main(configure_root, configure_dir, scm_name, cmd_name, fetch_subtrees_root = None, fetch_subtrees_builtin_root = False):
+def main(configure_root, configure_dir, scm_name, cmd_name, invoke_subtrees_root = None, root_only = False, reset_hard = False):
   # load `config.yaml` from `configure_root` up to `configure_dir` (excluded) directory
   configure_relpath = os.path.relpath(configure_dir, configure_root).replace('\\', '/')
   configure_relpath_comps = configure_relpath.split('/')
@@ -131,7 +143,10 @@ def main(configure_root, configure_dir, scm_name, cmd_name, fetch_subtrees_root 
       configure_parent_dir = os.path.join(configure_root, *configure_relpath_comps[:i+1]).replace('\\', '/')
       yaml_load_config(configure_parent_dir, 'config.yaml')
 
-  cmdop(configure_dir, scm_name, cmd_name, fetch_subtrees_root = fetch_subtrees_root, fetch_subtrees_builtin_root = fetch_subtrees_builtin_root)
+  cmdop(configure_dir, scm_name, cmd_name,
+    invoke_subtrees_root = invoke_subtrees_root,
+    root_only = root_only,
+    reset_hard = reset_hard)
 
 # CAUTION:
 #   Temporary disabled because of issues in the python xonsh module.
@@ -145,11 +160,12 @@ def main(configure_root, configure_dir, scm_name, cmd_name, fetch_subtrees_root 
 if __name__ == '__main__':
   # parse arguments
   arg_parser = argparse.ArgumentParser()
-  arg_parser.add_argument('--fetch_subtrees_root')
-  arg_parser.add_argument('-r', action='store_true')
+  arg_parser.add_argument('-R', type = str)                       # custom subtree root directory (path)
+  arg_parser.add_argument('-ro', action = 'store_true')           # invoke for the root record only (boolean)
+  arg_parser.add_argument('--reset_hard', action = 'store_true')  # use `git reset ...` call with the `--hard` parameter (boolean)
   args = arg_parser.parse_args(sys.argv[4:])
 
-  if not args.r is None and not args.fetch_subtrees_root is None:
-    raise Exception("Either -r or --fetch_subtrees_root must be used at a time")
-
-  main(CONFIGURE_ROOT, CONFIGURE_DIR, SCM_NAME, CMD_NAME, fetch_subtrees_root = args.fetch_subtrees_root, fetch_subtrees_builtin_root = (True if not args.r is None else False))
+  main(CONFIGURE_ROOT, CONFIGURE_DIR, SCM_NAME, CMD_NAME,
+    invoke_subtrees_root = args.R,
+    root_only = (True if args.ro else False),
+    reset_hard = (True if args.reset_hard else False))
