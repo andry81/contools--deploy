@@ -10,6 +10,7 @@ projects/_root/3dparty/dev/configure.bat -text
 projects/_root/3dparty/dev/git_repos.lst.in -text
 projects/_root/3dparty/dev/gl~git~fetch.bat -text
 projects/_root/3dparty/dev/gl~git~init.bat -text
+projects/_root/3dparty/dev/gl~git~pull.bat -text
 projects/_root/3dparty/dev/gl~git~reset.bat -text
 projects/_root/3dparty/dev/gl~git~sync_svn_to_git.bat -text
 projects/_root/3dparty/scripts/__init__.bat -text
@@ -19,6 +20,7 @@ projects/_root/3dparty/scripts/configure.bat -text
 projects/_root/3dparty/scripts/git_repos.lst.in -text
 projects/_root/3dparty/scripts/gl~git~fetch.bat -text
 projects/_root/3dparty/scripts/gl~git~init.bat -text
+projects/_root/3dparty/scripts/gl~git~pull.bat -text
 projects/_root/3dparty/scripts/gl~git~reset.bat -text
 projects/_root/3dparty/scripts/gl~git~sync_svn_to_git.bat -text
 projects/_root/README_EN.python_xonsh.known_issues.txt -text
@@ -71,6 +73,7 @@ projects/_root/_common/~obsolete/svn/svn~checkout.bat -text
 projects/_root/_common/~obsolete/svn/svn~update.bat -text
 projects/_root/bb~git~fetch.bat -text
 projects/_root/bb~git~init.bat -text
+projects/_root/bb~git~pull.bat -text
 projects/_root/bb~git~reset.bat -text
 projects/_root/bb~git~sync_svn_to_git.bat -text
 projects/_root/changelog.txt -text
@@ -81,10 +84,12 @@ projects/_root/configure.bat -text
 projects/_root/configure.private.bat -text
 projects/_root/gh~git~fetch.bat -text
 projects/_root/gh~git~init.bat -text
+projects/_root/gh~git~pull.bat -text
 projects/_root/gh~git~reset.bat -text
 projects/_root/gh~git~sync_svn_to_git.bat -text
 projects/_root/gl~git~fetch.bat -text
 projects/_root/gl~git~init.bat -text
+projects/_root/gl~git~pull.bat -text
 projects/_root/gl~git~reset.bat -text
 projects/_root/gl~git~sync_svn_to_git.bat -text
 projects/_root/sf~svn~checkout.bat -text
@@ -92,6 +97,7 @@ projects/_root/sf~svn~update.bat -text
 projects/contools/3dparty/__init__.bat -text
 projects/contools/3dparty/bb~git~fetch.bat -text
 projects/contools/3dparty/bb~git~init.bat -text
+projects/contools/3dparty/bb~git~pull.bat -text
 projects/contools/3dparty/bb~git~reset.bat -text
 projects/contools/3dparty/bb~git~sync_svn_to_git.bat -text
 projects/contools/3dparty/config.vars.in -text
@@ -99,6 +105,7 @@ projects/contools/3dparty/config.yaml.in -text
 projects/contools/3dparty/configure.bat -text
 projects/contools/3dparty/gh~git~fetch.bat -text
 projects/contools/3dparty/gh~git~init.bat -text
+projects/contools/3dparty/gh~git~pull.bat -text
 projects/contools/3dparty/gh~git~reset.bat -text
 projects/contools/3dparty/gh~git~sync_svn_to_git.bat -text
 projects/contools/3dparty/git_repos.lst.in -text
@@ -107,6 +114,7 @@ projects/contools/3dparty/sf~svn~update.bat -text
 projects/contools/3dparty_scripts/__init__.bat -text
 projects/contools/3dparty_scripts/bb~git~fetch.bat -text
 projects/contools/3dparty_scripts/bb~git~init.bat -text
+projects/contools/3dparty_scripts/bb~git~pull.bat -text
 projects/contools/3dparty_scripts/bb~git~reset.bat -text
 projects/contools/3dparty_scripts/bb~git~sync_svn_to_git.bat -text
 projects/contools/3dparty_scripts/config.vars.in -text
@@ -114,6 +122,7 @@ projects/contools/3dparty_scripts/config.yaml.in -text
 projects/contools/3dparty_scripts/configure.bat -text
 projects/contools/3dparty_scripts/gh~git~fetch.bat -text
 projects/contools/3dparty_scripts/gh~git~init.bat -text
+projects/contools/3dparty_scripts/gh~git~pull.bat -text
 projects/contools/3dparty_scripts/gh~git~reset.bat -text
 projects/contools/3dparty_scripts/gh~git~sync_svn_to_git.bat -text
 projects/contools/3dparty_scripts/git_repos.lst.in -text
@@ -123,6 +132,7 @@ projects/contools/README_EN.txt -text
 projects/contools/Tools/__init__.bat -text
 projects/contools/Tools/bb~git~fetch.bat -text
 projects/contools/Tools/bb~git~init.bat -text
+projects/contools/Tools/bb~git~pull.bat -text
 projects/contools/Tools/bb~git~reset.bat -text
 projects/contools/Tools/bb~git~sync_svn_to_git.bat -text
 projects/contools/Tools/config.vars.in -text
@@ -130,6 +140,7 @@ projects/contools/Tools/config.yaml.in -text
 projects/contools/Tools/configure.bat -text
 projects/contools/Tools/gh~git~fetch.bat -text
 projects/contools/Tools/gh~git~init.bat -text
+projects/contools/Tools/gh~git~pull.bat -text
 projects/contools/Tools/gh~git~reset.bat -text
 projects/contools/Tools/gh~git~sync_svn_to_git.bat -text
 projects/contools/Tools/git_repos.lst.in -text
@@ -137,6 +148,7 @@ projects/contools/__init__.bat -text
 projects/contools/bittools/__init__.bat -text
 projects/contools/bittools/bb~git~fetch.bat -text
 projects/contools/bittools/bb~git~init.bat -text
+projects/contools/bittools/bb~git~pull.bat -text
 projects/contools/bittools/bb~git~reset.bat -text
 projects/contools/bittools/bb~git~sync_svn_to_git.bat -text
 projects/contools/bittools/config.vars.in -text
@@ -144,11 +156,13 @@ projects/contools/bittools/config.yaml.in -text
 projects/contools/bittools/configure.bat -text
 projects/contools/bittools/gh~git~fetch.bat -text
 projects/contools/bittools/gh~git~init.bat -text
+projects/contools/bittools/gh~git~pull.bat -text
 projects/contools/bittools/gh~git~reset.bat -text
 projects/contools/bittools/gh~git~sync_svn_to_git.bat -text
 projects/contools/bittools/git_repos.lst.in -text
 projects/contools/bittools/gl~git~fetch.bat -text
 projects/contools/bittools/gl~git~init.bat -text
+projects/contools/bittools/gl~git~pull.bat -text
 projects/contools/bittools/gl~git~reset.bat -text
 projects/contools/bittools/gl~git~sync_svn_to_git.bat -text
 projects/contools/bittools/sf~svn~checkout.bat -text
@@ -159,6 +173,7 @@ projects/contools/configure.bat -text
 projects/contools/contools/__init__.bat -text
 projects/contools/contools/bb~git~fetch.bat -text
 projects/contools/contools/bb~git~init.bat -text
+projects/contools/contools/bb~git~pull.bat -text
 projects/contools/contools/bb~git~reset.bat -text
 projects/contools/contools/bb~git~sync_svn_to_git.bat -text
 projects/contools/contools/config.vars.in -text
@@ -166,6 +181,7 @@ projects/contools/contools/config.yaml.in -text
 projects/contools/contools/configure.bat -text
 projects/contools/contools/gh~git~fetch.bat -text
 projects/contools/contools/gh~git~init.bat -text
+projects/contools/contools/gh~git~pull.bat -text
 projects/contools/contools/gh~git~reset.bat -text
 projects/contools/contools/gh~git~sync_svn_to_git.bat -text
 projects/contools/contools/git_repos.lst.in -text
@@ -174,6 +190,7 @@ projects/contools/contools/sf~svn~update.bat -text
 projects/contools/debug/__init__.bat -text
 projects/contools/debug/bb~git~fetch.bat -text
 projects/contools/debug/bb~git~init.bat -text
+projects/contools/debug/bb~git~pull.bat -text
 projects/contools/debug/bb~git~reset.bat -text
 projects/contools/debug/bb~git~sync_svn_to_git.bat -text
 projects/contools/debug/config.vars.in -text
@@ -181,6 +198,7 @@ projects/contools/debug/config.yaml.in -text
 projects/contools/debug/configure.bat -text
 projects/contools/debug/gh~git~fetch.bat -text
 projects/contools/debug/gh~git~init.bat -text
+projects/contools/debug/gh~git~pull.bat -text
 projects/contools/debug/gh~git~reset.bat -text
 projects/contools/debug/gh~git~sync_svn_to_git.bat -text
 projects/contools/debug/git_repos.lst.in -text
@@ -189,6 +207,7 @@ projects/contools/debug/sf~svn~update.bat -text
 projects/contools/deploy/__init__.bat -text
 projects/contools/deploy/bb~git~fetch.bat -text
 projects/contools/deploy/bb~git~init.bat -text
+projects/contools/deploy/bb~git~pull.bat -text
 projects/contools/deploy/bb~git~reset.bat -text
 projects/contools/deploy/bb~git~sync_svn_to_git.bat -text
 projects/contools/deploy/config.vars.in -text
@@ -196,6 +215,7 @@ projects/contools/deploy/config.yaml.in -text
 projects/contools/deploy/configure.bat -text
 projects/contools/deploy/gh~git~fetch.bat -text
 projects/contools/deploy/gh~git~init.bat -text
+projects/contools/deploy/gh~git~pull.bat -text
 projects/contools/deploy/gh~git~reset.bat -text
 projects/contools/deploy/gh~git~sync_svn_to_git.bat -text
 projects/contools/deploy/git_repos.lst.in -text
@@ -204,6 +224,7 @@ projects/contools/deploy/sf~svn~update.bat -text
 projects/contools/external_tools/__init__.bat -text
 projects/contools/external_tools/bb~git~fetch.bat -text
 projects/contools/external_tools/bb~git~init.bat -text
+projects/contools/external_tools/bb~git~pull.bat -text
 projects/contools/external_tools/bb~git~reset.bat -text
 projects/contools/external_tools/bb~git~sync_svn_to_git.bat -text
 projects/contools/external_tools/config.vars.in -text
@@ -211,6 +232,7 @@ projects/contools/external_tools/config.yaml.in -text
 projects/contools/external_tools/configure.bat -text
 projects/contools/external_tools/gh~git~fetch.bat -text
 projects/contools/external_tools/gh~git~init.bat -text
+projects/contools/external_tools/gh~git~pull.bat -text
 projects/contools/external_tools/gh~git~reset.bat -text
 projects/contools/external_tools/gh~git~sync_svn_to_git.bat -text
 projects/contools/external_tools/git_repos.lst.in -text

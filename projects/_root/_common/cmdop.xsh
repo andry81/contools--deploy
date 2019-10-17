@@ -114,9 +114,9 @@ def cmdop(configure_dir, scm_name, cmd_name, invoke_subtrees_root = None, root_o
         elif cmd_name == 'reset':
           ret = cmdoplib.git_reset(configure_dir, scm_name,
             reset_subtrees_root = invoke_subtrees_root, root_only = root_only, reset_hard = reset_hard)
-        #elif cmd_name == 'pull':
-        #  ret = cmdoplib.git_pull(configure_dir, scm_name,
-        #    pull_subtrees_root = invoke_subtrees_root, root_only = root_only)
+        elif cmd_name == 'pull':
+          ret = cmdoplib.git_pull(configure_dir, scm_name,
+            pull_subtrees_root = invoke_subtrees_root, root_only = root_only, reset_hard = reset_hard)
         #elif cmd_name == 'sync_svn_to_git':
         #  ret = cmdoplib.git_sync_from_svn(configure_dir, scm_name,
         #    sync_subtrees_root = invoke_subtrees_root, root_only = root_only)
