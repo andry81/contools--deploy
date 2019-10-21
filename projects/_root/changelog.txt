@@ -1,3 +1,12 @@
+2019.10.21:
+* fixed: cmdoplib: `git_push_from_svn` function execution
+* changed: cmdoplib: [continued] `git_push_from_svn` function
+* refactor: minor refactor
+
+2019.10.18:
+* new: cmdoplib: [initiated] `git_push_from_svn` function
+* refactor: cmdoplib: `sync_svn_to_git` scripts renamed into `push_svn_to_git` to highlight the 1-way direction process (the `sync` basically associated with 2-way direction)
+
 2019.10.17:
 * fixed: tacklelib: stdout/stderr mix after a `tkl_import_module` call
 * new: cmdoplib: complete `git_pull` function

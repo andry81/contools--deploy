@@ -1,4 +1,4 @@
-# <scm_token>|<branch_type>|<remote_name>|<parent_remote_name>|<git_reporoot>|<svn_reporoot>|<local_branch>|<remote_branch>|<parent_git_path_prefix>|<svn_path_prefix>|<git_svn_init_cmdline>|<git_remote_add_cmdline>|<parent_git_subtree_cmdline>|<git_subtree_cmdline>
+# <scm_token>|<branch_type>|<remote_name>|<parent_remote_name>|<git_reporoot>|<svn_reporoot>|<git_local_branch>|<git_remote_branch>|<parent_git_path_prefix>|<svn_path_prefix>|<git_svn_init_cmdline>|<git_remote_add_cmdline>|<parent_git_subtree_cmdline>|<git_subtree_cmdline>
 GIT|root|origin|.|${CONTOOLS_3DPARTY.GIT.ORIGIN}|${CONTOOLS_3DPARTY.SVN.REPOROOT}|trunk|trunk|.|trunk|--stdlayout|.|.|.
 GIT2|root|origin|.|${CONTOOLS_3DPARTY.GIT2.ORIGIN}|${CONTOOLS_3DPARTY.SVN.REPOROOT}|trunk|trunk|.|trunk|--stdlayout|.|.|.
 GIT3|root|origin|.|${CONTOOLS_3DPARTY.GIT3.ORIGIN}|${CONTOOLS_3DPARTY.SVN.REPOROOT}|trunk|trunk|.|trunk|--stdlayout|.|.|.
