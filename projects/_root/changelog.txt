@@ -1,5 +1,9 @@
 2019.10.22:
 * changed: cmdoplib: [continued] `git_push_from_svn` function
+* changed: readme update
+
+2019.10.22:
+* changed: cmdoplib: [continued] `git_push_from_svn` function
 * refactor: minor refactor
 
 2019.10.21:

@@ -36,6 +36,7 @@ projects/_root/_common/configure.py.bat -text
 projects/_root/_common/configure.xsh -text
 projects/_root/_common/tools/cmdoplib/cmdoplib.csv.xsh -text
 projects/_root/_common/tools/cmdoplib/cmdoplib.csvgit.xsh -text
+projects/_root/_common/tools/cmdoplib/cmdoplib.csvsvn.xsh -text
 projects/_root/_common/tools/cmdoplib/cmdoplib.gitsvn.xsh -text
 projects/_root/_common/tools/cmdoplib/cmdoplib.std.xsh -text
 projects/_root/_common/tools/cmdoplib/cmdoplib.svn.xsh -text

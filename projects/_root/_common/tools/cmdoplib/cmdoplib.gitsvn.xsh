@@ -2,6 +2,7 @@
 
 import os, sys, io, csv, shlex, copy
 from plumbum import local
+from conditional import conditional
 
 tkl_source_module(SOURCE_DIR, 'cmdoplib.std.xsh')
 tkl_source_module(SOURCE_DIR, 'cmdoplib.yaml.xsh')
@@ -171,11 +172,11 @@ def get_git_commit_from_git_log(str, svn_reporoot, svn_path_prefix):
       svn_rev_index = git_svn_url.rfind('@')
       if svn_rev_index > 0:
         svn_path = git_svn_url[:svn_rev_index]
-        svn_rev = git_svn_url[svn_rev_index + 1:]
+        svn_rev = int(git_svn_url[svn_rev_index + 1:])
         if svn_path == svn_remote_path:
           return (svn_rev, commit_hash, commit_timestamp, num_commits)
 
-  return (None, commit_hash, commit_timestamp, num_commits)
+  return (None, None, None, num_commits)
 
 def get_last_git_pushed_commit_hash(git_reporoot, git_remote_local_ref_token):
   git_last_pushed_commit_hash = None
@@ -726,11 +727,9 @@ def git_fetch(configure_dir, scm_name, fetch_subtrees_root = None, root_only = F
     revert_if_git_head_refs_is_not_last_pushed(root_git_reporoot, git_local_ref_token, git_remote_ref_token,
       git_remote_local_ref_token, reset_hard = reset_hard)
 
-    # provoke git svn revisions rebuild
+    # generate `--ignore_paths` for subtrees
 
     git_svn_fetch_cmdline_list = []
-
-    # generate `--ignore_paths` for subtrees
 
     git_svn_fetch_ignore_paths_regex = get_git_svn_subtree_ignore_paths_regex(git_repos_reader, scm_name, root_remote_name, root_svn_reporoot)
     if len(git_svn_fetch_ignore_paths_regex) > 0:
@@ -807,12 +806,10 @@ def git_fetch(configure_dir, scm_name, fetch_subtrees_root = None, root_only = F
           revert_if_git_head_refs_is_not_last_pushed(subtree_git_reporoot, subtree_git_local_ref_token, subtree_git_remote_ref_token,
             subtree_git_remote_local_ref_token, reset_hard = reset_hard)
 
-          # provoke git svn revisions rebuild
-
-          subtree_git_svn_fetch_cmdline_list = []
-
           with GitReposListReader(configure_dir + '/git_repos.lst') as subtree_git_repos_reader:
             # generate `--ignore_paths` for subtrees
+
+            subtree_git_svn_fetch_cmdline_list = []
 
             subtree_git_svn_fetch_ignore_paths_regex = get_git_svn_subtree_ignore_paths_regex(subtree_git_repos_reader, scm_name, subtree_remote_name, subtree_svn_reporoot)
             if len(subtree_git_svn_fetch_ignore_paths_regex) > 0:
@@ -1036,11 +1033,9 @@ def git_pull(configure_dir, scm_name, pull_subtrees_root = None, root_only = Fal
     revert_if_git_head_refs_is_not_last_pushed(root_git_reporoot, git_local_ref_token, git_remote_ref_token,
       git_remote_local_ref_token, reset_hard = reset_hard)
 
-    # provoke git svn revisions rebuild
+    # generate `--ignore_paths` for subtrees
 
     git_svn_fetch_cmdline_list = []
-
-    # generate `--ignore_paths` for subtrees
 
     git_svn_fetch_ignore_paths_regex = get_git_svn_subtree_ignore_paths_regex(git_repos_reader, scm_name, root_remote_name, root_svn_reporoot)
     if len(git_svn_fetch_ignore_paths_regex) > 0:
@@ -1119,12 +1114,10 @@ def git_pull(configure_dir, scm_name, pull_subtrees_root = None, root_only = Fal
           revert_if_git_head_refs_is_not_last_pushed(subtree_git_reporoot, subtree_git_local_ref_token, subtree_git_remote_ref_token,
             subtree_git_remote_local_ref_token, reset_hard = reset_hard)
 
-          # provoke git svn revisions rebuild
-
-          subtree_git_svn_fetch_cmdline_list = []
-
           with GitReposListReader(configure_dir + '/git_repos.lst') as subtree_git_repos_reader:
             # generate `--ignore_paths` for subtrees
+
+            subtree_git_svn_fetch_cmdline_list = []
 
             subtree_git_svn_fetch_ignore_paths_regex = get_git_svn_subtree_ignore_paths_regex(subtree_git_repos_reader, scm_name, subtree_remote_name, subtree_svn_reporoot)
             if len(subtree_git_svn_fetch_ignore_paths_regex) > 0:
@@ -1286,15 +1279,14 @@ def git_push_from_svn(configure_dir, scm_name, push_subtrees_root = None, reset_
     #     'svn_path_prefix'               : <string>,
     #     'svn_repo_uuid'                 : <string>,
     #     'git_local_branch'              : <string>,
-    #     'git_remote_branch'             : <string>
+    #     'git_remote_branch'             : <string>,
+    #     'git_wcroot'                    : <string>
     #   }
     #   <*_fetch_state>:  {
-    #     # all `last_pushed_*` either None or required at a time
-    #     'last_pushed_svn_rev'           : <integer>,
+    #     'last_pushed_svn_rev'           : <integer>,  # 0 if does not exist
     #     'last_pushed_git_hash'          : <string>,
     #     'last_pushed_git_timestamp'     : <integer>,
-    #     # all `first_unpushed_*` either None or required at a time
-    #     'first_unpushed_svn_rev'        : <integer>,
+    #     'first_unpushed_svn_rev'        : <integer>,  # None if does not exist
     #     'first_unpushed_svn_timestamp'  : <integer>
     #   }
     #
@@ -1310,7 +1302,8 @@ def git_push_from_svn(configure_dir, scm_name, push_subtrees_root = None, reset_
           #'svn_repo_uuid'                : '',
           'svn_path_prefix'               : root_svn_path_prefix,
           'git_local_branch'              : root_git_local_branch,
-          'git_remote_branch'             : root_git_remote_branch
+          'git_remote_branch'             : root_git_remote_branch,
+          'git_wcroot'                    : '.'
         },
         # must be assigned at once, otherwise: `TypeError: 'tuple' object does not support item assignment`
         {},
@@ -1362,7 +1355,8 @@ def git_push_from_svn(configure_dir, scm_name, push_subtrees_root = None, reset_
 
             row_values = [subtree_remote_name, subtree_git_reporoot, subtree_parent_git_path_prefix, subtree_svn_repopath, subtree_git_local_branch, subtree_git_remote_branch]
             print('  {:<{}} {:<{}} {:<{}} {:<{}} {:<{}} {:<{}}'.format(
-              *(i for j in [(row_value, column_width) for row_value, column_width in zip(row_values, column_widths)] for i in j)
+              subtree_remote_name_prefix_str + row_values[0], column_widths[0],
+              *(i for j in [(row_value, column_width) for row_value, column_width in zip(row_values[1:], column_widths[1:])] for i in j)
             ))
 
             if subtree_remote_name in remote_name_list:
@@ -1387,6 +1381,9 @@ def git_push_from_svn(configure_dir, scm_name, push_subtrees_root = None, reset_
                 'svn_path_prefix'               : subtree_svn_path_prefix,
                 'git_local_branch'              : subtree_git_local_branch,
                 'git_remote_branch'             : subtree_git_remote_branch,
+                'git_wcroot'                    : os.path.abspath(
+                    os.path.join(push_subtrees_root, subtree_remote_name + "'" + subtree_parent_git_path_prefix.replace('/', '--'))
+                  ).replace('\\', '/')
               },
               # must be assigned at once, otherwise: `TypeError: 'tuple' object does not support item assignment`
               {},
@@ -1416,6 +1413,7 @@ def git_push_from_svn(configure_dir, scm_name, push_subtrees_root = None, reset_
 
     for git_svn_repo_tree_tuple_ref in git_svn_repo_tree_tuple_ref_preorder_list:
       ref_repo_params = git_svn_repo_tree_tuple_ref[0]
+
       svn_reporoot = ref_repo_params['svn_reporoot']
 
       if svn_reporoot not in svn_repo_root_to_uuid_dict.keys():
@@ -1438,27 +1436,46 @@ def git_push_from_svn(configure_dir, scm_name, push_subtrees_root = None, reset_
     # 2.
     #
 
+    print('- Updating GIT-SVN repositories fetch state...')
+
+    for git_svn_repo_tree_tuple_ref in git_svn_repo_tree_tuple_ref_preorder_list:
+      ref_repo_params = git_svn_repo_tree_tuple_ref[0]
+      ref_fetch_state = git_svn_repo_tree_tuple_ref[1]
+
+      remote_name = ref_repo_params['remote_name']
+      git_local_branch = ref_repo_params['git_local_branch']
+      git_remote_branch = ref_repo_params['git_remote_branch']
+      svn_reporoot = ref_repo_params['svn_reporoot']
+      svn_path_prefix = ref_repo_params['svn_path_prefix']
+      git_wcroot = ref_repo_params['git_wcroot']
+
+      svn_repopath = svn_reporoot + ('/' + svn_path_prefix if svn_path_prefix != '' else '')
+
+      with conditional(git_wcroot != '.', local.cwd(git_wcroot)):
+        # get last git-svn revision w/o fetch because it must be already fetched
+
+        git_last_svn_rev, git_commit_hash, git_commit_timestamp, git_from_commit_timestamp, num_git_commits = \
+          get_last_git_svn_rev_by_git_log(remote_name, git_local_branch, git_remote_branch, svn_reporoot, svn_path_prefix)
+
+        if git_last_svn_rev is None:
+          git_last_svn_rev = 0
+
+        # get first svn revision not pushed into respective git repository
+
+        svn_unpushed_log_list = get_svn_log_list(svn_repopath, 1, git_last_svn_rev + 1, 'HEAD')
+
+        ref_fetch_state['last_pushed_svn_rev'] = git_last_svn_rev
+        ref_fetch_state['last_pushed_git_hash'] = git_commit_hash
+        ref_fetch_state['last_pushed_git_timestamp'] = git_commit_timestamp
+
+        if len(svn_unpushed_log_list) > 0:
+          svn_first_unpushed_log_item = svn_unpushed_log_list[0]
+          ref_fetch_state['first_unpushed_svn_rev'] = svn_first_unpushed_log_item[0]
+          ref_fetch_state['first_unpushed_svn_timestamp'] = svn_first_unpushed_log_item[2]
+
     print('- Checking parent-child GIT/SVN repositories for the last fetch state...')
 
     #parent_svn_reporoot_urlpath = tkl.ParseResult('', *tkl.urlparse(svn_reporoot)[1:]).geturl()
-
-    git_remote_ref_token, git_remote_local_ref_token = \
-      get_git_remote_ref_token(root_remote_name, root_git_local_branch, root_git_remote_branch)
-
-    # provoke git svn revisions rebuild
-
-    git_svn_fetch_cmdline_list = []
-
-    # generate `--ignore_paths` for subtrees
-
-    git_svn_fetch_ignore_paths_regex = get_git_svn_subtree_ignore_paths_regex(git_repos_reader, scm_name, root_remote_name, root_svn_reporoot)
-    if len(git_svn_fetch_ignore_paths_regex) > 0:
-      git_svn_fetch_cmdline_list.append('--ignore-paths=' + git_svn_fetch_ignore_paths_regex)
-
-    # git-svn get last svn revision w/o fetch because it must be already fetched
-
-    root_git_last_svn_rev, root_git_commit_hash, root_git_commit_timestamp, root_git_from_commit_timestamp, root_num_git_commits = \
-      get_last_git_svn_rev_by_git_log(root_remote_name, root_git_local_branch, root_git_remote_branch, root_svn_reporoot, root_svn_path_prefix)
 
     """
     git_repos_reader.reset()
@@ -1502,12 +1519,10 @@ def git_push_from_svn(configure_dir, scm_name, push_subtrees_root = None, reset_
           revert_if_git_head_refs_is_not_last_pushed(subtree_git_reporoot, subtree_git_local_ref_token, subtree_git_remote_ref_token,
             subtree_git_remote_local_ref_token, reset_hard = reset_hard)
 
-          # provoke git svn revisions rebuild
-
-          subtree_git_svn_fetch_cmdline_list = []
-
           with GitReposListReader(configure_dir + '/git_repos.lst') as subtree_git_repos_reader:
             # generate `--ignore_paths` for subtrees
+
+            subtree_git_svn_fetch_cmdline_list = []
 
             subtree_git_svn_fetch_ignore_paths_regex = get_git_svn_subtree_ignore_paths_regex(subtree_git_repos_reader, scm_name, subtree_remote_name, subtree_svn_reporoot)
             if len(subtree_git_svn_fetch_ignore_paths_regex) > 0:

@@ -1,5 +1,5 @@
 * README_EN.txt
-* 2019.10.10
+* 2019.10.22
 * deploy/projects/_root
 
 1. DESCRIPTION
@@ -49,7 +49,7 @@ from:
 
 2. Interpreters:
 
-* python 3.7.4
+* python 3.7.4 (3.4+)
 
 3. Modules
 
@@ -62,6 +62,8 @@ from:
     - to enable unicode symbols support in the Windows console
 **  pyyaml 5.1.1
     - to read yaml format files (.yaml, .yml)
+**  conditional 1.3
+    - to support conditional `with` statements
 
 Temporary dropped usage:
 
