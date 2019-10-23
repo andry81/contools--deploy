@@ -6,6 +6,8 @@ from plumbum import local
 tkl_source_module(SOURCE_DIR, 'cmdoplib.std.xsh')
 tkl_source_module(SOURCE_DIR, 'cmdoplib.csvsvn.xsh')
 
+discover_executable('SVN_EXEC', 'svn', 'SVN')
+
 def get_svn_log_list(wcpath, depth = 1, from_rev = None, to_rev = None):
   rev_list = []
 
@@ -20,7 +22,7 @@ def get_svn_log_list(wcpath, depth = 1, from_rev = None, to_rev = None):
     else:
       to_rev = 'HEAD'
 
-  ret = call('svn', ['log', '-q', '-l', str(depth), '-r', str(from_rev) + ':' + str(to_rev), wcpath], stdout = None, stderr = None)
+  ret = call('${SVN}', ['log', '-q', '-l', str(depth), '-r', str(from_rev) + ':' + str(to_rev), wcpath], stdout = None, stderr = None)
 
   stdout_lines = ret[1]
   stderr_lines = ret[2]
@@ -94,7 +96,7 @@ def svn_update(configure_dir, scm_name):
   print(' -> {0}...'.format(wcroot_path))
 
   with local.cwd(wcroot_path):
-    call('svn', ['up'])
+    call('${SVN}', ['up'])
 
 def svn_checkout(configure_dir, scm_name):
   print(">svn checkout: {0}".format(configure_dir))
@@ -126,4 +128,4 @@ def svn_checkout(configure_dir, scm_name):
   if os.path.isdir(wcroot_path + '/.svn'):
     return 0
 
-  call('svn', ['co', svn_checkout_url, wcroot_path])
+  call('${SVN}', ['co', svn_checkout_url, wcroot_path])

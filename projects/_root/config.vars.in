@@ -7,3 +7,7 @@ CMDOP_BASE_SCRIPT_FILE_NAME=cmdop.py.bat
 
 # console codepage before start the python
 CHCP=1251
+
+# custom user executables
+# "GIT_EXEC=c:/program files/git/bin/git.exe"
+# "SVN_EXEC=c:/program files/svn/bin/svn.exe"
