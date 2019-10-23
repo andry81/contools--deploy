@@ -20,7 +20,7 @@ def get_svn_log_list(wcpath, depth = 1, from_rev = None, to_rev = None):
     else:
       to_rev = 'HEAD'
 
-  ret = call_no_except('svn', ['log', '-q', '-l', str(depth), '-r', str(from_rev) + ':' + str(to_rev), wcpath], stdout = None, stderr = None)
+  ret = call('svn', ['log', '-q', '-l', str(depth), '-r', str(from_rev) + ':' + str(to_rev), wcpath], stdout = None, stderr = None)
 
   stdout_lines = ret[1]
   stderr_lines = ret[2]
@@ -31,14 +31,14 @@ def get_svn_log_list(wcpath, depth = 1, from_rev = None, to_rev = None):
       if svn_rev[:1] == 'r':
         svn_rev = svn_rev[1:].rstrip()
         svn_user_name = row['user_name'].rstrip()
-        svn_time_date = row['time_date']
-        found_index = svn_time_date.find('(')
+        svn_date_time = row['date_time']
+        found_index = svn_date_time.find('(')
         if found_index >= 0:
-          svn_time_date = svn_time_date[:found_index]
-        svn_time_date = svn_time_date.rstrip()
+          svn_date_time = svn_date_time[:found_index]
+        svn_date_time = svn_date_time.rstrip()
 
-        svn_timestamp = int(time.mktime(datetime.datetime.strptime(svn_time_date, '%Y-%m-%d %H:%M:%S %z').timetuple()))
-        rev_list.append((svn_rev, svn_user_name, svn_timestamp, svn_time_date))
+        svn_timestamp = int(time.mktime(datetime.datetime.strptime(svn_date_time, '%Y-%m-%d %H:%M:%S %z').timetuple()))
+        rev_list.append((svn_rev, svn_user_name, svn_timestamp, svn_date_time))
 
   # cut out the middle of the stdout
   num_revs = len(rev_list)
@@ -59,6 +59,7 @@ def get_svn_log_list(wcpath, depth = 1, from_rev = None, to_rev = None):
   """
   # To iterate over lines instead chars.
   # (see details: https://stackoverflow.com/questions/3054604/iterate-over-the-lines-of-a-string/3054898#3054898 )
+
   stdout_lines = io.StringIO(ret[1])
   print(stdout_lines)
   for line in stdout_lines:
