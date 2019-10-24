@@ -1,3 +1,7 @@
+2019.10.24:
+* fixed: cmdoplib: minor fix with SVN repository uuid update
+* changed: cmdoplib: [continued] `git_push_from_svn` function
+
 2019.10.23:
 * new: cmdoplib: `discover_executable` function to be able to override SVN/GIT executables either by respective environment variables (`SVN_EXEC`/`GIT_EXEC`) or by respective global variables (`SVN`/`GIT`)
 * changed: cmdoplib: [continued] `git_push_from_svn` function

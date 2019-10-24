@@ -1340,7 +1340,7 @@ def git_push_from_svn(configure_dir, scm_name, push_subtrees_root = None, reset_
           'git_reporoot'                  : root_git_reporoot,
           'parent_git_path_prefix'        : root_parent_git_path_prefix,
           'svn_reporoot'                  : root_svn_reporoot,
-          #'svn_repo_uuid'                : '',
+          'svn_repo_uuid'                 : '',                 # to avoid complex compare
           'svn_path_prefix'               : root_svn_path_prefix,
           'git_local_branch'              : root_git_local_branch,
           'git_remote_branch'             : root_git_remote_branch,
@@ -1417,7 +1417,7 @@ def git_push_from_svn(configure_dir, scm_name, push_subtrees_root = None, reset_
                 'git_reporoot'                  : subtree_git_reporoot,
                 'parent_git_path_prefix'        : subtree_parent_git_path_prefix,
                 'svn_reporoot'                  : subtree_svn_reporoot,
-                #'svn_repo_uuid'                : '',
+                'svn_repo_uuid'                 : '',
                 'svn_path_prefix'               : subtree_svn_path_prefix,
                 'git_local_branch'              : subtree_git_local_branch,
                 'git_remote_branch'             : subtree_git_remote_branch,
@@ -1458,7 +1458,7 @@ def git_push_from_svn(configure_dir, scm_name, push_subtrees_root = None, reset_
           svn_repo_uuid = svn_repo_uuid.rstrip()
 
         if svn_repo_uuid != '':
-          svn_repo_root_to_uuid_dict[svn_reporoot] = svn_repo_uuid
+          svn_repo_root_to_uuid_dict[svn_reporoot] = repo_params_ref['svn_repo_uuid'] = svn_repo_uuid
 
         if len(svn_repo_uuid) > 0:
           print(svn_repo_uuid)
@@ -1625,6 +1625,28 @@ def git_push_from_svn(configure_dir, scm_name, push_subtrees_root = None, reset_
                 '--since', str(parent_first_unpushed_svn_timestamp)])
 
             raise Exception('the child GIT repository `' + child_remote_name + '` is ahead to the parent GIT repository `' + parent_remote_name + '`')
+
+    print('- Checking children GIT/SVN repositories on compatability with the root...')
+
+    root_repo_tuple_ref = git_svn_repo_tree_tuple_ref_preorder_list[0]
+    root_repo_params_ref = root_repo_tuple_ref[0]
+    root_svn_repo_uuid = root_repo_params_ref['svn_repo_uuid']
+
+    if len(root_svn_repo_uuid) > 0:
+      for git_svn_repo_tree_tuple_ref in git_svn_repo_tree_tuple_ref_preorder_list:
+        repo_params_ref = git_svn_repo_tree_tuple_ref[0]
+
+        parent_tuple_ref = repo_params_ref['parent_tuple_ref']
+        if not parent_tuple_ref is None:
+          children_dict_ref = git_svn_repo_tree_tuple_ref[2]
+          # if have has no children then can have has a different repository UUID
+          if len(children_dict_ref) > 0:
+            svn_repo_uuid = root_repo_params_ref['svn_repo_uuid']
+            if len(svn_repo_uuid) > 0 and svn_repo_uuid != repo_params_ref['svn_repo_uuid']:
+              raise Exception('all not root and not leaf GIT repositories must have has the same SVN repository UUID '
+                'as the root GIT repository, because a history merge into a parent GIT repository for a change from the '
+                'child GIT repository is applicable if and ONLY if the being pushed GIT repository has an association with '
+                'the same SVN repository as the root GIT repository has')
 
     #parent_svn_reporoot_urlpath = tkl.ParseResult('', *tkl.urlparse(svn_reporoot)[1:]).geturl()
 
