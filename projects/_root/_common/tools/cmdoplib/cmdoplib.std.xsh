@@ -1,12 +1,8 @@
 # python module for commands with extension modules usage: tacklelib
 
-import os, sys, shutil, plumbum
-
-### local import ###
-
 tkl_import_module(TACKLELIB_ROOT, 'tacklelib.py', 'tkl')
 
-### functions ###
+import os, sys, shutil, plumbum
 
 # call from pipe
 def pcall(args):
@@ -48,19 +44,19 @@ def hasvar(x):
 def discover_executable(env_var_name, exec_file_name_wo_ext, global_var_name):
   if env_var_name in os.environ:
     exec_path = os.environ[env_var_name]
-    print('- discovered environment variable: ' + env_var_name + '=`' + exec_path + '`')
+    print('- discover environment variable: ' + env_var_name + '=`' + exec_path + '`')
 
     if exec_path.find('\\') >= 0 or exec_path.find('/') >= 0:
       exec_path = os.path.abspath(os.environ[env_var_name]).replace('\\', '/')
     tkl_declare_global(global_var_name, exec_path)
-    print('- declared global variable: ' + global_var_name + '=`' + exec_path + '`')
+    print('- declare global variable: ' + global_var_name + '=`' + exec_path + '`')
     return
 
   var = shutil.which(exec_file_name_wo_ext)
   if not var is None:
     exec_path = os.path.abspath(var).replace('\\', '/')
     tkl_declare_global(global_var_name, exec_path)
-    print('- declared global variable: ' + global_var_name + '=`' + exec_path + '`')
+    print('- declare global variable: ' + global_var_name + '=`' + exec_path + '`')
     return
 
   raise Exception('Executable is not found in the `' + env_var_name + '` environment variable nor in the PATH variable.')

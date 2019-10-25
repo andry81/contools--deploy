@@ -1,8 +1,8 @@
 # python module for commands with extension modules usage: tacklelib, csv
 
-import csv
-
 tkl_source_module(SOURCE_DIR, 'cmdoplib.csv.xsh')
+
+import csv
 
 class GitReposListReaderDialect(csv.Dialect):
   delimiter = '|'

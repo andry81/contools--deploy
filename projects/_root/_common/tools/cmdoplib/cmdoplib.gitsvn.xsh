@@ -1,9 +1,5 @@
 # python module for commands with extension modules usage: tacklelib, plumbum
 
-import os, sys, io, csv, shlex, copy
-from plumbum import local
-from conditional import conditional
-
 tkl_source_module(SOURCE_DIR, 'cmdoplib.std.xsh')
 tkl_source_module(SOURCE_DIR, 'cmdoplib.yaml.xsh')
 tkl_source_module(SOURCE_DIR, 'cmdoplib.csvgit.xsh')
@@ -12,6 +8,11 @@ tkl_source_module(SOURCE_DIR, 'cmdoplib.url.xsh')
 tkl_source_module(SOURCE_DIR, 'cmdoplib.svn.xsh')
 
 tkl_import_module(TACKLELIB_ROOT, 'tacklelib.utils.py', 'tkl')
+
+import os, sys, io, csv, shlex, copy
+from plumbum import local
+from conditional import conditional
+from datetime import datetime # must be the same everythere
 
 discover_executable('GIT_EXEC', 'git', 'GIT')
 
@@ -179,7 +180,7 @@ def get_git_commit_from_git_log(str, svn_reporoot, svn_path_prefix):
       commit_hash = value_list[1]
       num_commits += 1
     elif key == 'timestamp':
-      commit_timestamp = value_list[1]
+      commit_timestamp = int(value_list[1])
     elif key == 'date_time':
       commit_date_time = value_list[1]
     elif key == 'git-svn-id':
@@ -191,7 +192,7 @@ def get_git_commit_from_git_log(str, svn_reporoot, svn_path_prefix):
         if svn_path == svn_remote_path:
           return (svn_rev, commit_hash, commit_timestamp, commit_date_time, num_commits)
 
-  return (None, None, None, None, num_commits)
+  return (0, None, None, None, num_commits)
 
 def get_last_git_pushed_commit_hash(git_reporoot, git_remote_local_ref_token):
   git_last_pushed_commit_hash = None
@@ -350,10 +351,7 @@ def git_svn_fetch_to_last_git_pushed_svn_rev(remote_name, git_local_branch, git_
   # special `git svn fetch` call to build initial git-svn revisions map from the svn repository
 
   try:
-    if not git_last_svn_rev is None:
-      ret = call('${GIT}', ['svn', 'fetch', '-r' + str(git_last_svn_rev)] + git_svn_fetch_cmdline_list, stdout = None, stderr = None)
-    else:
-      ret = call('${GIT}', ['svn', 'fetch', '-r0'] + git_svn_fetch_cmdline_list, stdout = None, stderr = None)
+    ret = call('${GIT}', ['svn', 'fetch', '-r' + str(git_last_svn_rev)] + git_svn_fetch_cmdline_list, stdout = None, stderr = None)
 
   except ProcessExecutionError as proc_err:
     if len(proc_err.stdout) > 0:
@@ -395,7 +393,7 @@ def git_svn_fetch_to_last_git_pushed_svn_rev(remote_name, git_local_branch, git_
 #
 def get_last_git_svn_rev_by_git_log(remote_name, git_local_branch, git_remote_branch, svn_reporoot, svn_path_prefix, git_log_start_depth = 16):
   # get last pushed svn revision from the `git log` using last commit hash from the git remote repo
-  git_last_svn_rev = None
+  git_last_svn_rev = 0
   git_commit_hash = None
   git_commit_timestamp = None
   git_commit_date_time = None
@@ -421,7 +419,7 @@ def get_last_git_svn_rev_by_git_log(remote_name, git_local_branch, git_remote_br
       get_git_commit_from_git_log(ret[1], svn_reporoot, svn_path_prefix)
 
     # quit if the svn revision is found
-    if not git_last_svn_rev is None:
+    if git_last_svn_rev > 0:
       break
 
     git_log_prev_num_commits = git_log_next_num_commits
@@ -1292,6 +1290,9 @@ def git_push_from_svn(configure_dir, scm_name, push_subtrees_root = None, reset_
 
     print('- Reading GIT-SVN repositories list:')
 
+    # maximal time depth in a multiple svn commits fetch from an svn repository
+    max_time_depth_in_multiple_svn_commits_fetch_sec = 2678400 # seconds in 1 month (31 days)
+
     column_names = ['<remote_name>', '<git_reporoot>', '<parent_git_prefix>', '<svn_repopath>', '<git_local_branch>', '<git_remote_branch>']
     column_widths = [15, 64, 20, 64, 20, 20]
 
@@ -1307,27 +1308,26 @@ def git_push_from_svn(configure_dir, scm_name, push_subtrees_root = None, reset_
     # Recursive format:
     #   { <root_repo_remote_name> : ( <root_repo_params>, <root_fetch_state>, { <child_remote_name> : ( <child_repo_params>, <child_fetch_state>, ... ), ... } ) }
     #   <*_repo_params>:  {
-    #     'nest_index'                    : <integer>,
-    #     'parent_tuple_ref'              : <tuple>,
-    #     'remote_name'                   : <string>,
-    #     'parent_remote_name'            : <string>,
-    #     'git_reporoot'                  : <string>,
-    #     'parent_git_path_prefix'        : <string>,
-    #     'svn_reporoot'                  : <string>,
-    #     'svn_path_prefix'               : <string>,
-    #     'svn_repo_uuid'                 : <string>,
-    #     'git_local_branch'              : <string>,
-    #     'git_remote_branch'             : <string>,
-    #     'git_wcroot'                    : <string>
+    #     'nest_index'                          : <integer>,
+    #     'parent_tuple_ref'                    : <tuple>,
+    #     'remote_name'                         : <string>,
+    #     'parent_remote_name'                  : <string>,
+    #     'git_reporoot'                        : <string>,
+    #     'parent_git_path_prefix'              : <string>,
+    #     'svn_reporoot'                        : <string>,
+    #     'svn_path_prefix'                     : <string>,
+    #     'svn_repo_uuid'                       : <string>,
+    #     'git_local_branch'                    : <string>,
+    #     'git_remote_branch'                   : <string>,
+    #     'git_wcroot'                          : <string>
     #   }
     #   <*_fetch_state>:  {
-    #     'last_pushed_svn_rev'           : <integer>,  # 0 if does not exist
-    #     'last_pushed_git_hash'          : <string>,
-    #     'last_pushed_git_timestamp'     : <integer>,
-    #     'last_pushed_git_date_time'     : <string>,
-    #     'first_unpushed_svn_rev'        : <integer>,  # None if does not exist
-    #     'first_unpushed_svn_timestamp'  : <integer>,
-    #     'first_unpushed_svn_date_time'  : <string>
+    #     'last_pushed_git_commit'              : [
+    #       (<svn_rev>, <git_hash>, <git_timestamp>, <git_date_time>), ...
+    #     ],
+    #     'unpushed_svn_commit_list'            : [
+    #       (<svn_rev>, <svn_user_name>, <svn_timestamp>, <svn_date_time>), ...
+    #     ]
     #   }
     #
     git_svn_repo_tree = {
@@ -1467,6 +1467,28 @@ def git_push_from_svn(configure_dir, scm_name, push_subtrees_root = None, reset_
       else:
         repo_params_ref['svn_repo_uuid'] = svn_repo_root_to_uuid_dict[svn_reporoot]
 
+    print('- Checking children GIT/SVN repositories on compatability with the root...')
+
+    root_repo_tuple_ref = git_svn_repo_tree_tuple_ref_preorder_list[0]
+    root_repo_params_ref = root_repo_tuple_ref[0]
+    root_svn_repo_uuid = root_repo_params_ref['svn_repo_uuid']
+
+    if len(root_svn_repo_uuid) > 0:
+      for git_svn_repo_tree_tuple_ref in git_svn_repo_tree_tuple_ref_preorder_list:
+        repo_params_ref = git_svn_repo_tree_tuple_ref[0]
+
+        parent_tuple_ref = repo_params_ref['parent_tuple_ref']
+        if not parent_tuple_ref is None:
+          children_dict_ref = git_svn_repo_tree_tuple_ref[2]
+          # if have has no children then can have has a different repository UUID
+          if len(children_dict_ref) > 0:
+            svn_repo_uuid = root_repo_params_ref['svn_repo_uuid']
+            if len(svn_repo_uuid) > 0 and svn_repo_uuid != repo_params_ref['svn_repo_uuid']:
+              raise Exception('all not root and not leaf GIT repositories must have has the same SVN repository UUID '
+                'as the root GIT repository, because a history merge into a parent GIT repository for a change from the '
+                'child GIT repository is applicable if and ONLY if the being pushed GIT repository has an association with '
+                'the same SVN repository as the root GIT repository has')
+
     # 2.
     #
 
@@ -1491,23 +1513,42 @@ def git_push_from_svn(configure_dir, scm_name, push_subtrees_root = None, reset_
         git_last_svn_rev, git_commit_hash, git_commit_timestamp, git_commit_date_time, git_from_commit_timestamp, num_git_commits = \
           get_last_git_svn_rev_by_git_log(remote_name, git_local_branch, git_remote_branch, svn_reporoot, svn_path_prefix)
 
-        if git_last_svn_rev is None:
-          git_last_svn_rev = 0
-
         # get first svn revision not pushed into respective git repository
 
-        svn_unpushed_log_list = get_svn_log_list(svn_repopath, 1, git_last_svn_rev + 1, 'HEAD')
+        if git_last_svn_rev > 0:
+          # request svn commits limited by a maximal time depth for a multiple svn commits fetch, `+ 1` because the range end in the `svn log -r ...` is excluded
+          to_svn_rev_date_time = datetime.utcfromtimestamp(git_commit_timestamp + max_time_depth_in_multiple_svn_commits_fetch_sec + 1).strftime('%Y-%m-%d %H:%M:%S')
+          unpushed_svn_commit_list = get_svn_commit_list(svn_repopath, 1, git_last_svn_rev + 1, '{' + to_svn_rev_date_time + ' +0000}')
+        else:
+          # we must test an svn repository on emptiness before call to `svn log ...`
+          ret = call('${SVN}', ['info', '--show-item', 'last-changed-revision', svn_reporoot], stdout = None, stderr = None)
 
-        fetch_state_ref['last_pushed_svn_rev'] = git_last_svn_rev
-        fetch_state_ref['last_pushed_git_hash'] = git_commit_hash
-        fetch_state_ref['last_pushed_git_timestamp'] = int(git_commit_timestamp)
-        fetch_state_ref['last_pushed_git_date_time'] = git_commit_date_time
+          svn_last_changed_rev = ret[1]
+          if not svn_last_changed_rev is None:
+            svn_last_changed_rev = svn_last_changed_rev.rstrip()
 
-        if len(svn_unpushed_log_list) > 0:
-          svn_first_unpushed_log_item = svn_unpushed_log_list[0]
-          fetch_state_ref['first_unpushed_svn_rev'] = svn_first_unpushed_log_item[0]
-          fetch_state_ref['first_unpushed_svn_timestamp'] = int(svn_first_unpushed_log_item[2])
-          fetch_state_ref['first_unpushed_svn_date_time'] = svn_first_unpushed_log_item[3]
+          if len(svn_last_changed_rev) > 0:
+            print(svn_last_changed_rev)
+          if len(ret[2]) > 0:
+            print(ret[2].rstrip())
+
+          if svn_last_changed_rev > 0:
+            # request the first commit to retrieve a commit timestamp to make offset from
+            unpushed_svn_commit_list = get_svn_commit_list(svn_repopath, 1, 1, 'HEAD')
+            svn_first_commit_timestamp = unpushed_svn_commit_list[2]
+
+            # request svn commits limited by a maximal time depth for a multiple svn commits fetch, `+ 1` because the range end in the `svn log -r ...` is excluded
+            to_svn_rev_date_time = datetime.utcfromtimestamp(svn_first_commit_timestamp + max_time_depth_in_multiple_svn_commits_fetch_sec + 1).strftime('%Y-%m-%d %H:%M:%S %z')
+            unpushed_svn_commit_list = get_svn_commit_list(svn_repopath, 1, 1, '{' + to_svn_rev_date_time + ' +0000}')
+          else:
+            unpushed_svn_commit_list = None
+
+        fetch_state_ref['last_pushed_git_commit'] = (
+          git_last_svn_rev, git_commit_hash,
+          int(git_commit_timestamp) if not git_commit_timestamp is None else None,
+          git_commit_date_time
+        )
+        fetch_state_ref['unpushed_svn_commit_list'] = unpushed_svn_commit_list
 
     print('- Checking parent-child GIT/SVN repositories for the last fetch state consistency...')
 
@@ -1517,14 +1558,27 @@ def git_push_from_svn(configure_dir, scm_name, push_subtrees_root = None, reset_
       parent_tuple_ref = repo_params_ref['parent_tuple_ref']
       if not parent_tuple_ref is None:
         parent_repo_params_ref = parent_tuple_ref[0]
-        parent_fetch_state_ref = parent_tuple_ref[1]
-
         child_repo_params_ref = git_svn_repo_tree_tuple_ref[0]
+
+        # We exclude compare of GIT repositories has a reference to different SVN repositories, because in that case a child
+        # GIT repository (must be already a leaf in the tree in the previous check) is in a read only mode where the push
+        # command is not applicable.
+
+        parent_svn_repo_uuid = parent_repo_params_ref['svn_repo_uuid']
+        child_svn_repo_uuid = child_repo_params_ref['svn_repo_uuid']
+
+        if parent_svn_repo_uuid != child_svn_repo_uuid:
+          continue
+
+        parent_fetch_state_ref = parent_tuple_ref[1]
         child_fetch_state_ref = git_svn_repo_tree_tuple_ref[1]
 
-        parent_last_pushed_git_timestamp = parent_fetch_state_ref['last_pushed_git_timestamp']
-        if parent_last_pushed_git_timestamp > 0 and 'first_unpushed_svn_timestamp' in child_fetch_state_ref:
-          child_first_unpushed_svn_timestamp = child_fetch_state_ref['first_unpushed_svn_timestamp']
+        parent_last_pushed_git_timestamp = parent_fetch_state_ref['last_pushed_git_commit'][2]
+        child_unpushed_svn_commit_list = child_fetch_state_ref['unpushed_svn_commit_list']
+
+        if not parent_last_pushed_git_timestamp is None and not child_unpushed_svn_commit_list is None:
+          child_first_unpushed_svn_commit = child_unpushed_svn_commit_list[0]
+          child_first_unpushed_svn_timestamp = child_first_unpushed_svn_commit[2]
 
           if parent_last_pushed_git_timestamp >= child_first_unpushed_svn_timestamp:
             print('  The parent GIT repository is ahead to the child GIT repository:')
@@ -1542,7 +1596,7 @@ def git_push_from_svn(configure_dir, scm_name, push_subtrees_root = None, reset_
             parent_svn_repopath = parent_svn_reporoot + ('/' + parent_svn_path_prefix if parent_svn_path_prefix != '' else '')
             child_svn_repopath = child_svn_reporoot + ('/' + child_svn_path_prefix if child_svn_path_prefix != '' else '')
 
-            child_first_unpushed_svn_date_time = child_fetch_state_ref['first_unpushed_svn_date_time']
+            child_first_unpushed_svn_date_time = child_first_unpushed_svn_commit[3]
 
             git_print_repos_list_header(column_names, column_widths)
 
@@ -1574,9 +1628,12 @@ def git_push_from_svn(configure_dir, scm_name, push_subtrees_root = None, reset_
 
             raise Exception('the parent GIT repository `' + parent_remote_name + '` is ahead to the child GIT repository `' + child_remote_name + '`')
 
-        child_last_pushed_git_timestamp = child_fetch_state_ref['last_pushed_git_timestamp']
-        if child_last_pushed_git_timestamp > 0 and 'first_unpushed_svn_timestamp' in parent_fetch_state_ref:
-          parent_first_unpushed_svn_timestamp = parent_fetch_state_ref['first_unpushed_svn_timestamp']
+        child_last_pushed_git_timestamp = child_fetch_state_ref['last_pushed_git_commit'][2]
+        parent_unpushed_svn_commit_list = parent_fetch_state_ref['unpushed_svn_commit_list']
+
+        if not child_last_pushed_git_timestamp is None and not parent_unpushed_svn_commit_list is None:
+          parent_first_unpushed_svn_commit = parent_unpushed_svn_commit_list[0]
+          parent_first_unpushed_svn_timestamp = parent_first_unpushed_svn_commit[2]
 
           if child_last_pushed_git_timestamp >= parent_first_unpushed_svn_timestamp:
             print('  The child GIT repository is ahead to the parent GIT repository:')
@@ -1594,7 +1651,7 @@ def git_push_from_svn(configure_dir, scm_name, push_subtrees_root = None, reset_
             parent_svn_repopath = parent_svn_reporoot + ('/' + parent_svn_path_prefix if parent_svn_path_prefix != '' else '')
             child_svn_repopath = child_svn_reporoot + ('/' + child_svn_path_prefix if child_svn_path_prefix != '' else '')
 
-            parent_first_unpushed_svn_date_time = parent_fetch_state_ref['first_unpushed_svn_date_time']
+            parent_first_unpushed_svn_date_time = parent_first_unpushed_svn_commit[3]
 
             git_print_repos_list_header(column_names, column_widths)
 
@@ -1626,27 +1683,11 @@ def git_push_from_svn(configure_dir, scm_name, push_subtrees_root = None, reset_
 
             raise Exception('the child GIT repository `' + child_remote_name + '` is ahead to the parent GIT repository `' + parent_remote_name + '`')
 
-    print('- Checking children GIT/SVN repositories on compatability with the root...')
+    # 3.
+    #
 
-    root_repo_tuple_ref = git_svn_repo_tree_tuple_ref_preorder_list[0]
-    root_repo_params_ref = root_repo_tuple_ref[0]
-    root_svn_repo_uuid = root_repo_params_ref['svn_repo_uuid']
-
-    if len(root_svn_repo_uuid) > 0:
-      for git_svn_repo_tree_tuple_ref in git_svn_repo_tree_tuple_ref_preorder_list:
-        repo_params_ref = git_svn_repo_tree_tuple_ref[0]
-
-        parent_tuple_ref = repo_params_ref['parent_tuple_ref']
-        if not parent_tuple_ref is None:
-          children_dict_ref = git_svn_repo_tree_tuple_ref[2]
-          # if have has no children then can have has a different repository UUID
-          if len(children_dict_ref) > 0:
-            svn_repo_uuid = root_repo_params_ref['svn_repo_uuid']
-            if len(svn_repo_uuid) > 0 and svn_repo_uuid != repo_params_ref['svn_repo_uuid']:
-              raise Exception('all not root and not leaf GIT repositories must have has the same SVN repository UUID '
-                'as the root GIT repository, because a history merge into a parent GIT repository for a change from the '
-                'child GIT repository is applicable if and ONLY if the being pushed GIT repository has an association with '
-                'the same SVN repository as the root GIT repository has')
+    print('- Request SVN repositories for the revision lists, order/group GIT repositories by a timestamp for a respective SVN repository commit and '
+      'do fetch/rebase/push in order from child to parent in a group GIT repositories...')
 
     #parent_svn_reporoot_urlpath = tkl.ParseResult('', *tkl.urlparse(svn_reporoot)[1:]).geturl()
 

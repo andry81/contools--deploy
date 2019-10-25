@@ -1,14 +1,15 @@
 # python module for commands with extension modules usage: tacklelib, plumbum
 
-import os, sys, time, datetime
-from plumbum import local
-
 tkl_source_module(SOURCE_DIR, 'cmdoplib.std.xsh')
 tkl_source_module(SOURCE_DIR, 'cmdoplib.csvsvn.xsh')
 
+import os, sys, time
+from plumbum import local
+from datetime import datetime # must be the same everythere
+
 discover_executable('SVN_EXEC', 'svn', 'SVN')
 
-def get_svn_log_list(wcpath, depth = 1, from_rev = None, to_rev = None):
+def get_svn_commit_list(wcpath, depth = 1, from_rev = None, to_rev = None):
   rev_list = []
 
   if from_rev is None:
@@ -39,7 +40,7 @@ def get_svn_log_list(wcpath, depth = 1, from_rev = None, to_rev = None):
           svn_date_time = svn_date_time[:found_index]
         svn_date_time = svn_date_time.rstrip()
 
-        svn_timestamp = int(time.mktime(datetime.datetime.strptime(svn_date_time, '%Y-%m-%d %H:%M:%S %z').timetuple()))
+        svn_timestamp = int(time.mktime(datetime.strptime(svn_date_time, '%Y-%m-%d %H:%M:%S %z').timetuple()))
         rev_list.append((svn_rev, svn_user_name, svn_timestamp, svn_date_time))
 
   # cut out the middle of the stdout
@@ -71,7 +72,7 @@ def get_svn_log_list(wcpath, depth = 1, from_rev = None, to_rev = None):
         rev_list.append(line[1:rev_str_end])
   """
 
-  return rev_list
+  return rev_list if len(rev_list) > 0 else None
 
 def svn_update(configure_dir, scm_name):
   print(">svn update: {0}".format(configure_dir))
