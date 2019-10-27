@@ -39,11 +39,11 @@ if not CMD_NAME:
 #except:
 #  pass
 
-def cmdop(configure_dir, scm_name, cmd_name, invoke_subtrees_root = None, root_only = False, reset_hard = False):
+def cmdop(configure_dir, scm_name, cmd_name, subtrees_root = None, root_only = False, reset_hard = False):
   print(">cmdop: {0} -> {1}".format(scm_name, cmd_name))
 
-  if not invoke_subtrees_root is None:
-    print(' invoke_subtrees_root: ' + invoke_subtrees_root)
+  if not subtrees_root is None:
+    print(' subtrees_root: ' + subtrees_root)
   if root_only:
     print(' root_only: ' + str(root_only))
   if reset_hard:
@@ -107,19 +107,19 @@ def cmdop(configure_dir, scm_name, cmd_name, invoke_subtrees_root = None, root_o
       if hasvar(scm_name + '.WCROOT_DIR'):
         if cmd_name == 'init':
           ret = cmdoplib.git_init(configure_dir, scm_name,
-            init_subtrees_root = invoke_subtrees_root, root_only = root_only)
+            subtrees_root = subtrees_root, root_only = root_only)
         elif cmd_name == 'fetch':
           ret = cmdoplib.git_fetch(configure_dir, scm_name,
-            fetch_subtrees_root = invoke_subtrees_root, root_only = root_only, reset_hard = reset_hard)
+            subtrees_root = subtrees_root, root_only = root_only, reset_hard = reset_hard)
         elif cmd_name == 'reset':
           ret = cmdoplib.git_reset(configure_dir, scm_name,
-            reset_subtrees_root = invoke_subtrees_root, root_only = root_only, reset_hard = reset_hard)
+            subtrees_root = subtrees_root, root_only = root_only, reset_hard = reset_hard)
         elif cmd_name == 'pull':
           ret = cmdoplib.git_pull(configure_dir, scm_name,
-            pull_subtrees_root = invoke_subtrees_root, root_only = root_only, reset_hard = reset_hard)
+            subtrees_root = subtrees_root, root_only = root_only, reset_hard = reset_hard)
         elif cmd_name == 'push_svn_to_git':
           ret = cmdoplib.git_push_from_svn(configure_dir, scm_name,
-            push_subtrees_root = invoke_subtrees_root, reset_hard = reset_hard)
+            subtrees_root = subtrees_root, reset_hard = reset_hard)
         else:
           raise Exception('unknown command name: ' + str(cmd_name))
     else:
@@ -131,7 +131,7 @@ def cmdop(configure_dir, scm_name, cmd_name, invoke_subtrees_root = None, root_o
 
   return ret
 
-def main(configure_root, configure_dir, scm_name, cmd_name, invoke_subtrees_root = None, root_only = False, reset_hard = False):
+def main(configure_root, configure_dir, scm_name, cmd_name, subtrees_root = None, root_only = False, reset_hard = False):
   # load `config.yaml` from `configure_root` up to `configure_dir` (excluded) directory
   configure_relpath = os.path.relpath(configure_dir, configure_root).replace('\\', '/')
   configure_relpath_comps = configure_relpath.split('/')
@@ -144,7 +144,7 @@ def main(configure_root, configure_dir, scm_name, cmd_name, invoke_subtrees_root
       yaml_load_config(configure_parent_dir, 'config.yaml')
 
   cmdop(configure_dir, scm_name, cmd_name,
-    invoke_subtrees_root = invoke_subtrees_root,
+    subtrees_root = subtrees_root,
     root_only = root_only,
     reset_hard = reset_hard)
 
@@ -166,6 +166,6 @@ if __name__ == '__main__':
   args = arg_parser.parse_args(sys.argv[4:])
 
   main(CONFIGURE_ROOT, CONFIGURE_DIR, SCM_NAME, CMD_NAME,
-    invoke_subtrees_root = args.R,
+    subtrees_root = args.R,
     root_only = (True if args.ro else False),
     reset_hard = (True if args.reset_hard else False))

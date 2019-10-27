@@ -1,3 +1,8 @@
+2019.10.27:
+* changed: cmdoplib: [continued] `git_push_from_svn` function
+* changed: cmdoplib: other minor changes and fixes
+* refactor: cmdoplib: code reduction
+
 2019.10.25:
 * fixed: tacklelib: `tkl_classcopy` function issue around the error `TypeError: descriptor 'combine' for type 'datetime.datetime' doesn't apply to type 'datetime'`
 * fixed: tacklelib: `tkl_merge_module` function issue around copy of a `datetime.datetime` variable from a module to a `datetime` variable
