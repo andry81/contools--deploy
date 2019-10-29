@@ -20,6 +20,8 @@ sys.path.pop()
 # basic initialization, loads `config.private.yaml`
 tkl_source_module(SOURCE_DIR, '__init__.xsh')
 
+tkl_import_module(TACKLELIB_ROOT, 'tacklelib.utils.py', 'tkl')
+
 tkl_import_module(CMDOPLIB_ROOT, 'cmdoplib.svn.xsh', 'cmdoplib')
 tkl_import_module(CMDOPLIB_ROOT, 'cmdoplib.gitsvn.xsh', 'cmdoplib')
 
@@ -39,99 +41,102 @@ if not CMD_NAME:
 #except:
 #  pass
 
-def cmdop(configure_dir, scm_name, cmd_name, subtrees_root = None, root_only = False, reset_hard = False):
-  print(">cmdop: {0} -> {1}".format(scm_name, cmd_name))
+def cmdop(configure_dir, scm_name, cmd_name, bare_args, subtrees_root = None, root_only = False, reset_hard = False):
+  print(">cmdop: {0} {1}: entering `{2}`".format(scm_name, cmd_name, configure_dir))
 
-  if not subtrees_root is None:
-    print(' subtrees_root: ' + subtrees_root)
-  if root_only:
-    print(' root_only: ' + str(root_only))
-  if reset_hard:
-    print(' reset_hard: ' + str(reset_hard))
+  with tkl.OnExit(lambda: print(">cmdop: {0} {1}: leaving `{2}`\n---".format(scm_name, cmd_name, configure_dir))):
+    if not subtrees_root is None:
+      print(' subtrees_root: ' + subtrees_root)
+    if root_only:
+      print(' root_only: ' + str(root_only))
+    if reset_hard:
+      print(' reset_hard: ' + str(reset_hard))
 
-  if configure_dir == '':
-    print_err("{0}: error: configure directory is not defined.".format(sys.argv[0]))
-    exit(1)
+    if configure_dir == '':
+      print_err("{0}: error: configure directory is not defined.".format(sys.argv[0]))
+      exit(1)
 
-  if configure_dir[-1:] in ['\\', '/']:
-    configure_dir = configure_dir[:-1]
+    if configure_dir[-1:] in ['\\', '/']:
+      configure_dir = configure_dir[:-1]
 
-  if not os.path.isdir(configure_dir):
-    print_err("{0}: error: configure directory does not exist: `{1}`.".format(sys.argv[0], configure_dir))
-    exit(2)
+    if not os.path.isdir(configure_dir):
+      print_err("{0}: error: configure directory does not exist: `{1}`.".format(sys.argv[0], configure_dir))
+      exit(2)
 
-  hab_root_var = scm_name + '.HUB_ROOT'
-  if not hasvar(hab_root_var):
-    print_err("{0}: error: hub root variable is not declared for the scm_name as prefix: `{1}`.".format(sys.argv[0], hab_root_var))
-    exit(3)
+    hab_root_var = scm_name + '.HUB_ROOT'
+    if not hasvar(hab_root_var):
+      print_err("{0}: error: hub root variable is not declared for the scm_name as prefix: `{1}`.".format(sys.argv[0], hab_root_var))
+      exit(3)
 
-  # loads `config.yaml` from `configure_dir`
-  yaml_global_vars_pushed = False
-  if os.path.isfile(os.path.join(configure_dir, 'config.yaml')):
-    # save all old variable values and remember all newly added variables as a new stack record
-    yaml_push_global_vars()
-    yaml_global_vars_pushed = True
-    yaml_load_config(configure_dir, 'config.yaml')
+    # loads `config.yaml` from `configure_dir`
+    yaml_global_vars_pushed = False
+    if os.path.isfile(os.path.join(configure_dir, 'config.yaml')):
+      # save all old variable values and remember all newly added variables as a new stack record
+      yaml_push_global_vars()
+      yaml_global_vars_pushed = True
+      yaml_load_config(configure_dir, 'config.yaml')
 
-  is_leaf_configure_dir = True
-  ret = 0
+    is_leaf_configure_dir = True
+    ret = 0
 
-  for dirpath, dirs, files in os.walk(configure_dir):
-    for dir in dirs:
-      # ignore directories beginning by '.'
-      if str(dir)[0:1] == '.':
-        continue
-      # ignore common directories
-      if str(dir) in ['_common']:
-        continue
-      ## ignore directories w/o config.vars.in and config.yaml.in files
-      #if not (os.path.isfile(os.path.join(dirpath, dir, 'config.vars.in')) and
-      #   os.path.isfile(os.path.join(dirpath, dir, 'config.yaml.in'))):
-      #  continue
-      if os.path.isfile(os.path.join(dirpath, dir, 'config.yaml')):
-        ret = cmdop(os.path.join(dirpath, dir), scm_name, cmd_name)
-      is_leaf_configure_dir = False
-    dirs.clear() # not recursively
+    for dirpath, dirs, files in os.walk(configure_dir):
+      for dir in dirs:
+        # ignore directories beginning by '.'
+        if str(dir)[0:1] == '.':
+          continue
+        # ignore common directories
+        if str(dir) in ['_common']:
+          continue
+        ## ignore directories w/o config.vars.in and config.yaml.in files
+        #if not (os.path.isfile(os.path.join(dirpath, dir, 'config.vars.in')) and
+        #   os.path.isfile(os.path.join(dirpath, dir, 'config.yaml.in'))):
+        #  continue
+        if os.path.isfile(os.path.join(dirpath, dir, 'config.yaml')):
+          ret = cmdop(os.path.join(dirpath, dir).replace('\\', '/'), scm_name, cmd_name, bare_args)
+        is_leaf_configure_dir = False
+      dirs.clear() # not recursively
 
-  # do action only in a leaf configure_dir
-  if is_leaf_configure_dir:
-    if scm_name[:3] == 'SVN':
-      if hasvar(scm_name + '.WCROOT_DIR'):
-        if cmd_name == 'update':
-          ret = cmdoplib.svn_update(configure_dir, scm_name)
-        elif cmd_name == 'checkout':
-          ret = cmdoplib.svn_checkout(configure_dir, scm_name)
-        else:
-          raise Exception('unknown command name: ' + str(cmd_name))
-    elif scm_name[:3] == 'GIT':
-      if hasvar(scm_name + '.WCROOT_DIR'):
-        if cmd_name == 'init':
-          ret = cmdoplib.git_init(configure_dir, scm_name,
-            subtrees_root = subtrees_root, root_only = root_only)
-        elif cmd_name == 'fetch':
-          ret = cmdoplib.git_fetch(configure_dir, scm_name,
-            subtrees_root = subtrees_root, root_only = root_only, reset_hard = reset_hard)
-        elif cmd_name == 'reset':
-          ret = cmdoplib.git_reset(configure_dir, scm_name,
-            subtrees_root = subtrees_root, root_only = root_only, reset_hard = reset_hard)
-        elif cmd_name == 'pull':
-          ret = cmdoplib.git_pull(configure_dir, scm_name,
-            subtrees_root = subtrees_root, root_only = root_only, reset_hard = reset_hard)
-        elif cmd_name == 'push_svn_to_git':
-          ret = cmdoplib.git_push_from_svn(configure_dir, scm_name,
-            subtrees_root = subtrees_root, reset_hard = reset_hard)
-        else:
-          raise Exception('unknown command name: ' + str(cmd_name))
-    else:
-      raise Exception('unsupported scm name: ' + str(scm_name))
+    # do action only in a leaf configure_dir
+    if is_leaf_configure_dir:
+      if scm_name[:3] == 'SVN':
+        if hasvar(scm_name + '.WCROOT_DIR'):
+          if cmd_name == 'update':
+            ret = cmdoplib.svn_update(configure_dir, scm_name, bare_args)
+          elif cmd_name == 'checkout':
+            ret = cmdoplib.svn_checkout(configure_dir, scm_name, bare_args)
+          elif cmd_name == 'relocate':
+            ret = cmdoplib.svn_relocate(configure_dir, scm_name, bare_args)
+          else:
+            raise Exception('unknown command name: ' + str(cmd_name))
+      elif scm_name[:3] == 'GIT':
+        if hasvar(scm_name + '.WCROOT_DIR'):
+          if cmd_name == 'init':
+            ret = cmdoplib.git_init(configure_dir, scm_name,
+              subtrees_root = subtrees_root, root_only = root_only)
+          elif cmd_name == 'fetch':
+            ret = cmdoplib.git_fetch(configure_dir, scm_name,
+              subtrees_root = subtrees_root, root_only = root_only, reset_hard = reset_hard)
+          elif cmd_name == 'reset':
+            ret = cmdoplib.git_reset(configure_dir, scm_name,
+              subtrees_root = subtrees_root, root_only = root_only, reset_hard = reset_hard)
+          elif cmd_name == 'pull':
+            ret = cmdoplib.git_pull(configure_dir, scm_name,
+              subtrees_root = subtrees_root, root_only = root_only, reset_hard = reset_hard)
+          elif cmd_name == 'push_svn_to_git':
+            ret = cmdoplib.git_push_from_svn(configure_dir, scm_name,
+              subtrees_root = subtrees_root, reset_hard = reset_hard)
+          else:
+            raise Exception('unknown command name: ' + str(cmd_name))
+      else:
+        raise Exception('unsupported scm name: ' + str(scm_name))
 
-  if yaml_global_vars_pushed:
-    # remove previously added variables and restore previously changed variable values
-    yaml_pop_global_vars(True)
+    if yaml_global_vars_pushed:
+      # remove previously added variables and restore previously changed variable values
+      yaml_pop_global_vars(True)
 
   return ret
 
-def main(configure_root, configure_dir, scm_name, cmd_name, subtrees_root = None, root_only = False, reset_hard = False):
+def main(configure_root, configure_dir, scm_name, cmd_name, bare_args, subtrees_root = None, root_only = False, reset_hard = False):
   # load `config.yaml` from `configure_root` up to `configure_dir` (excluded) directory
   configure_relpath = os.path.relpath(configure_dir, configure_root).replace('\\', '/')
   configure_relpath_comps = configure_relpath.split('/')
@@ -143,7 +148,7 @@ def main(configure_root, configure_dir, scm_name, cmd_name, subtrees_root = None
       configure_parent_dir = os.path.join(configure_root, *configure_relpath_comps[:i+1]).replace('\\', '/')
       yaml_load_config(configure_parent_dir, 'config.yaml')
 
-  cmdop(configure_dir, scm_name, cmd_name,
+  cmdop(configure_dir, scm_name, cmd_name, bare_args,
     subtrees_root = subtrees_root,
     root_only = root_only,
     reset_hard = reset_hard)
@@ -163,9 +168,9 @@ if __name__ == '__main__':
   arg_parser.add_argument('-R', type = str)                       # custom subtree root directory (path)
   arg_parser.add_argument('-ro', action = 'store_true')           # invoke for the root record only (boolean)
   arg_parser.add_argument('--reset_hard', action = 'store_true')  # use `git reset ...` call with the `--hard` parameter (boolean)
-  args = arg_parser.parse_args(sys.argv[4:])
+  known_args, unknown_args = arg_parser.parse_known_args(sys.argv[4:])
 
-  main(CONFIGURE_ROOT, CONFIGURE_DIR, SCM_NAME, CMD_NAME,
-    subtrees_root = args.R,
-    root_only = (True if args.ro else False),
-    reset_hard = (True if args.reset_hard else False))
+  main(CONFIGURE_ROOT, CONFIGURE_DIR, SCM_NAME, CMD_NAME, unknown_args,
+    subtrees_root = known_args.R,
+    root_only = (True if known_args.ro else False),
+    reset_hard = (True if known_args.reset_hard else False))

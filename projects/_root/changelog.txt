@@ -1,4 +1,11 @@
 2019.10.29:
+* new: tacklelib: `OnExit` class to use as a RAII alternative in the python with the `with` statement
+* new: cmdoplib: bare argument support for svn scripts
+* new: svn relocate script
+* changed: svn config switched onto svn+ssh protocol because of the sourceforge frequent returns of the `svn: E175002: Unexpected HTTP status 504 'Gateway time-out'` even on a simple `svn update` (https://sourceforge.net/p/forge/site-support/19726/ )
+* changed: readme update
+
+2019.10.29:
 * changed: readme update
 
 2019.10.28:

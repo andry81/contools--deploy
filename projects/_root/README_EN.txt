@@ -125,6 +125,9 @@ Any deploy script format:
                   directory
     `update`    - updates svn working copy directory from the remote svn
                   repository
+    `relocate`  - updates svn working copy repository url to the remote svn
+                  repository (for example, to change url scheme from
+                  `https://` to `svn+ssh://`)
 
 -------------------------------------------------------------------------------
 5.1. Mirroring (merging) from SVN to GIT
@@ -141,7 +144,6 @@ a LOCAL repository), then these scripts must be issued:
 
 1. `<HubAbbrivatedName>~git~init` (required only if not inited yet)
 2. `<HubAbbrivatedName>~git~push_svn_to_git`
-
 
 -------------------------------------------------------------------------------
 6. KNOWN ISSUES

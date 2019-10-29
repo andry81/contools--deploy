@@ -94,6 +94,7 @@ projects/_root/gl~git~pull.bat -text
 projects/_root/gl~git~push_svn_to_git.bat -text
 projects/_root/gl~git~reset.bat -text
 projects/_root/sf~svn~checkout.bat -text
+projects/_root/sf~svn~relocate.bat -text
 projects/_root/sf~svn~update.bat -text
 projects/contools/3dparty/__init__.bat -text
 projects/contools/3dparty/bb~git~fetch.bat -text
@@ -111,6 +112,7 @@ projects/contools/3dparty/gh~git~push_svn_to_git.bat -text
 projects/contools/3dparty/gh~git~reset.bat -text
 projects/contools/3dparty/git_repos.lst.in -text
 projects/contools/3dparty/sf~svn~checkout.bat -text
+projects/contools/3dparty/sf~svn~relocate.bat -text
 projects/contools/3dparty/sf~svn~update.bat -text
 projects/contools/3dparty_scripts/__init__.bat -text
 projects/contools/3dparty_scripts/bb~git~fetch.bat -text
@@ -128,6 +130,7 @@ projects/contools/3dparty_scripts/gh~git~push_svn_to_git.bat -text
 projects/contools/3dparty_scripts/gh~git~reset.bat -text
 projects/contools/3dparty_scripts/git_repos.lst.in -text
 projects/contools/3dparty_scripts/sf~svn~checkout.bat -text
+projects/contools/3dparty_scripts/sf~svn~relocate.bat -text
 projects/contools/3dparty_scripts/sf~svn~update.bat -text
 projects/contools/README_EN.txt -text
 projects/contools/Tools/__init__.bat -text
@@ -167,6 +170,7 @@ projects/contools/bittools/gl~git~pull.bat -text
 projects/contools/bittools/gl~git~push_svn_to_git.bat -text
 projects/contools/bittools/gl~git~reset.bat -text
 projects/contools/bittools/sf~svn~checkout.bat -text
+projects/contools/bittools/sf~svn~relocate.bat -text
 projects/contools/bittools/sf~svn~update.bat -text
 projects/contools/config.vars.in -text
 projects/contools/config.yaml.in -text
@@ -187,6 +191,7 @@ projects/contools/contools/gh~git~push_svn_to_git.bat -text
 projects/contools/contools/gh~git~reset.bat -text
 projects/contools/contools/git_repos.lst.in -text
 projects/contools/contools/sf~svn~checkout.bat -text
+projects/contools/contools/sf~svn~relocate.bat -text
 projects/contools/contools/sf~svn~update.bat -text
 projects/contools/debug/__init__.bat -text
 projects/contools/debug/bb~git~fetch.bat -text
@@ -204,6 +209,7 @@ projects/contools/debug/gh~git~push_svn_to_git.bat -text
 projects/contools/debug/gh~git~reset.bat -text
 projects/contools/debug/git_repos.lst.in -text
 projects/contools/debug/sf~svn~checkout.bat -text
+projects/contools/debug/sf~svn~relocate.bat -text
 projects/contools/debug/sf~svn~update.bat -text
 projects/contools/deploy/__init__.bat -text
 projects/contools/deploy/bb~git~fetch.bat -text
@@ -221,6 +227,7 @@ projects/contools/deploy/gh~git~push_svn_to_git.bat -text
 projects/contools/deploy/gh~git~reset.bat -text
 projects/contools/deploy/git_repos.lst.in -text
 projects/contools/deploy/sf~svn~checkout.bat -text
+projects/contools/deploy/sf~svn~relocate.bat -text
 projects/contools/deploy/sf~svn~update.bat -text
 projects/contools/external_tools/__init__.bat -text
 projects/contools/external_tools/bb~git~fetch.bat -text
@@ -238,6 +245,7 @@ projects/contools/external_tools/gh~git~push_svn_to_git.bat -text
 projects/contools/external_tools/gh~git~reset.bat -text
 projects/contools/external_tools/git_repos.lst.in -text
 projects/contools/external_tools/sf~svn~checkout.bat -text
+projects/contools/external_tools/sf~svn~relocate.bat -text
 projects/contools/external_tools/sf~svn~update.bat -text
 projects/shell.sf.net/home/svn/p/contools/contools/hooks/pre-revprop-change -text
 projects/shell.sf.net/home/svn/p/contools/debug/hooks/pre-revprop-change -text

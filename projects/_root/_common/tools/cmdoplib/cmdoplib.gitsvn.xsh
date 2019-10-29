@@ -344,7 +344,7 @@ def git_svn_fetch_to_last_git_pushed_svn_rev(remote_name, git_local_branch, git_
   git_last_svn_rev, git_commit_hash, git_commit_timestamp, git_commit_date_time, git_from_commit_timestamp, num_git_commits = \
     get_last_git_svn_rev_by_git_log(remote_name, git_local_branch, git_remote_branch, svn_reporoot, svn_path_prefix)
 
-  # special `git svn fetch` call to build initial git-svn revisions map from the svn repository
+  # special `git svn fetch` call to build initial git-svn revisions map from the svn repository if not done yet
 
   try:
     ret = call('${GIT}', ['svn', 'fetch', '-r' + str(git_last_svn_rev)] + git_svn_fetch_cmdline_list, stdout = None, stderr = None)
@@ -380,7 +380,46 @@ def git_svn_fetch_to_last_git_pushed_svn_rev(remote_name, git_local_branch, git_
       print(stderr_lines)
       if stderr_lines.find('W: ') > 0:
         raise Exception('all warnings from the `git svn fetch ...` command is treated as errors')
+
   return git_last_svn_rev
+
+def git_svn_fetch_next_svn_rev(git_svn_next_fetch_rev, git_svn_fetch_cmdline_list):
+  # special `git svn fetch` call to build initial git-svn revisions map from the svn repository if not done yet
+
+  try:
+    ret = call('${GIT}', ['svn', 'fetch', '-r' + str(git_svn_next_fetch_rev)] + git_svn_fetch_cmdline_list, stdout = None, stderr = None)
+
+  except plumbum.ProcessExecutionError as proc_err:
+    if len(proc_err.stdout) > 0:
+      print(proc_err.stdout)
+    if len(proc_err.stderr) > 0:
+      print(proc_err.stderr)
+    raise
+
+  else:
+    # cut out the middle of the stdout
+    stdout_lines = ret[1].rstrip()
+    stderr_lines = ret[2].rstrip()
+
+    num_new_lines = stdout_lines.count('\n')
+    if num_new_lines > 7:
+      line_index = 0
+
+      # To iterate over lines instead chars.
+      # (see details: https://stackoverflow.com/questions/3054604/iterate-over-the-lines-of-a-string/3054898#3054898 )
+
+      for line in io.StringIO(stdout_lines):
+        if line_index < 3 or line_index >= num_new_lines - 3: # excluding the last line return
+          print(line, end='')
+        elif line_index == 3:
+          print('...')
+        line_index += 1
+    elif len(stdout_lines) > 0:
+      print(stdout_lines)
+    if len(stderr_lines) > 0:
+      print(stderr_lines)
+      if stderr_lines.find('W: ') > 0:
+        raise Exception('all warnings from the `git svn fetch ...` command is treated as errors')
 
 # returns as tuple:
 #   git_last_svn_rev          - last pushed svn revision if has any
@@ -931,10 +970,16 @@ def get_git_svn_repos_list_table_params():
     [15, 64, 20, 64, 20, 20]
   )
 
+def get_max_time_depth_in_multiple_svn_commits_fetch_sec():
+  # maximal time depth in a multiple svn commits fetch from an svn repository
+  return 2678400 # seconds in 1 month (31 days)
+
 def update_git_svn_repo_fetch_state(git_svn_repo_tree_tuple_ref_preorder_list, max_time_depth_in_multiple_svn_commits_fetch_sec, root_only = False):
   print('- Updating GIT-SVN repositories fetch state...')
 
   first_time_pass = True
+
+  max_time_depth_in_multiple_svn_commits_fetch_sec = get_max_time_depth_in_multiple_svn_commits_fetch_sec()
 
   while True:
     unpushed_svn_commit_all_list_len = 0
@@ -1208,8 +1253,7 @@ def git_fetch(configure_dir, scm_name, subtrees_root = None, root_only = False, 
   if not os.path.exists(wcroot_path):
     os.mkdir(wcroot_path)
 
-  # maximal time depth in a multiple svn commits fetch from an svn repository
-  max_time_depth_in_multiple_svn_commits_fetch_sec = 2678400 # seconds in 1 month (31 days)
+  max_time_depth_in_multiple_svn_commits_fetch_sec = get_max_time_depth_in_multiple_svn_commits_fetch_sec()
 
   with local.cwd(wcroot_path), GitReposListReader(configure_dir + '/git_repos.lst') as git_repos_reader:
     column_names, column_widths = get_git_svn_repos_list_table_params()
@@ -1271,17 +1315,16 @@ def git_fetch(configure_dir, scm_name, subtrees_root = None, root_only = False, 
 
     for git_svn_repo_tree_tuple_ref in git_svn_repo_tree_tuple_ref_preorder_list:
       repo_params_ref = git_svn_repo_tree_tuple_ref[0]
+      fetch_state_ref = git_svn_repo_tree_tuple_ref[1]
 
       parent_tuple_ref = repo_params_ref['parent_tuple_ref']
 
       remote_name = repo_params_ref['remote_name']
-      parent_remote_name = repo_params_ref['parent_remote_name']
 
       git_reporoot = repo_params_ref['git_reporoot']
       svn_reporoot = repo_params_ref['svn_reporoot']
 
       parent_git_path_prefix = repo_params_ref['parent_git_path_prefix']
-      svn_path_prefix = repo_params_ref['svn_path_prefix']
 
       git_local_branch = repo_params_ref['git_local_branch']
       git_remote_branch = repo_params_ref['git_remote_branch']
@@ -1303,11 +1346,14 @@ def git_fetch(configure_dir, scm_name, subtrees_root = None, root_only = False, 
         if len(git_svn_fetch_ignore_paths_regex) > 0:
           git_svn_fetch_cmdline_list.append('--ignore-paths=' + git_svn_fetch_ignore_paths_regex)
 
-        # git-svn (re)fetch last svn revision (faster than (re)fetch all revisions)
+        # git-svn (re)fetch next svn revision
 
-        git_last_svn_rev = git_svn_fetch_to_last_git_pushed_svn_rev(remote_name, git_local_branch, git_remote_branch, svn_reporoot, svn_path_prefix, git_svn_fetch_cmdline_list)
+        git_svn_next_fetch_rev = fetch_state_ref['git_svn_next_fetch_rev']
+
+        git_svn_fetch_next_svn_rev(git_svn_next_fetch_rev, git_svn_fetch_cmdline_list)
 
         # revert again if last fetch has broke the HEAD
+
         revert_if_git_head_refs_is_not_last_pushed(git_reporoot, git_local_ref_token, git_remote_ref_token,
           git_remote_local_ref_token, reset_hard = reset_hard, revert_after_fetch = True)
 
@@ -1381,13 +1427,10 @@ def git_reset(configure_dir, scm_name, subtrees_root = None, root_only = False, 
       parent_tuple_ref = repo_params_ref['parent_tuple_ref']
 
       remote_name = repo_params_ref['remote_name']
-      parent_remote_name = repo_params_ref['parent_remote_name']
 
       git_reporoot = repo_params_ref['git_reporoot']
-      svn_reporoot = repo_params_ref['svn_reporoot']
 
       parent_git_path_prefix = repo_params_ref['parent_git_path_prefix']
-      svn_path_prefix = repo_params_ref['svn_path_prefix']
 
       git_local_branch = repo_params_ref['git_local_branch']
       git_remote_branch = repo_params_ref['git_remote_branch']
@@ -1462,6 +1505,8 @@ def git_pull(configure_dir, scm_name, subtrees_root = None, root_only = False, r
   if not os.path.exists(wcroot_path):
     os.mkdir(wcroot_path)
 
+  max_time_depth_in_multiple_svn_commits_fetch_sec = get_max_time_depth_in_multiple_svn_commits_fetch_sec()
+
   with local.cwd(wcroot_path), GitReposListReader(configure_dir + '/git_repos.lst') as git_repos_reader:
     column_names, column_widths = get_git_svn_repos_list_table_params()
 
@@ -1511,6 +1556,40 @@ def git_pull(configure_dir, scm_name, subtrees_root = None, root_only = False, r
         revert_if_git_head_refs_is_not_last_pushed(git_reporoot, git_local_ref_token, git_remote_ref_token,
           git_remote_local_ref_token, reset_hard = reset_hard)
 
+        print('---')
+
+        if parent_tuple_ref is None and root_only:
+          break
+
+    update_git_svn_repo_fetch_state(git_svn_repo_tree_tuple_ref_preorder_list, max_time_depth_in_multiple_svn_commits_fetch_sec, root_only = root_only)
+
+    print('- GIT-SVN fetching...')
+
+    for git_svn_repo_tree_tuple_ref in git_svn_repo_tree_tuple_ref_preorder_list:
+      repo_params_ref = git_svn_repo_tree_tuple_ref[0]
+      fetch_state_ref = git_svn_repo_tree_tuple_ref[1]
+
+      parent_tuple_ref = repo_params_ref['parent_tuple_ref']
+
+      remote_name = repo_params_ref['remote_name']
+
+      git_reporoot = repo_params_ref['git_reporoot']
+      svn_reporoot = repo_params_ref['svn_reporoot']
+
+      parent_git_path_prefix = repo_params_ref['parent_git_path_prefix']
+
+      git_local_branch = repo_params_ref['git_local_branch']
+      git_remote_branch = repo_params_ref['git_remote_branch']
+
+      if not parent_tuple_ref is None:
+        subtree_git_wcroot = os.path.abspath(os.path.join(subtrees_root, remote_name + "'" + parent_git_path_prefix.replace('/', '--'))).replace('\\', '/')
+
+        print(' ->> pushd: {0}...'.format(subtree_git_wcroot))
+
+      with conditional(not parent_tuple_ref is None, local.cwd(subtree_git_wcroot) if not parent_tuple_ref is None else None):
+        git_remote_ref_token, git_remote_local_ref_token = \
+          get_git_remote_ref_token(remote_name, git_local_branch, git_remote_branch)
+
         # generate `--ignore_paths` for subtrees
 
         git_svn_fetch_cmdline_list = []
@@ -1519,11 +1598,14 @@ def git_pull(configure_dir, scm_name, subtrees_root = None, root_only = False, r
         if len(git_svn_fetch_ignore_paths_regex) > 0:
           git_svn_fetch_cmdline_list.append('--ignore-paths=' + git_svn_fetch_ignore_paths_regex)
 
-        # git-svn (re)fetch last svn revision (faster than (re)fetch all revisions)
+        # git-svn (re)fetch next svn revision
 
-        git_last_svn_rev = git_svn_fetch_to_last_git_pushed_svn_rev(remote_name, git_local_branch, git_remote_branch, svn_reporoot, svn_path_prefix, git_svn_fetch_cmdline_list)
+        git_svn_next_fetch_rev = fetch_state_ref['git_svn_next_fetch_rev']
+
+        git_svn_fetch_next_svn_rev(git_svn_next_fetch_rev, git_svn_fetch_cmdline_list)
 
         # revert again if last fetch has broke the HEAD
+
         revert_if_git_head_refs_is_not_last_pushed(git_reporoot, git_local_ref_token, git_remote_ref_token,
           git_remote_local_ref_token, reset_hard = reset_hard, revert_after_fetch = True)
 
@@ -1534,6 +1616,33 @@ def git_pull(configure_dir, scm_name, subtrees_root = None, root_only = False, r
             head_file.close()
         """
 
+        print('---')
+
+        if parent_tuple_ref is None and root_only:
+          break
+
+    print('- GIT switching...')
+
+    for git_svn_repo_tree_tuple_ref in git_svn_repo_tree_tuple_ref_preorder_list:
+      repo_params_ref = git_svn_repo_tree_tuple_ref[0]
+      fetch_state_ref = git_svn_repo_tree_tuple_ref[1]
+
+      parent_tuple_ref = repo_params_ref['parent_tuple_ref']
+
+      remote_name = repo_params_ref['remote_name']
+
+      git_reporoot = repo_params_ref['git_reporoot']
+
+      parent_git_path_prefix = repo_params_ref['parent_git_path_prefix']
+
+      git_local_branch = repo_params_ref['git_local_branch']
+
+      if not parent_tuple_ref is None:
+        subtree_git_wcroot = os.path.abspath(os.path.join(subtrees_root, remote_name + "'" + parent_git_path_prefix.replace('/', '--'))).replace('\\', '/')
+
+        print(' ->> pushd: {0}...'.format(subtree_git_wcroot))
+
+      with conditional(not parent_tuple_ref is None, local.cwd(subtree_git_wcroot) if not parent_tuple_ref is None else None):
         call('${GIT}', ['switch', git_local_branch])
 
         print('---')
@@ -1605,8 +1714,7 @@ def git_push_from_svn(configure_dir, scm_name, subtrees_root = None, reset_hard 
   #    revision from a child svn repository.
   #
 
-  # maximal time depth in a multiple svn commits fetch from an svn repository
-  max_time_depth_in_multiple_svn_commits_fetch_sec = 2678400 # seconds in 1 month (31 days)
+  max_time_depth_in_multiple_svn_commits_fetch_sec = get_max_time_depth_in_multiple_svn_commits_fetch_sec()
 
   with local.cwd(wcroot_path), GitReposListReader(configure_dir + '/git_repos.lst') as git_repos_reader:
     column_names, column_widths = get_git_svn_repos_list_table_params()

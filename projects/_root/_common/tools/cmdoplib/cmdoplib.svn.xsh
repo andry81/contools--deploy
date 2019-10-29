@@ -79,8 +79,10 @@ def get_svn_commit_list(wcpath, depth = 1, from_rev = None, to_rev = None):
 
   return rev_list if len(rev_list) > 0 else None
 
-def svn_update(configure_dir, scm_name):
+def svn_update(configure_dir, scm_name, bare_args):
   print(">svn update: {0}".format(configure_dir))
+  if len(bare_args) > 0:
+    print('- args:', bare_args)
 
   if configure_dir == '':
     print_err("{0}: error: configure directory is not defined.".format(sys.argv[0]))
@@ -102,10 +104,12 @@ def svn_update(configure_dir, scm_name):
   print(' -> {0}...'.format(wcroot_path))
 
   with local.cwd(wcroot_path):
-    call('${SVN}', ['up'])
+    call('${SVN}', ['up'] + bare_args)
 
-def svn_checkout(configure_dir, scm_name):
+def svn_checkout(configure_dir, scm_name, bare_args):
   print(">svn checkout: {0}".format(configure_dir))
+  if len(bare_args) > 0:
+    print('- args:', bare_args)
 
   if configure_dir == '':
     print_err("{0}: error: configure directory is not defined.".format(sys.argv[0]))
@@ -134,4 +138,31 @@ def svn_checkout(configure_dir, scm_name):
   if os.path.isdir(wcroot_path + '/.svn'):
     return 0
 
-  call('${SVN}', ['co', svn_checkout_url, wcroot_path])
+  call('${SVN}', ['co', svn_checkout_url, wcroot_path] + bare_args)
+
+def svn_relocate(configure_dir, scm_name, bare_args):
+  print(">svn update: {0}".format(configure_dir))
+  if len(bare_args) > 0:
+    print('- args:', bare_args)
+
+  if configure_dir == '':
+    print_err("{0}: error: configure directory is not defined.".format(sys.argv[0]))
+    return 1
+
+  if configure_dir[-1:] in ['\\', '/']:
+    configure_dir = configure_dir[:-1]
+
+  if not os.path.isdir(configure_dir):
+    print_err("{0}: error: configure directory does not exist: `{1}`.".format(sys.argv[0], configure_dir))
+    return 2
+
+  wcroot_dir = getvar(scm_name + '.WCROOT_DIR')
+  if wcroot_dir == '': return -254
+  if WCROOT_OFFSET == '': return -253
+
+  wcroot_path = os.path.abspath(os.path.join(WCROOT_OFFSET, wcroot_dir)).replace('\\', '/')
+
+  print(' -> {0}...'.format(wcroot_path))
+
+  with local.cwd(wcroot_path):
+    call('${SVN}', ['relocate'] + bare_args)
