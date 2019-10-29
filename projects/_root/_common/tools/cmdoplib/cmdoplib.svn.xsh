@@ -9,6 +9,8 @@ from datetime import datetime # must be the same everythere
 
 discover_executable('SVN_EXEC', 'svn', 'SVN')
 
+call('${SVN}', ['--version'])
+
 def get_svn_commit_list(wcpath, depth = 1, from_rev = None, to_rev = None):
   rev_list = []
 
@@ -23,7 +25,10 @@ def get_svn_commit_list(wcpath, depth = 1, from_rev = None, to_rev = None):
     else:
       to_rev = 'HEAD'
 
-  ret = call('${SVN}', ['log', '-q', '-l', str(depth), '-r', str(from_rev) + ':' + str(to_rev), wcpath], stdout = None, stderr = None)
+  if depth == '*':
+    ret = call('${SVN}', ['log', '-q', '-r', str(from_rev) + ':' + str(to_rev), wcpath], stdout = None, stderr = None)
+  else:
+    ret = call('${SVN}', ['log', '-q', '-l', str(depth), '-r', str(from_rev) + ':' + str(to_rev), wcpath], stdout = None, stderr = None)
 
   stdout_lines = ret[1]
   stderr_lines = ret[2]
@@ -32,7 +37,7 @@ def get_svn_commit_list(wcpath, depth = 1, from_rev = None, to_rev = None):
     for row in svn_log_reader:
       svn_rev = row['rev']
       if svn_rev[:1] == 'r':
-        svn_rev = svn_rev[1:].rstrip()
+        svn_rev = int(svn_rev[1:].rstrip())
         svn_user_name = row['user_name'].rstrip()
         svn_date_time = row['date_time']
         found_index = svn_date_time.find('(')
@@ -49,13 +54,13 @@ def get_svn_commit_list(wcpath, depth = 1, from_rev = None, to_rev = None):
     row_index = 0
     for row in rev_list:
       if row_index < 3 or row_index >= num_revs - 3: # excluding the last line return
-        print('r{} | {} | {} [{}]'.format(*row))
+        print('r{} | {} | {} {{{}}}'.format(*row))
       elif row_index == 3:
         print('...')
       row_index += 1
   elif num_revs > 0:
     for row in rev_list:
-      print('r{} | {} | {} [{}]'.format(*row))
+      print('r{} | {} | {} {{{}}}'.format(*row))
   if len(stderr_lines) > 0:
     print(stderr_lines)
 
