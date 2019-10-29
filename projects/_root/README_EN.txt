@@ -1,5 +1,5 @@
 * README_EN.txt
-* 2019.10.22
+* 2019.10.29
 * deploy/projects/_root
 
 1. DESCRIPTION
@@ -53,7 +53,7 @@ from:
 
 3. Modules
 
-* Python modules:
+* Python site modules:
 
 **  plumbum 1.6.7
     https://plumbum.readthedocs.io/en/latest/
@@ -112,23 +112,26 @@ Any deploy script format:
 
   [ScmName=git]
     `init`      - create and initialize local git working copy directory
-    `fetch`     - fetch remote git repositories optionally does
-                  (by default is NOT) the fetch of all subtrees
-    `reset`     - reset local working copy
-    `sync_svn_to_git` - same as `pull` plus synchronizes local git working copy
-        with the remote svn repository and pushes it to the remote <ScmName>
-        repository
+    `fetch`     - fetch remote git repositories and optionally does
+                  (by default is) the pull of all subtrees
+    `pull`      - pull remote git repositories and optionally does
+                  (by default is) the fetch of all subtrees
+    `reset`     - reset local working copy and optionally does
+                  (by default is) the reset of all subtree working copies
+    `push_svn_to_git` - same as `pull` plus pushes local git working copy
+                  to the remote <ScmName> repository
   [ScmName=svn]
     `checkout`  - checks out an svn repository into new svn working copy
                   directory
-    `update`    - updates svn working copy directory from the remote
+    `update`    - updates svn working copy directory from the remote svn
+                  repository
 
 -------------------------------------------------------------------------------
 5.1. Mirroring (merging) from SVN to GIT
 -------------------------------------------------------------------------------
 
-To do a merge from the svn REMOTE repository to the git LOCAL repository, then
-these scripts must be issued:
+To take changes from the git REMOTE repository, then these scripts must be
+issued:
 
 1. `<HubAbbrivatedName>~git~init` (required only if not inited yet)
 2. `<HubAbbrivatedName>~git~pull`
@@ -137,7 +140,7 @@ To do a merge from svn REMOTE repository to git REMOTE repository (through
 a LOCAL repository), then these scripts must be issued:
 
 1. `<HubAbbrivatedName>~git~init` (required only if not inited yet)
-2. `<HubAbbrivatedName>~git~sync_svn_to_git`
+2. `<HubAbbrivatedName>~git~push_svn_to_git`
 
 
 -------------------------------------------------------------------------------

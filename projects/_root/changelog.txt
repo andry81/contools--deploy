@@ -1,3 +1,6 @@
+2019.10.29:
+* changed: readme update
+
 2019.10.28:
 * changed: cmdoplib: [continued] `git_push_from_svn` function
 * changed: cmdoplib: other minor changes and fixes
