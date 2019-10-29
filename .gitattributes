@@ -78,6 +78,7 @@ projects/_root/bb~git~pull.bat -text
 projects/_root/bb~git~push_svn_to_git.bat -text
 projects/_root/bb~git~reset.bat -text
 projects/_root/changelog.txt -text
+projects/_root/config.env.yaml.in -text
 projects/_root/config.private.yaml.in -text
 projects/_root/config.vars.in -text
 projects/_root/config.yaml.in -text

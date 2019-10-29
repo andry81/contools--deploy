@@ -191,7 +191,11 @@ def get_git_commit_from_git_log(str, svn_reporoot, svn_path_prefix):
       if svn_rev_index > 0:
         svn_path = git_svn_url[:svn_rev_index]
         svn_rev = int(git_svn_url[svn_rev_index + 1:])
-        if svn_path == svn_remote_path:
+
+        svn_path_wo_scheme = tkl.ParseResult('', *tkl.urlparse(svn_path)[1:]).geturl()
+        svn_remote_path_wo_scheme = tkl.ParseResult('', *tkl.urlparse(svn_remote_path)[1:]).geturl()
+
+        if svn_path_wo_scheme == svn_remote_path_wo_scheme:
           return (svn_rev, commit_hash, commit_timestamp, commit_date_time, num_commits)
 
   return (0, None, None, None, num_commits)
@@ -351,9 +355,9 @@ def git_svn_fetch_to_last_git_pushed_svn_rev(remote_name, git_local_branch, git_
 
   except plumbum.ProcessExecutionError as proc_err:
     if len(proc_err.stdout) > 0:
-      print(proc_err.stdout)
+      print(proc_err.stdout.rstrip())
     if len(proc_err.stderr) > 0:
-      print(proc_err.stderr)
+      print(proc_err.stderr.rstrip())
     raise
 
   else:
@@ -391,9 +395,9 @@ def git_svn_fetch_next_svn_rev(git_svn_next_fetch_rev, git_svn_fetch_cmdline_lis
 
   except plumbum.ProcessExecutionError as proc_err:
     if len(proc_err.stdout) > 0:
-      print(proc_err.stdout)
+      print(proc_err.stdout.rstrip())
     if len(proc_err.stderr) > 0:
-      print(proc_err.stderr)
+      print(proc_err.stderr.rstrip())
     raise
 
   else:
@@ -507,14 +511,14 @@ def git_init(configure_dir, scm_name, subtrees_root = None, root_only = False):
     print_err("{0}: error: subtrees_root directory does not exist: `{1}`.".format(sys.argv[0], subtrees_root))
     return 33
 
-  wcroot_dir = getvar(scm_name + '.WCROOT_DIR')
+  wcroot_dir = getglobalvar(scm_name + '.WCROOT_DIR')
   if wcroot_dir == '': return -254
   if WCROOT_OFFSET == '': return -253
 
   wcroot_path = os.path.abspath(os.path.join(WCROOT_OFFSET, wcroot_dir)).replace('\\', '/')
 
-  git_user = getvar(scm_name + '.USER')
-  git_email = getvar(scm_name + '.EMAIL')
+  git_user = getglobalvar(scm_name + '.USER')
+  git_email = getglobalvar(scm_name + '.EMAIL')
 
   print(' -> pushd: {0}...'.format(wcroot_path))
 
@@ -1239,14 +1243,14 @@ def git_fetch(configure_dir, scm_name, subtrees_root = None, root_only = False, 
     print_err("{0}: error: subtrees_root directory does not exist: `{1}`.".format(sys.argv[0], subtrees_root))
     return 33
 
-  wcroot_dir = getvar(scm_name + '.WCROOT_DIR')
+  wcroot_dir = getglobalvar(scm_name + '.WCROOT_DIR')
   if wcroot_dir == '': return -254
   if WCROOT_OFFSET == '': return -253
 
   wcroot_path = os.path.abspath(os.path.join(WCROOT_OFFSET, wcroot_dir)).replace('\\', '/')
 
-  git_user = getvar(scm_name + '.USER')
-  git_email = getvar(scm_name + '.EMAIL')
+  git_user = getglobalvar(scm_name + '.USER')
+  git_email = getglobalvar(scm_name + '.EMAIL')
 
   print(' -> pushd: {0}...'.format(wcroot_path))
 
@@ -1396,14 +1400,14 @@ def git_reset(configure_dir, scm_name, subtrees_root = None, root_only = False, 
     print_err("{0}: error: subtrees_root directory does not exist: `{1}`.".format(sys.argv[0], subtrees_root))
     return 33
 
-  wcroot_dir = getvar(scm_name + '.WCROOT_DIR')
+  wcroot_dir = getglobalvar(scm_name + '.WCROOT_DIR')
   if wcroot_dir == '': return -254
   if WCROOT_OFFSET == '': return -253
 
   wcroot_path = os.path.abspath(os.path.join(WCROOT_OFFSET, wcroot_dir)).replace('\\', '/')
 
-  git_user = getvar(scm_name + '.USER')
-  git_email = getvar(scm_name + '.EMAIL')
+  git_user = getglobalvar(scm_name + '.USER')
+  git_email = getglobalvar(scm_name + '.EMAIL')
 
   print(' -> pushd: {0}...'.format(wcroot_path))
 
@@ -1491,14 +1495,14 @@ def git_pull(configure_dir, scm_name, subtrees_root = None, root_only = False, r
     print_err("{0}: error: subtrees_root directory does not exist: `{1}`.".format(sys.argv[0], subtrees_root))
     return 33
 
-  wcroot_dir = getvar(scm_name + '.WCROOT_DIR')
+  wcroot_dir = getglobalvar(scm_name + '.WCROOT_DIR')
   if wcroot_dir == '': return -254
   if WCROOT_OFFSET == '': return -253
 
   wcroot_path = os.path.abspath(os.path.join(WCROOT_OFFSET, wcroot_dir)).replace('\\', '/')
 
-  git_user = getvar(scm_name + '.USER')
-  git_email = getvar(scm_name + '.EMAIL')
+  git_user = getglobalvar(scm_name + '.USER')
+  git_email = getglobalvar(scm_name + '.EMAIL')
 
   print(' -> pushd: {0}...'.format(wcroot_path))
 
@@ -1679,14 +1683,14 @@ def git_push_from_svn(configure_dir, scm_name, subtrees_root = None, reset_hard 
     print_err("{0}: error: subtrees_root directory does not exist: `{1}`.".format(sys.argv[0], subtrees_root))
     return 33
 
-  wcroot_dir = getvar(scm_name + '.WCROOT_DIR')
+  wcroot_dir = getglobalvar(scm_name + '.WCROOT_DIR')
   if wcroot_dir == '': return -254
   if WCROOT_OFFSET == '': return -253
 
   wcroot_path = os.path.abspath(os.path.join(WCROOT_OFFSET, wcroot_dir)).replace('\\', '/')
 
-  git_user = getvar(scm_name + '.USER')
-  git_email = getvar(scm_name + '.EMAIL')
+  git_user = getglobalvar(scm_name + '.USER')
+  git_email = getglobalvar(scm_name + '.EMAIL')
 
   print(' -> pushd: {0}...'.format(wcroot_path))
 
