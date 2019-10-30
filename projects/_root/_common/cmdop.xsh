@@ -17,6 +17,13 @@ tkl.tkl_merge_module(tkl, globals())
 tkl = None
 sys.path.pop()
 
+### globals ###
+
+# format: [(<header_str>, <stderr_str>), ...]
+tkl_declare_global('g_registered_ignored_errors', [], copy_as_reference_in_parent = True) # must be empty list to save the reference
+
+### imports ###
+
 # basic initialization, loads `config.private.yaml`
 tkl_source_module(SOURCE_DIR, '__init__.xsh')
 
@@ -148,33 +155,42 @@ def cmdop(configure_dir, scm_name, cmd_name, bare_args, subtrees_root = None, ro
 
   return ret
 
+def on_main_exit():
+  if len(g_registered_ignored_errors) > 0:
+    print('- Registered ignored errors:')
+    for registered_ignored_error in g_registered_ignored_errors:
+      print(registered_ignored_error[0])
+      print(registered_ignored_error[1])
+      print('---')
+
 def main(configure_root, configure_dir, scm_name, cmd_name, bare_args, subtrees_root = None, root_only = False, reset_hard = False):
-  configure_relpath = os.path.relpath(configure_dir, configure_root).replace('\\', '/')
-  configure_relpath_comps = configure_relpath.split('/')
-  num_comps = len(configure_relpath_comps)
+  with tkl.OnExit(on_main_exit):
+    configure_relpath = os.path.relpath(configure_dir, configure_root).replace('\\', '/')
+    configure_relpath_comps = configure_relpath.split('/')
+    num_comps = len(configure_relpath_comps)
 
-  # load `config.yaml` from `configure_root` up to `configure_dir` (excluded) directory
-  if num_comps > 0 and os.path.exists(configure_root + '/config.yaml.in'):
-    yaml_load_config(configure_root, 'config.yaml', to_globals = True, to_environ = False)
-  if num_comps > 1:
-    for i in range(num_comps-1):
-      configure_parent_dir = os.path.join(configure_root, *configure_relpath_comps[:i+1]).replace('\\', '/')
-      if os.path.exists(configure_parent_dir + '/config.yaml.in'):
-        yaml_load_config(configure_parent_dir, 'config.yaml', to_globals = True, to_environ = False)
+    # load `config.yaml` from `configure_root` up to `configure_dir` (excluded) directory
+    if num_comps > 0 and os.path.exists(configure_root + '/config.yaml.in'):
+      yaml_load_config(configure_root, 'config.yaml', to_globals = True, to_environ = False)
+    if num_comps > 1:
+      for i in range(num_comps-1):
+        configure_parent_dir = os.path.join(configure_root, *configure_relpath_comps[:i+1]).replace('\\', '/')
+        if os.path.exists(configure_parent_dir + '/config.yaml.in'):
+          yaml_load_config(configure_parent_dir, 'config.yaml', to_globals = True, to_environ = False)
 
-  # load `config.env.yaml` from `configure_root` up to `configure_dir` (excluded) directory
-  if num_comps > 0 and os.path.exists(configure_root + '/config.env.yaml.in'):
-    yaml_load_config(configure_root, 'config.env.yaml', to_globals = False, to_environ = True)
-  if num_comps > 1:
-    for i in range(num_comps-1):
-      configure_parent_dir = os.path.join(configure_root, *configure_relpath_comps[:i+1]).replace('\\', '/')
-      if os.path.exists(configure_parent_dir + '/config.env.yaml.in'):
-        yaml_load_config(configure_parent_dir, 'config.env.yaml', to_globals = False, to_environ = True)
+    # load `config.env.yaml` from `configure_root` up to `configure_dir` (excluded) directory
+    if num_comps > 0 and os.path.exists(configure_root + '/config.env.yaml.in'):
+      yaml_load_config(configure_root, 'config.env.yaml', to_globals = False, to_environ = True)
+    if num_comps > 1:
+      for i in range(num_comps-1):
+        configure_parent_dir = os.path.join(configure_root, *configure_relpath_comps[:i+1]).replace('\\', '/')
+        if os.path.exists(configure_parent_dir + '/config.env.yaml.in'):
+          yaml_load_config(configure_parent_dir, 'config.env.yaml', to_globals = False, to_environ = True)
 
-  cmdop(configure_dir, scm_name, cmd_name, bare_args,
-    subtrees_root = subtrees_root,
-    root_only = root_only,
-    reset_hard = reset_hard)
+    cmdop(configure_dir, scm_name, cmd_name, bare_args,
+      subtrees_root = subtrees_root,
+      root_only = root_only,
+      reset_hard = reset_hard)
 
 # CAUTION:
 #   Temporary disabled because of issues in the python xonsh module.

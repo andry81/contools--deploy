@@ -1,5 +1,5 @@
 * README_EN.txt
-* 2019.10.29
+* 2019.10.30
 * deploy/projects/_root
 
 1. DESCRIPTION
@@ -9,6 +9,7 @@
 5. USAGE
 5.1. Mirroring (merging) from SVN to GIT
 6. KNOWN ISSUES
+6.1. Message `svn: E170013: Unable to connect to a repository at URL 'svn+ssh://...'`
 7. AUTHOR EMAIL
 
 -------------------------------------------------------------------------------
@@ -150,6 +151,34 @@ a LOCAL repository), then these scripts must be issued:
 -------------------------------------------------------------------------------
 For the issues around python xonsh module see details in the
 `README_EN.python_xonsh.known_issues.txt` file.
+
+-------------------------------------------------------------------------------
+6.1. Message `svn: E170013: Unable to connect to a repository at URL 'svn+ssh://...'`
+-------------------------------------------------------------------------------
+The svn+ssh protocol must be setuped using the private ssh key.
+
+In case of in the Windows usage you have to setup the ssh key before run the svn client using these general steps:
+
+1. Install the `putty` client.
+2. Generate the key using the `puttygen.exe` utility and the correct type of
+   the key dependent on the svn hub server (Ed25519, RSA, DSA, etc).
+3. Install the been generated public variant of the key into the svn hub server
+   by reading the steps from the docs to the server.
+4. Ensure that the `SVN_SSH` environment variable in the generated
+   `config.env.yaml` file is pointing a correct path to the `plink.exe` and
+   uses valid arguments.
+5. Ensure that all svn working copies and the `externals` properties in them
+   contains valid svn repository urls with the `svn+ssh://` prefix. If not then
+   use the `*~svn~relocate` scrtip(s) to switch onto it. Fix all the rest urls
+   in the `externals` properties just by remove the url scheme prefix and leave
+   the `//` prefix instead.
+6. Run the `pageant.exe` in the background with the previously generated
+   private key (add it).
+7. Test the connection to the svn hub server through the `putty.exe` client.
+   The client should not ask for the password if the `pageant.exe` is up and
+   running with has been correctly setuped private key. The client should not
+   ask for the user name either if the `SVN_SSH` environment variable is
+   declared with the user name.
 
 -------------------------------------------------------------------------------
 7. AUTHOR EMAIL

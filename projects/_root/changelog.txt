@@ -1,3 +1,9 @@
+2019.10.30:
+* new: tacklelib: `tkl_declare_global` function can declare global in a child as a reference in the parent module/globals
+* new: cmdoplib: print ignored errors at the end of the `git_relocate` function call
+* new: `install_python_modules.bat` script to install all required python modules
+* changed: readme update
+
 2019.10.29:
 * fixed: cmdoplib: exception from `svn_relocate` function on non critical error `svn: E155024: Invalid source URL prefix: 'https://' (does not overlap target's URL 'svn+ssh://...')`
 * fixed: cmdoplib: SVN_SSH usage as an environment variable from the yaml configuration file

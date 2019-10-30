@@ -94,6 +94,7 @@ projects/_root/gl~git~init.bat -text
 projects/_root/gl~git~pull.bat -text
 projects/_root/gl~git~push_svn_to_git.bat -text
 projects/_root/gl~git~reset.bat -text
+projects/_root/install_python_modules.bat -text
 projects/_root/sf~svn~checkout.bat -text
 projects/_root/sf~svn~relocate.bat -text
 projects/_root/sf~svn~update.bat -text
