@@ -110,8 +110,6 @@ def main(configure_root, configure_dir):
   num_comps = len(configure_relpath_comps)
 
   # load `config.yaml` from `configure_root` up to `configure_dir` (excluded) directory
-  if num_comps > 0 and os.path.exists(configure_root + '/config.yaml.in'):
-    yaml_load_config(configure_root, 'config.yaml', to_globals = True, to_environ = False)
   if num_comps > 1:
     for i in range(num_comps-1):
       configure_parent_dir = os.path.join(configure_root, *configure_relpath_comps[:i+1]).replace('\\', '/')
@@ -119,8 +117,6 @@ def main(configure_root, configure_dir):
         yaml_load_config(configure_parent_dir, 'config.yaml', to_globals = True, to_environ = False)
 
   # load `config.env.yaml` from `configure_root` up to `configure_dir` (excluded) directory
-  if num_comps > 0 and os.path.exists(configure_root + '/config.env.yaml.in'):
-    yaml_load_config(configure_root, 'config.env.yaml', to_globals = False, to_environ = True)
   if num_comps > 1:
     for i in range(num_comps-1):
       configure_parent_dir = os.path.join(configure_root, *configure_relpath_comps[:i+1]).replace('\\', '/')

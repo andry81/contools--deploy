@@ -1,4 +1,8 @@
 2019.10.30:
+* fixed: cmdoplib: environment variable accidental double declare
+* fixed: missed `delvar` function refactor
+
+2019.10.30:
 * new: tacklelib: `tkl_declare_global` function can declare global in a child as a reference in the parent module/globals
 * new: cmdoplib: print ignored errors at the end of the `git_relocate` function call
 * new: `install_python_modules.bat` script to install all required python modules
