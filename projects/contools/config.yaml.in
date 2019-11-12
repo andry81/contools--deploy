@@ -1,5 +1,5 @@
 PROJECT_NAME:                           contools
-WCROOT_OFFSET:                          ${env:CONFIGURE_ROOT:path}/../../_${PROJECT_NAME}
+WCROOT_OFFSET:                          ${CONFIGURE_ROOT}/../../_${PROJECT_NAME}
 
 CONTOOLS_DEPLOY.SVN.REPOROOT:           svn+ssh://${SVN.HUB_ROOT}/contools/deploy
 CONTOOLS_DEBUG.SVN.REPOROOT:            svn+ssh://${SVN.HUB_ROOT}/contools/debug

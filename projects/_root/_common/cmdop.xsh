@@ -4,33 +4,30 @@ import os, sys, inspect, argparse
 SOURCE_FILE = os.path.abspath(inspect.getsourcefile(lambda:0)).replace('\\','/')
 SOURCE_DIR = os.path.dirname(SOURCE_FILE)
 
-CONFIGURE_DIR = sys.argv[1].replace('\\', '/') if len(sys.argv) >= 2 else ''
-SCM_NAME = sys.argv[2] if len(sys.argv) >= 3 else ''
-CMD_NAME = sys.argv[3] if len(sys.argv) >= 4 else ''
-
 # portable import to the global space
 sys.path.append(SOURCE_DIR + '/tools/tacklelib')
 import tacklelib as tkl
-# all functions in the module have has a 'tkl_' prefix, all classes begins by `Tackle`, so we don't need a scope here
-tkl.tkl_merge_module(tkl, globals())
+
+tkl.tkl_init(tkl)
+
 # cleanup
-tkl = None
+del tkl # must be instead of `tkl = None`, otherwise the variable would be still persist
 sys.path.pop()
 
-### globals ###
+
+tkl_declare_global('CONFIGURE_DIR', sys.argv[1].replace('\\', '/') if len(sys.argv) >= 2 else '')
+tkl_declare_global('SCM_NAME', sys.argv[2] if len(sys.argv) >= 3 else '')
+tkl_declare_global('CMD_NAME', sys.argv[3] if len(sys.argv) >= 4 else '')
 
 # format: [(<header_str>, <stderr_str>), ...]
-tkl_declare_global('g_registered_ignored_errors', [], copy_as_reference_in_parent = True) # must be empty list to save the reference
-
-### imports ###
+tkl_declare_global('g_registered_ignored_errors', []) # must be not empty value to save the reference
 
 # basic initialization, loads `config.private.yaml`
 tkl_source_module(SOURCE_DIR, '__init__.xsh')
 
 tkl_import_module(TACKLELIB_ROOT, 'tacklelib.utils.py', 'tkl')
-
-tkl_import_module(CMDOPLIB_ROOT, 'cmdoplib.svn.xsh', 'cmdoplib')
-tkl_import_module(CMDOPLIB_ROOT, 'cmdoplib.gitsvn.xsh', 'cmdoplib')
+tkl_import_module(CMDOPLIB_ROOT, 'cmdoplib.svn.xsh', 'cmdoplib_svn')
+tkl_import_module(CMDOPLIB_ROOT, 'cmdoplib.gitsvn.xsh', 'cmdoplib_gitsvn')
 
 if not os.path.isdir(CONFIGURE_ROOT):
   raise Exception('CONFIGURE_ROOT directory does not exist: `{0}`'.format(CONFIGURE_ROOT))
@@ -81,7 +78,8 @@ def cmdop(configure_dir, scm_name, cmd_name, bare_args, subtrees_root = None, ro
       # save all old variable values and remember all newly added variables as a new stack record
       yaml_push_global_vars()
       yaml_global_vars_pushed = True
-      yaml_load_config(configure_dir, 'config.yaml', to_globals = True, to_environ = False)
+      yaml_load_config(configure_dir, 'config.yaml', to_globals = True, to_environ = False,
+        search_by_global_pred_at_third = lambda var_name: getglobalvar(var_name))
 
     # loads `config.env.yaml` from `configure_dir`
     yaml_environ_vars_pushed = False
@@ -89,7 +87,8 @@ def cmdop(configure_dir, scm_name, cmd_name, bare_args, subtrees_root = None, ro
       # save all old variable values and remember all newly added variables as a new stack record
       yaml_push_environ_vars()
       yaml_environ_vars_pushed = True
-      yaml_load_config(configure_dir, 'config.env.yaml', to_globals = False, to_environ = True)
+      yaml_load_config(configure_dir, 'config.env.yaml', to_globals = False, to_environ = True,
+        search_by_environ_pred_at_third = lambda var_name: getglobalvar(var_name))
 
     is_leaf_configure_dir = True
     ret = 0
@@ -116,29 +115,29 @@ def cmdop(configure_dir, scm_name, cmd_name, bare_args, subtrees_root = None, ro
       if scm_name[:3] == 'SVN':
         if hasglobalvar(scm_name + '.WCROOT_DIR'):
           if cmd_name == 'update':
-            ret = cmdoplib.svn_update(configure_dir, scm_name, bare_args)
+            ret = cmdoplib_svn.svn_update(configure_dir, scm_name, bare_args)
           elif cmd_name == 'checkout':
-            ret = cmdoplib.svn_checkout(configure_dir, scm_name, bare_args)
+            ret = cmdoplib_svn.svn_checkout(configure_dir, scm_name, bare_args)
           elif cmd_name == 'relocate':
-            ret = cmdoplib.svn_relocate(configure_dir, scm_name, bare_args)
+            ret = cmdoplib_svn.svn_relocate(configure_dir, scm_name, bare_args)
           else:
             raise Exception('unknown command name: ' + str(cmd_name))
       elif scm_name[:3] == 'GIT':
         if hasglobalvar(scm_name + '.WCROOT_DIR'):
           if cmd_name == 'init':
-            ret = cmdoplib.git_init(configure_dir, scm_name,
+            ret = cmdoplib_gitsvn.git_init(configure_dir, scm_name,
               subtrees_root = subtrees_root, root_only = root_only)
           elif cmd_name == 'fetch':
-            ret = cmdoplib.git_fetch(configure_dir, scm_name,
+            ret = cmdoplib_gitsvn.git_fetch(configure_dir, scm_name,
               subtrees_root = subtrees_root, root_only = root_only, reset_hard = reset_hard)
           elif cmd_name == 'reset':
-            ret = cmdoplib.git_reset(configure_dir, scm_name,
+            ret = cmdoplib_gitsvn.git_reset(configure_dir, scm_name,
               subtrees_root = subtrees_root, root_only = root_only, reset_hard = reset_hard)
           elif cmd_name == 'pull':
-            ret = cmdoplib.git_pull(configure_dir, scm_name,
+            ret = cmdoplib_gitsvn.git_pull(configure_dir, scm_name,
               subtrees_root = subtrees_root, root_only = root_only, reset_hard = reset_hard)
           elif cmd_name == 'push_svn_to_git':
-            ret = cmdoplib.git_push_from_svn(configure_dir, scm_name,
+            ret = cmdoplib_gitsvn.git_push_from_svn(configure_dir, scm_name,
               subtrees_root = subtrees_root, reset_hard = reset_hard)
           else:
             raise Exception('unknown command name: ' + str(cmd_name))
@@ -171,17 +170,25 @@ def main(configure_root, configure_dir, scm_name, cmd_name, bare_args, subtrees_
 
     # load `config.yaml` from `configure_root` up to `configure_dir` (excluded) directory
     if num_comps > 1:
+      if os.path.exists(configure_root + '/config.yaml.in'):
+        yaml_load_config(configure_root, 'config.yaml', to_globals = True, to_environ = False,
+          search_by_global_pred_at_third = lambda var_name: getglobalvar(var_name))
       for i in range(num_comps-1):
         configure_parent_dir = os.path.join(configure_root, *configure_relpath_comps[:i+1]).replace('\\', '/')
         if os.path.exists(configure_parent_dir + '/config.yaml.in'):
-          yaml_load_config(configure_parent_dir, 'config.yaml', to_globals = True, to_environ = False)
+          yaml_load_config(configure_parent_dir, 'config.yaml', to_globals = True, to_environ = False,
+            search_by_global_pred_at_third = lambda var_name: getglobalvar(var_name))
 
     # load `config.env.yaml` from `configure_root` up to `configure_dir` (excluded) directory
     if num_comps > 1:
+      if os.path.exists(configure_root + '/config.env.yaml.in'):
+        yaml_load_config(configure_root, 'config.env.yaml', to_globals = False, to_environ = True,
+          search_by_environ_pred_at_third = lambda var_name: getglobalvar(var_name))
       for i in range(num_comps-1):
         configure_parent_dir = os.path.join(configure_root, *configure_relpath_comps[:i+1]).replace('\\', '/')
         if os.path.exists(configure_parent_dir + '/config.env.yaml.in'):
-          yaml_load_config(configure_parent_dir, 'config.env.yaml', to_globals = False, to_environ = True)
+          yaml_load_config(configure_parent_dir, 'config.env.yaml', to_globals = False, to_environ = True,
+            search_by_environ_pred_at_third = lambda var_name: getglobalvar(var_name))
 
     cmdop(configure_dir, scm_name, cmd_name, bare_args,
       subtrees_root = subtrees_root,

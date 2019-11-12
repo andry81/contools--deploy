@@ -4,16 +4,21 @@ import sys, os, shutil, inspect
 SOURCE_FILE = os.path.abspath(inspect.getsourcefile(lambda:0)).replace('\\','/')
 SOURCE_DIR = os.path.dirname(SOURCE_FILE)
 
-CONFIGURE_DIR = sys.argv[1].replace('\\', '/') if len(sys.argv) >= 2 else ''
-
 # portable import to the global space
 sys.path.append(SOURCE_DIR + '/tools/tacklelib')
 import tacklelib as tkl
-# all functions in the module have has a 'tkl_' prefix, all classes begins by `Tackle`, so we don't need a scope here
-tkl.tkl_merge_module(tkl, globals())
+
+tkl.tkl_init(tkl)
+
 # cleanup
-tkl = None
+del tkl # must be instead of `tkl = None`, otherwise the variable would be still persist
 sys.path.pop()
+
+
+tkl_declare_global('CONFIGURE_DIR', sys.argv[1].replace('\\', '/') if len(sys.argv) >= 2 else '')
+
+# format: [(<header_str>, <stderr_str>), ...]
+tkl_declare_global('g_registered_ignored_errors', []) # must be not empty value to save the reference
 
 # basic initialization, loads `config.private.yaml`
 tkl_source_module(SOURCE_DIR, '__init__.xsh')
@@ -70,7 +75,8 @@ def configure(configure_dir):
       # save all old variable values and remember all newly added variables as a new stack record
       yaml_push_global_vars()
       yaml_global_vars_pushed = True
-      yaml_load_config(configure_dir, 'config.yaml', to_globals = True, to_environ = False)
+      yaml_load_config(configure_dir, 'config.yaml', to_globals = True, to_environ = False,
+        search_by_global_pred_at_third = lambda var_name: getglobalvar(var_name))
 
     # loads `config.env.yaml` from `configure_dir`
     yaml_environ_vars_pushed = False
@@ -78,7 +84,8 @@ def configure(configure_dir):
       # save all old variable values and remember all newly added variables as a new stack record
       yaml_push_environ_vars()
       yaml_environ_vars_pushed = True
-      yaml_load_config(configure_dir, 'config.env.yaml', to_globals = False, to_environ = True)
+      yaml_load_config(configure_dir, 'config.env.yaml', to_globals = False, to_environ = True,
+        search_by_environ_pred_at_third = lambda var_name: getglobalvar(var_name))
 
     for dirpath, dirs, files in os.walk(configure_dir):
       for dir in dirs:
@@ -104,26 +111,43 @@ def configure(configure_dir):
       # remove previously added variables and restore previously changed variable values
       yaml_pop_global_vars(True)
 
+def on_main_exit():
+  if len(g_registered_ignored_errors) > 0:
+    print('- Registered ignored errors:')
+    for registered_ignored_error in g_registered_ignored_errors:
+      print(registered_ignored_error[0])
+      print(registered_ignored_error[1])
+      print('---')
+
 def main(configure_root, configure_dir):
-  configure_relpath = os.path.relpath(configure_dir, configure_root).replace('\\', '/')
-  configure_relpath_comps = configure_relpath.split('/')
-  num_comps = len(configure_relpath_comps)
+  with tkl.OnExit(on_main_exit):
+    configure_relpath = os.path.relpath(configure_dir, configure_root).replace('\\', '/')
+    configure_relpath_comps = configure_relpath.split('/')
+    num_comps = len(configure_relpath_comps)
 
-  # load `config.yaml` from `configure_root` up to `configure_dir` (excluded) directory
-  if num_comps > 1:
-    for i in range(num_comps-1):
-      configure_parent_dir = os.path.join(configure_root, *configure_relpath_comps[:i+1]).replace('\\', '/')
-      if os.path.exists(configure_parent_dir + '/config.yaml.in'):
-        yaml_load_config(configure_parent_dir, 'config.yaml', to_globals = True, to_environ = False)
+    # load `config.yaml` from `configure_root` up to `configure_dir` (excluded) directory
+    if num_comps > 1:
+      if os.path.exists(configure_root + '/config.yaml.in'):
+        yaml_load_config(configure_root, 'config.yaml', to_globals = True, to_environ = False,
+          search_by_global_pred_at_third = lambda var_name: getglobalvar(var_name))
+      for i in range(num_comps-1):
+        configure_parent_dir = os.path.join(configure_root, *configure_relpath_comps[:i+1]).replace('\\', '/')
+        if os.path.exists(configure_parent_dir + '/config.yaml.in'):
+          yaml_load_config(configure_parent_dir, 'config.yaml', to_globals = True, to_environ = False,
+            search_by_global_pred_at_third = lambda var_name: getglobalvar(var_name))
 
-  # load `config.env.yaml` from `configure_root` up to `configure_dir` (excluded) directory
-  if num_comps > 1:
-    for i in range(num_comps-1):
-      configure_parent_dir = os.path.join(configure_root, *configure_relpath_comps[:i+1]).replace('\\', '/')
-      if os.path.exists(configure_parent_dir + '/config.env.yaml.in'):
-        yaml_load_config(configure_parent_dir, 'config.env.yaml', to_globals = False, to_environ = True)
+    # load `config.env.yaml` from `configure_root` up to `configure_dir` (excluded) directory
+    if num_comps > 1:
+      if os.path.exists(configure_root + '/config.env.yaml.in'):
+        yaml_load_config(configure_root, 'config.env.yaml', to_globals = False, to_environ = True,
+          search_by_environ_pred_at_third = lambda var_name: getglobalvar(var_name))
+      for i in range(num_comps-1):
+        configure_parent_dir = os.path.join(configure_root, *configure_relpath_comps[:i+1]).replace('\\', '/')
+        if os.path.exists(configure_parent_dir + '/config.env.yaml.in'):
+          yaml_load_config(configure_parent_dir, 'config.env.yaml', to_globals = False, to_environ = True,
+            search_by_environ_pred_at_third = lambda var_name: getglobalvar(var_name))
 
-  configure(configure_dir)
+    configure(configure_dir)
 
 # CAUTION:
 #   Temporary disabled because of issues in the python xonsh module.

@@ -1,4 +1,5 @@
 * text=auto !eol
+projects/_root/3dparty/README_EN.txt -text
 projects/_root/3dparty/__init__.bat -text
 projects/_root/3dparty/config.vars.in -text
 projects/_root/3dparty/config.yaml.in -text
@@ -28,12 +29,20 @@ projects/_root/README_EN.txt -text
 projects/_root/TODO.txt -text
 projects/_root/__init__.bat -text
 projects/_root/__init__.xsh -text
+projects/_root/_cache/.svnignore -text
 projects/_root/_common/__init__.bat -text
 projects/_root/_common/__init__.xsh -text
 projects/_root/_common/cmdop.py.bat -text
 projects/_root/_common/cmdop.xsh -text
 projects/_root/_common/configure.py.bat -text
 projects/_root/_common/configure.xsh -text
+projects/_root/_common/python_patches/fcache/cache.py -text
+projects/_root/_common/python_patches/fcache/cache.py.diff -text
+projects/_root/_common/python_patches/fcache/posixemulation.py -text
+projects/_root/_common/python_patches/fcache/posixemulation.py.diff -text
+projects/_root/_common/tools/cmdoplib/cmdoplib.cache.xsh -text
+projects/_root/_common/tools/cmdoplib/cmdoplib.callgit.xsh -text
+projects/_root/_common/tools/cmdoplib/cmdoplib.callsvn.xsh -text
 projects/_root/_common/tools/cmdoplib/cmdoplib.csv.xsh -text
 projects/_root/_common/tools/cmdoplib/cmdoplib.csvgit.xsh -text
 projects/_root/_common/tools/cmdoplib/cmdoplib.csvsvn.xsh -text
@@ -45,8 +54,11 @@ projects/_root/_common/tools/cmdoplib/cmdoplib.xsh -text
 projects/_root/_common/tools/cmdoplib/cmdoplib.yaml.xsh -text
 projects/_root/_common/tools/get_datetime.bat -text
 projects/_root/_common/tools/load_config.bat -text
+projects/_root/_common/tools/tacklelib/tacklelib.cache.py -text
 projects/_root/_common/tools/tacklelib/tacklelib.csv.py -text
+projects/_root/_common/tools/tacklelib/tacklelib.io.py -text
 projects/_root/_common/tools/tacklelib/tacklelib.py -text
+projects/_root/_common/tools/tacklelib/tacklelib.sig.py -text
 projects/_root/_common/tools/tacklelib/tacklelib.url.py -text
 projects/_root/_common/tools/tacklelib/tacklelib.utils.py -text
 projects/_root/_common/tools/tacklelib/tacklelib.yaml.py -text

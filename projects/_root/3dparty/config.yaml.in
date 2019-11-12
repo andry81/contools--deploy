@@ -1,5 +1,5 @@
 PROJECT_NAME:                   3dparty
-WCROOT_OFFSET:                  ${env:CONFIGURE_ROOT:path}/../../_${PROJECT_NAME}
+WCROOT_OFFSET:                  ${CONFIGURE_ROOT}/../../_${PROJECT_NAME}
 
 _3DPARTY_DEV.SVN.REPOROOT:      svn+ssh://${SVN.HUB_ROOT}/contools/3dparty
 _3DPARTY_SCRIPTS.SVN.REPOROOT:  svn+ssh://${SVN.HUB_ROOT}/contools/3dparty_scripts

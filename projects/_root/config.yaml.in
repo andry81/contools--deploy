@@ -1,5 +1,14 @@
 #%% version: 1
 
+SVN_SSH_ENABLED:    1
+GIT_SSH_ENABLED:    0
+
+SVN_SSH_AGENT:      'c:/Programs/Net/Internet/putty.org/putty/plink.exe'
+GIT_SSH_AGENT:      'c:/Programs/Net/Internet/putty.org/putty/plink.exe'
+GIT_SVN_SSH_AGENT:  'C:/Programs/Dev/git-scm.com/Git/usr/bin/ssh-pageant.exe'
+
+LOCAL_CACHE_ROOT:   '${CONFIGURE_ROOT}/_cache'
+
 SVN.PROJECT_PATH_LIST:
   - orbittools/deploy
   - tacklelib/deploy
