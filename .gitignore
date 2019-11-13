@@ -15,7 +15,7 @@ projects/_root/3dparty/scripts/*.vars
 projects/_root/3dparty/scripts/*.yaml
 projects/_root/3dparty/scripts/.log
 projects/_root/__pycache__
-projects/_root/_cache/*.*
+projects/_root/_cache/*
 projects/_root/_common/__pycache__
 projects/_root/_common/tools/cmdoplib/__pycache__
 projects/_root/_common/tools/tacklelib/__pycache__
