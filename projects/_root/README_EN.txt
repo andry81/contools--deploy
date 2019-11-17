@@ -1,5 +1,5 @@
 * README_EN.txt
-* 2019.11.10
+* 2019.11.17
 * deploy/projects/_root
 
 1. DESCRIPTION
@@ -8,18 +8,18 @@
 4. INSTALLATION
 5. USAGE
 5.1. Mirroring (merging) from SVN to GIT
-6. KNOWN ISSUES
-6.1. Message `svn: E170013: Unable to connect to a repository at URL 'svn+ssh://...'`
-6.2. Message `svn: E170013: Unable to connect to a repository at URL 'svn+ssh://...'`
+6. SSH+SVN/PLINK SETUP
+7. KNOWN ISSUES
+7.1. Message `svn: E170013: Unable to connect to a repository at URL 'svn+ssh://...'`
     `svn: E170012: Can't create tunnel`
-6.3. Message `Can't create session: Unable to connect to a repository at URL 'svn+ssh://...': `
+7.2. Message `Can't create session: Unable to connect to a repository at URL 'svn+ssh://...': `
      `To better debug SSH connection problems, remove the -q option from ssh' in the [tunnels] section of your Subversion configuration file. `
      `at .../Git/mingw64/share/perl5/Git/SVN.pm line 310.'`
-6.4. `OSError: [WinError 87] The parameter is incorrect` while try to run
+7.3. `OSError: [WinError 87] The parameter is incorrect` while try to run
      `python_tests`
-6.5. pytest execution issues
-6.6. fcache execution issues
-7. AUTHOR EMAIL
+7.4. pytest execution issues
+7.5. fcache execution issues
+8. AUTHOR EMAIL
 
 -------------------------------------------------------------------------------
 1. DESCRIPTION
@@ -107,12 +107,14 @@ Temporary dropped usage:
 -------------------------------------------------------------------------------
 4. INSTALLATION
 -------------------------------------------------------------------------------
-1. run the solution root `configure.bat`
-2. run the `configure_private.bat` in all subdirectories if not done yet
-3. edit the `WCROOT_OFFSET` variable in the `configure.user.bat` to
-   change the default directory structure
-4. edit the `GIT.USER`/`GIT.EMAIL`/`GIT2.USER`/`GIT2.EMAIL` in projects's
-   `configure_private.user.bat` to mirror from svn to git under unique account
+1. run the `configure.bat` script from the root directory or from a
+   subdirectory you going to use.
+2. run the `configure_private.bat` script from the root directory or from a
+   subdirectory you going to use.
+3. edit the `WCROOT_OFFSET` variable in the respective `config.yaml` file
+   and change the default directory structure if is required to.
+4. edit the `GIT.USER`/`GIT.EMAIL`/`GIT2.USER`/`GIT2.EMAIL` in respective
+   `config.private.yaml` file to mirror from svn to git under unique account
    (will be showed in a merge info after a merge).
 
 -------------------------------------------------------------------------------
@@ -173,13 +175,7 @@ a LOCAL repository), then these scripts must be issued:
 2. `<HubAbbrivatedName>~git~push_svn_to_git`
 
 -------------------------------------------------------------------------------
-6. KNOWN ISSUES
--------------------------------------------------------------------------------
-For the issues around python xonsh module see details in the
-`README_EN.python_xonsh.known_issues.txt` file.
-
--------------------------------------------------------------------------------
-6.1. Message `svn: E170013: Unable to connect to a repository at URL 'svn+ssh://...'`
+6. SSH+SVN/PLINK SETUP
 -------------------------------------------------------------------------------
 Based on: https://stackoverflow.com/questions/11345868/how-to-use-git-svn-with-svnssh-url/58641860#58641860
 
@@ -254,20 +250,46 @@ NOTE:
   files.
 
 -------------------------------------------------------------------------------
-6.2. Message `svn: E170013: Unable to connect to a repository at URL 'svn+ssh://...'`
-    `svn: E170012: Can't create tunnel`
+7. KNOWN ISSUES
 -------------------------------------------------------------------------------
-The `svn ...` command was run w/o properly configured putty plink utility or
-w/o the `SVN_SSH` environment variable with the user name parameter.
-See the previous section for the details.
+For the issues around python xonsh module see details in the
+`README_EN.python_xonsh.known_issues.txt` file.
 
 -------------------------------------------------------------------------------
-6.3. Message `Can't create session: Unable to connect to a repository at URL 'svn+ssh://...': `
+7.1. Message `svn: E170013: Unable to connect to a repository at URL 'svn+ssh://...'`
+    `svn: E170012: Can't create tunnel`
+-------------------------------------------------------------------------------
+
+Issue #1:
+
+The `svn ...` command was run w/o properly configured putty plink utility or
+w/o the `SVN_SSH` environment variable with the user name parameter.
+
+Solution:
+
+Carefully read the `SSH+SVN/PLINK SETUP` section to fix most of the cases.
+
+Issue #2
+
+The `SVN_SSH` environment variable have has the backslash characters - `\`.
+
+Solution:
+
+Replace all the backslash characters by forward slash character - `/` or by
+double baskslash character - `\\`.
+
+-------------------------------------------------------------------------------
+7.2. Message `Can't create session: Unable to connect to a repository at URL 'svn+ssh://...': `
      `To better debug SSH connection problems, remove the -q option from ssh' in the [tunnels] section of your Subversion configuration file. `
      `at .../Git/mingw64/share/perl5/Git/SVN.pm line 310.'`
 -------------------------------------------------------------------------------
+
+Issue:
+
 The `git svn ...` command should not be called with the `SVN_SSH` variable
 declared for the `svn ...` command.
+
+Solution:
 
 Read docs about the `ssh-pageant` usage from the msys tools to fix that.
 
@@ -279,7 +301,7 @@ NOTE:
   the respective configuration files.
 
 -------------------------------------------------------------------------------
-6.4. `OSError: [WinError 87] The parameter is incorrect` while try to run
+7.3. `OSError: [WinError 87] The parameter is incorrect` while try to run
      `python_tests`
 -------------------------------------------------------------------------------
 
@@ -298,7 +320,7 @@ Solution:
 Reinstall the different python version.
 
 -------------------------------------------------------------------------------
-6.5. pytest execution issues
+7.4. pytest execution issues
 -------------------------------------------------------------------------------
 * `xonsh incorrectly reorders the test for the pytest` :
   https://github.com/xonsh/xonsh/issues/3380
@@ -309,7 +331,7 @@ Reinstall the different python version.
 
 
 -------------------------------------------------------------------------------
-6.6. fcache execution issues
+7.5. fcache execution issues
 -------------------------------------------------------------------------------
 * `fcache is not multiprocess aware on Windows` :
   https://github.com/tsroten/fcache/issues/26
@@ -319,6 +341,6 @@ Reinstall the different python version.
   https://github.com/tsroten/fcache/issues/28
 
 -------------------------------------------------------------------------------
-7. AUTHOR EMAIL
+8. AUTHOR EMAIL
 -------------------------------------------------------------------------------
 Andrey Dibrov (andry at inbox dot ru)
