@@ -1,4 +1,7 @@
 2019.11.17:
+* fixed: install script missed modules
+
+2019.11.17:
 * changed: readme update
 
 2019.11.14:
