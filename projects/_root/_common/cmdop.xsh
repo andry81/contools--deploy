@@ -46,9 +46,9 @@ if not CMD_NAME:
 #  pass
 
 def cmdop(configure_dir, scm_name, cmd_name, bare_args, subtrees_root = None, root_only = False, reset_hard = False):
-  print(">cmdop: {0} {1}: entering `{2}`".format(scm_name, cmd_name, configure_dir))
+  print("cmdop: {0} {1}: entering `{2}`".format(scm_name, cmd_name, configure_dir))
 
-  with tkl.OnExit(lambda: print(">cmdop: {0} {1}: leaving `{2}`\n---".format(scm_name, cmd_name, configure_dir))):
+  with tkl.OnExit(lambda: print("cmdop: {0} {1}: leaving `{2}`\n---".format(scm_name, cmd_name, configure_dir))):
     if not subtrees_root is None:
       print(' subtrees_root: ' + subtrees_root)
     if root_only:

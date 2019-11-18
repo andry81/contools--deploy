@@ -37,9 +37,9 @@ if not os.path.isdir(CONFIGURE_DIR):
 #  pass
 
 def configure(configure_dir):
-  print(">configure: entering `{0}`".format(configure_dir))
+  print("configure: entering `{0}`".format(configure_dir))
 
-  with tkl.OnExit(lambda: print(">configure: leaving `{0}`\n---".format(configure_dir))):
+  with tkl.OnExit(lambda: print("configure: leaving `{0}`\n---".format(configure_dir))):
     if configure_dir == '':
       print_err("{0}: error: configure directory is not defined.".format(sys.argv[0]))
       exit(1)
