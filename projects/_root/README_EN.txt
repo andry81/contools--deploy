@@ -1,5 +1,5 @@
 * README_EN.txt
-* 2019.11.17
+* 2019.11.20
 * deploy/projects/_root
 
 1. DESCRIPTION
@@ -10,15 +10,18 @@
 5.1. Mirroring (merging) from SVN to GIT
 6. SSH+SVN/PLINK SETUP
 7. KNOWN ISSUES
-7.1. Message `svn: E170013: Unable to connect to a repository at URL 'svn+ssh://...'`
-    `svn: E170012: Can't create tunnel`
-7.2. Message `Can't create session: Unable to connect to a repository at URL 'svn+ssh://...': `
+7.1. svn+ssh issues
+7.1.1. Message `svn: E170013: Unable to connect to a repository at URL 'svn+ssh://...'`
+       `svn: E170012: Can't create tunnel`
+7.1.2. Message `Can't create session: Unable to connect to a repository at URL 'svn+ssh://...': `
      `To better debug SSH connection problems, remove the -q option from ssh' in the [tunnels] section of your Subversion configuration file. `
      `at .../Git/mingw64/share/perl5/Git/SVN.pm line 310.'`
-7.3. `OSError: [WinError 87] The parameter is incorrect` while try to run
-     `python_tests`
-7.4. pytest execution issues
-7.5. fcache execution issues
+7.2. Python execution issues
+7.2.1. `OSError: [WinError 87] The parameter is incorrect` while try to run
+       `python_tests`
+7.2.2. `OSError: [WinError 6] The handle is invalid`
+7.3. pytest execution issues
+7.4. fcache execution issues
 8. AUTHOR EMAIL
 
 -------------------------------------------------------------------------------
@@ -87,6 +90,10 @@ from:
     - to support conditional `with` statements
 **  fcache 0.4.7
     - for local cache storage for python scripts
+**  psutil 5.6.7
+    - for processes list request
+**  tzlocal 2.0.0
+    - for local timezone request
 
 Temporary dropped usage:
 
@@ -256,8 +263,12 @@ For the issues around python xonsh module see details in the
 `README_EN.python_xonsh.known_issues.txt` file.
 
 -------------------------------------------------------------------------------
-7.1. Message `svn: E170013: Unable to connect to a repository at URL 'svn+ssh://...'`
-    `svn: E170012: Can't create tunnel`
+7.1. svn+ssh issues
+-------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------
+7.1.1. Message `svn: E170013: Unable to connect to a repository at URL 'svn+ssh://...'`
+       `svn: E170012: Can't create tunnel`
 -------------------------------------------------------------------------------
 
 Issue #1:
@@ -279,9 +290,9 @@ Replace all the backslash characters by forward slash character - `/` or by
 double baskslash character - `\\`.
 
 -------------------------------------------------------------------------------
-7.2. Message `Can't create session: Unable to connect to a repository at URL 'svn+ssh://...': `
-     `To better debug SSH connection problems, remove the -q option from ssh' in the [tunnels] section of your Subversion configuration file. `
-     `at .../Git/mingw64/share/perl5/Git/SVN.pm line 310.'`
+7.1.2. Message `Can't create session: Unable to connect to a repository at URL 'svn+ssh://...': `
+       `To better debug SSH connection problems, remove the -q option from ssh' in the [tunnels] section of your Subversion configuration file. `
+       `at .../Git/mingw64/share/perl5/Git/SVN.pm line 310.'`
 -------------------------------------------------------------------------------
 
 Issue:
@@ -301,8 +312,12 @@ NOTE:
   the respective configuration files.
 
 -------------------------------------------------------------------------------
-7.3. `OSError: [WinError 87] The parameter is incorrect` while try to run
-     `python_tests`
+7.2. Python execution issues
+-------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------
+7.2.1. `OSError: [WinError 87] The parameter is incorrect` while try to run
+       `python_tests`
 -------------------------------------------------------------------------------
 
 Issue:
@@ -320,7 +335,20 @@ Solution:
 Reinstall the different python version.
 
 -------------------------------------------------------------------------------
-7.4. pytest execution issues
+7.2.2. `OSError: [WinError 6] The handle is invalid`
+-------------------------------------------------------------------------------
+
+Issue:
+
+The python interpreter (3.7, 3.8, 3.9) sometimes throws this message at exit,
+see details here: https://bugs.python.org/issue37380
+
+Solution:
+
+Reinstall the different python version.
+
+-------------------------------------------------------------------------------
+7.3. pytest execution issues
 -------------------------------------------------------------------------------
 * `xonsh incorrectly reorders the test for the pytest` :
   https://github.com/xonsh/xonsh/issues/3380
@@ -331,7 +359,7 @@ Reinstall the different python version.
 
 
 -------------------------------------------------------------------------------
-7.5. fcache execution issues
+7.4. fcache execution issues
 -------------------------------------------------------------------------------
 * `fcache is not multiprocess aware on Windows` :
   https://github.com/tsroten/fcache/issues/26
