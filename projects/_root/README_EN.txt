@@ -1,5 +1,5 @@
 * README_EN.txt
-* 2019.11.20
+* 2019.11.22
 * deploy/projects/_root
 
 1. DESCRIPTION
@@ -14,8 +14,12 @@
 7.1.1. Message `svn: E170013: Unable to connect to a repository at URL 'svn+ssh://...'`
        `svn: E170012: Can't create tunnel`
 7.1.2. Message `Can't create session: Unable to connect to a repository at URL 'svn+ssh://...': `
-     `To better debug SSH connection problems, remove the -q option from ssh' in the [tunnels] section of your Subversion configuration file. `
-     `at .../Git/mingw64/share/perl5/Git/SVN.pm line 310.'`
+       `To better debug SSH connection problems, remove the -q option from ssh' in the [tunnels] section of your Subversion configuration file. `
+       `at .../Git/mingw64/share/perl5/Git/SVN.pm line 310.'`
+7.1.3. Message `Keyboard-interactive authentication prompts from server:`
+       `svn: E170013: Unable to connect to a repository at URL 'svn+ssh://...'`
+       `svn: E210002: To better debug SSH connection problems, remove the -q option from 'ssh' in the [tunnels] section of your Subversion configuration file.`
+       `svn: E210002: Network connection closed unexpectedly`
 7.2. Python execution issues
 7.2.1. `OSError: [WinError 87] The parameter is incorrect` while try to run
        `python_tests`
@@ -332,7 +336,7 @@ https://bugs.python.org/issue37549 :
 
 Solution:
 
-Reinstall the different python version.
+Reinstall a different python version.
 
 -------------------------------------------------------------------------------
 7.2.2. `OSError: [WinError 6] The handle is invalid`
@@ -345,7 +349,33 @@ see details here: https://bugs.python.org/issue37380
 
 Solution:
 
-Reinstall the different python version.
+Reinstall a different python version.
+
+-------------------------------------------------------------------------------
+7.1.3. Message `Keyboard-interactive authentication prompts from server:`
+       `svn: E170013: Unable to connect to a repository at URL 'svn+ssh://...'`
+       `svn: E210002: To better debug SSH connection problems, remove the -q option from 'ssh' in the [tunnels] section of your Subversion configuration file.`
+       `svn: E210002: Network connection closed unexpectedly`
+-------------------------------------------------------------------------------
+
+Related command: `git svn ...`
+
+Issue #1:
+
+Network is disabled:
+
+Issue #2:
+
+The `pageant` application is not running or the provate SSH key is not added.
+
+Issue #3:
+
+The `ssh-pageant` utility is not running or the `git svn ...` command does run
+without the `SSH_AUTH_SOCK` environment variable properly registered.
+
+Solution:
+
+Read the deatils in the `SSH+SVN/PLINK SETUP` section.
 
 -------------------------------------------------------------------------------
 7.3. pytest execution issues
