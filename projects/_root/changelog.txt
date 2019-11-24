@@ -1,4 +1,9 @@
 2019.11.24:
+* new: tacklelib: reimport functionality in the `tkl_import_module` function to partially resolve module cross references
+* changed: cmdoplib: `yaml_expand_*` functions always searches in python global variables now
+* refactor: minor refactor
+
+2019.11.24:
 * fixed: cmdoplib: now a project checks whether a command file exists (without extension) to run a command
 * fixed: cmdoplib: minor fixup
 * new: added `tacklelib--3dparty`, `tacklelib--3dparty--p7client`, `tacklelib--3dparty--fmt`, `tacklelib--3dparty--pystring` projects
