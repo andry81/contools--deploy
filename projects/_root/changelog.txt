@@ -1,3 +1,8 @@
+2019.11.24:
+* fixed: now a project checks whether a command file exists (without extension) to run a command
+* fixed: minor fixup
+* new: added `tacklelib--3dparty`, `tacklelib--3dparty--p7client`, `tacklelib--3dparty--fmt`, `tacklelib--3dparty--pystring` projects
+
 2019.11.23:
 * fixed: cmdoplib: git-svn branch cleanup before fetch
 * changed: cmdoplib: all branches started by `git-svn` is reserved for internal usage

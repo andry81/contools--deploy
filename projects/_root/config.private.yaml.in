@@ -1,19 +1,23 @@
 SVN.HUB_ROOT:     localhost
+SVN.HUB_ABBR:     lh
 SVN.USER:         user
 
 GIT.HUB_ROOT:     localhost
+GIT.HUB_ABBR:     lh
 GIT.REPO_OWNER:   owner
 GIT.USER:         user
 GIT.SVNSSH.USER:  ${SVN.USER}
 GIT.EMAIL:        user@mail.com
 
 GIT2.HUB_ROOT:    localhost
+GIT2.HUB_ABBR:    lh
 GIT2.REPO_OWNER:  owner
 GIT2.USER:        user
 GIT2.SVNSSH.USER: ${SVN.USER}
 GIT2.EMAIL:       user@mail.com
 
 GIT3.HUB_ROOT:    localhost
+GIT3.HUB_ABBR:    lh
 GIT3.REPO_OWNER:  owner
 GIT3.USER:        user
 GIT3.SVNSSH.USER: ${SVN.USER}
