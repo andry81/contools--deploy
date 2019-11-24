@@ -1,6 +1,7 @@
 2019.11.24:
 * new: tacklelib: reimport functionality in the `tkl_import_module` function to partially resolve module cross references
 * changed: cmdoplib: `yaml_expand_*` functions always searches in python global variables now
+* changed: cmdoplib: [continued] `git_push_from_svn` function
 * refactor: minor refactor
 
 2019.11.24:
