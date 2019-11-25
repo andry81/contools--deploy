@@ -1,4 +1,7 @@
 2019.11.25:
+* fixed: removed user name from git repo path to avoid the git credential issue in the bitbucket server
+
+2019.11.25:
 * fixed: cmdoplib: fixup to init/fetch/reset/pull/push over empty git repository
 * changed: cmdoplib: [continued] `git_push_from_svn` function
 

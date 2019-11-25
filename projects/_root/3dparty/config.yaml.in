@@ -4,5 +4,5 @@ WCROOT_OFFSET:                  ${CONFIGURE_ROOT}/../../_${PROJECT_NAME}
 _3DPARTY_DEV.SVN.REPOROOT:      svn+ssh://${SVN.HUB_ROOT}/contools/3dparty
 _3DPARTY_SCRIPTS.SVN.REPOROOT:  svn+ssh://${SVN.HUB_ROOT}/contools/3dparty_scripts
 
-_3DPARTY_DEV.GIT3.ORIGIN:       https://${GIT3.USER}@${GIT3.HUB_ROOT}/${GIT3.REPO_OWNER}/3dparty--dev.git
-_3DPARTY_SCRIPTS.GIT3.ORIGIN:   https://${GIT3.USER}@${GIT3.HUB_ROOT}/${GIT3.REPO_OWNER}/3dparty--scripts.git
+_3DPARTY_DEV.GIT3.ORIGIN:       https://${GIT3.HUB_ROOT}/${GIT3.REPO_OWNER}/3dparty--dev.git
+_3DPARTY_SCRIPTS.GIT3.ORIGIN:   https://${GIT3.HUB_ROOT}/${GIT3.REPO_OWNER}/3dparty--scripts.git
