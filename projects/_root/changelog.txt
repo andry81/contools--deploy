@@ -1,4 +1,8 @@
 2019.11.25:
+* fixed: minor fixup
+* new: change author name and email before push
+
+2019.11.25:
 * fixed: removed user name from git repo path to avoid the git credential issue in the bitbucket server
 
 2019.11.25:
