@@ -1,4 +1,8 @@
 2019.11.27:
+* fixed: cmdoplib: added '--localtime' to all `git svn fetch ...` commands
+* changed: cmdoplib: [continued] `git_push_from_svn` function
+
+2019.11.27:
 * fixed: cmdoplib: correct `git cherry-pick ...` calls
 
 2019.11.26:
