@@ -2497,7 +2497,24 @@ def git_push_from_svn(configure_dir, scm_name, subtrees_root = None, reset_hard 
                 ###git_local_refspec_token = get_git_local_refspec_token(git_local_branch, git_remote_branch)
                 ###call_git(['rebase', git_local_refspec_token, 'refs/remotes/origin/git-svn-trunk'])
 
-                call_git(['cherry-pick', '--allow-empty', git_first_commit_hash])
+                # CAUTION:
+                #   1. We have to cleanup before the `git cherry-pick ...` command, otherwise the command may fail with the messages:
+                #      `error: your local changes would be overwritten by cherry-pick`
+                #      `hint: commit your changes or stash them to proceed.`
+                #   2. We have to reset with the `--hard`, otherwise another error message:
+                #      `error: The following untracked working tree files would be overwritten by merge:`
+                #
+                call_git(['reset', '--hard'])
+
+                # CAUTION:
+                #   1. Before call `git cherry-pick ...` command we have to check whether the same commit already exist by the HEAD, otherwise
+                #      would an error message: `nothing to commit, working tree clean`
+                #
+                ret = call_git(['rev-parse', 'HEAD'])
+                head_hash = ret[1].rstrip()
+
+                if head_hash != git_first_commit_hash:
+                  call_git(['cherry-pick', '--allow-empty', git_first_commit_hash])
 
                 # Change:
                 #   1. Author name and email.

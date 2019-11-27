@@ -1,3 +1,6 @@
+2019.11.27:
+* fixed: cmdoplib: correct `git cherry-pick ...` calls
+
 2019.11.26:
 * fixed: cmdoplib: has used git commit timestamp/datetime in comparison instead of associated svn commit timestamp/datetime
 * fixed: cmdoplib: correct skip push of empty svn commits
