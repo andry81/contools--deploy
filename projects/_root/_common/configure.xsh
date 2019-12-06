@@ -54,15 +54,10 @@ def configure(configure_dir):
     try:
       if os.path.isfile(os.path.join(configure_dir, 'git_repos.lst.in')):
         shutil.copyfile(os.path.join(configure_dir, 'git_repos.lst.in'), os.path.join(configure_dir, 'git_repos.lst')),
-    except:
-      # `exit` with the parentheses to workaround the issue:
-      # `source` xsh file with try/except does hang`:
-      # https://github.com/xonsh/xonsh/issues/3301
-      exit(255)
-
-    try:
       if os.path.isfile(os.path.join(configure_dir, 'config.yaml.in')):
         shutil.copyfile(os.path.join(configure_dir, 'config.yaml.in'), os.path.join(configure_dir, 'config.yaml')),
+      if os.path.isfile(os.path.join(configure_dir, 'config.env.yaml.in')):
+        shutil.copyfile(os.path.join(configure_dir, 'config.env.yaml.in'), os.path.join(configure_dir, 'config.env.yaml')),
     except:
       # `exit` with the parentheses to workaround the issue:
       # `source` xsh file with try/except does hang`:

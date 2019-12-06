@@ -1,3 +1,15 @@
+2019.12.06:
+* changed: cmdoplib: [continued] `git_push_from_svn` function
+
+2019.12.05:
+* fixed: configure: missed `config.env.yaml` generation
+
+2019.12.04:
+* changed: removed `parent_git_subtree_cmdline` and `git_subtree_cmdline` from `git_repos.lst` as not required anymore (`git subtree ...` command is not used anymore)
+* changed: cmdoplib: removed usage of `parent_git_subtree_cmdline` and `git_subtree_cmdline` parameters in `GitReposListReader` class
+* changed: cmdoplib: [continued] `git_push_from_svn` function
+* refactor: cmdoplib: git functions refactor
+
 2019.11.27:
 * fixed: cmdoplib: added '--localtime' to all `git svn fetch ...` commands
 * changed: cmdoplib: [continued] `git_push_from_svn` function

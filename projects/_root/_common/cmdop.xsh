@@ -16,8 +16,8 @@ sys.path.pop()
 
 
 tkl_declare_global('CONFIGURE_DIR', sys.argv[1].replace('\\', '/') if len(sys.argv) >= 2 else '')
-tkl_declare_global('SCM_NAME', sys.argv[2] if len(sys.argv) >= 3 else '')
-tkl_declare_global('CMD_NAME', sys.argv[3] if len(sys.argv) >= 4 else '')
+tkl_declare_global('SCM_TOKEN', sys.argv[2] if len(sys.argv) >= 3 else '')
+tkl_declare_global('CMD_TOKEN', sys.argv[3] if len(sys.argv) >= 4 else '')
 
 # format: [(<header_str>, <stderr_str>), ...]
 tkl_declare_global('g_registered_ignored_errors', []) # must be not empty value to save the reference
@@ -35,20 +35,20 @@ if not os.path.isdir(CONFIGURE_ROOT):
 if not os.path.isdir(CONFIGURE_DIR):
   raise Exception('CONFIGURE_DIR directory does not exist: `{0}`'.format(CONFIGURE_DIR))
 
-if not SCM_NAME:
-  raise Exception('SCM_NAME name is not defined: `{0}`'.format(SCM_NAME))
-if not CMD_NAME:
-  raise Exception('CMD_NAME name is not defined: `{0}`'.format(CMD_NAME))
+if not SCM_TOKEN:
+  raise Exception('SCM_TOKEN name is not defined: `{0}`'.format(SCM_TOKEN))
+if not CMD_TOKEN:
+  raise Exception('CMD_TOKEN name is not defined: `{0}`'.format(CMD_TOKEN))
 
 #try:
 #  os.mkdir(os.path.join(CONFIGURE_DIR, '.log'))
 #except:
 #  pass
 
-def cmdop(configure_dir, scm_name, cmd_name, bare_args, subtrees_root = None, root_only = False, reset_hard = False):
-  print("cmdop: {0} {1}: entering `{2}`".format(scm_name, cmd_name, configure_dir))
+def cmdop(configure_dir, scm_token, cmd_token, bare_args, subtrees_root = None, root_only = False, reset_hard = False):
+  print("cmdop: {0} {1}: entering `{2}`".format(scm_token, cmd_token, configure_dir))
 
-  with tkl.OnExit(lambda: print("cmdop: {0} {1}: leaving `{2}`\n---".format(scm_name, cmd_name, configure_dir))):
+  with tkl.OnExit(lambda: print("cmdop: {0} {1}: leaving `{2}`\n---".format(scm_token, cmd_token, configure_dir))):
     if not subtrees_root is None:
       print(' subtrees_root: ' + subtrees_root)
     if root_only:
@@ -67,18 +67,18 @@ def cmdop(configure_dir, scm_name, cmd_name, bare_args, subtrees_root = None, ro
       print_err("{0}: error: configure directory does not exist: `{1}`.".format(sys.argv[0], configure_dir))
       exit(2)
 
-    hub_root_var = scm_name + '.HUB_ROOT'
+    hub_root_var = scm_token + '.HUB_ROOT'
     if not hasglobalvar(hub_root_var):
-      print_err("{0}: error: hub root variable is not declared for the scm_name as prefix: `{1}`.".format(sys.argv[0], hub_root_var))
+      print_err("{0}: error: hub root variable is not declared for the scm_token as prefix: `{1}`.".format(sys.argv[0], hub_root_var))
       exit(3)
 
-    hub_abbr_var = scm_name + '.HUB_ABBR'
+    hub_abbr_var = scm_token + '.HUB_ABBR'
     if not hasglobalvar(hub_abbr_var):
-      print_err("{0}: error: hub abbrivation variable is not declared for the scm_name as prefix: `{1}`.".format(sys.argv[0], hub_abbr_var))
+      print_err("{0}: error: hub abbrivation variable is not declared for the scm_token as prefix: `{1}`.".format(sys.argv[0], hub_abbr_var))
       exit(4)
 
     hub_abbr = getglobalvar(hub_abbr_var)
-    scm_type = scm_name[:3].lower()
+    scm_type = scm_token[:3].lower()
 
     # loads `config.yaml` from `configure_dir`
     yaml_global_vars_pushed = False
@@ -103,7 +103,7 @@ def cmdop(configure_dir, scm_name, cmd_name, bare_args, subtrees_root = None, ro
     # do action only if not in the root and a command file is present
     if not tkl.compare_file_paths(configure_dir, CONFIGURE_ROOT):
       dir_files_wo_ext = [os.path.splitext(f)[0] for f in os.listdir(configure_dir) if os.path.isfile(f)]
-      cmd_file = hub_abbr + '~' + scm_type + '~' + cmd_name
+      cmd_file = hub_abbr + '~' + scm_type + '~' + cmd_token
 
       is_cmd_file_found = False
       for dir_file_wo_ext in dir_files_wo_ext:
@@ -113,36 +113,36 @@ def cmdop(configure_dir, scm_name, cmd_name, bare_args, subtrees_root = None, ro
 
       if is_cmd_file_found:
         if scm_type == 'svn':
-          if hasglobalvar(scm_name + '.WCROOT_DIR'):
-            if cmd_name == 'update':
-              ret = cmdoplib_svn.svn_update(configure_dir, scm_name, bare_args)
-            elif cmd_name == 'checkout':
-              ret = cmdoplib_svn.svn_checkout(configure_dir, scm_name, bare_args)
-            elif cmd_name == 'relocate':
-              ret = cmdoplib_svn.svn_relocate(configure_dir, scm_name, bare_args)
+          if hasglobalvar(scm_token + '.WCROOT_DIR'):
+            if cmd_token == 'update':
+              ret = cmdoplib_svn.svn_update(configure_dir, scm_token, bare_args)
+            elif cmd_token == 'checkout':
+              ret = cmdoplib_svn.svn_checkout(configure_dir, scm_token, bare_args)
+            elif cmd_token == 'relocate':
+              ret = cmdoplib_svn.svn_relocate(configure_dir, scm_token, bare_args)
             else:
-              raise Exception('unknown command name: ' + str(cmd_name))
+              raise Exception('unknown command name: ' + str(cmd_token))
         elif scm_type == 'git':
-          if hasglobalvar(scm_name + '.WCROOT_DIR'):
-            if cmd_name == 'init':
-              ret = cmdoplib_gitsvn.git_init(configure_dir, scm_name,
+          if hasglobalvar(scm_token + '.WCROOT_DIR'):
+            if cmd_token == 'init':
+              ret = cmdoplib_gitsvn.git_init(configure_dir, scm_token,
                 subtrees_root = subtrees_root, root_only = root_only)
-            elif cmd_name == 'fetch':
-              ret = cmdoplib_gitsvn.git_fetch(configure_dir, scm_name,
+            elif cmd_token == 'fetch':
+              ret = cmdoplib_gitsvn.git_fetch(configure_dir, scm_token,
                 subtrees_root = subtrees_root, root_only = root_only, reset_hard = reset_hard)
-            elif cmd_name == 'reset':
-              ret = cmdoplib_gitsvn.git_reset(configure_dir, scm_name,
+            elif cmd_token == 'reset':
+              ret = cmdoplib_gitsvn.git_reset(configure_dir, scm_token,
                 subtrees_root = subtrees_root, root_only = root_only, reset_hard = reset_hard)
-            elif cmd_name == 'pull':
-              ret = cmdoplib_gitsvn.git_pull(configure_dir, scm_name,
+            elif cmd_token == 'pull':
+              ret = cmdoplib_gitsvn.git_pull(configure_dir, scm_token,
                 subtrees_root = subtrees_root, root_only = root_only, reset_hard = reset_hard)
-            elif cmd_name == 'push_svn_to_git':
-              ret = cmdoplib_gitsvn.git_push_from_svn(configure_dir, scm_name,
+            elif cmd_token == 'push_svn_to_git':
+              ret = cmdoplib_gitsvn.git_push_from_svn(configure_dir, scm_token,
                 subtrees_root = subtrees_root, reset_hard = reset_hard)
             else:
-              raise Exception('unknown command name: ' + str(cmd_name))
+              raise Exception('unknown command name: ' + str(cmd_token))
         else:
-          raise Exception('unsupported scm name: ' + str(scm_name))
+          raise Exception('unsupported scm name: ' + str(scm_token))
 
     for dirpath, dirs, files in os.walk(configure_dir):
       for dir in dirs:
@@ -157,7 +157,7 @@ def cmdop(configure_dir, scm_name, cmd_name, bare_args, subtrees_root = None, ro
         #   os.path.isfile(os.path.join(dirpath, dir, 'config.yaml.in'))):
         #  continue
         if os.path.isfile(os.path.join(dirpath, dir, 'config.yaml.in')):
-          cmdop(os.path.join(dirpath, dir).replace('\\', '/'), scm_name, cmd_name, bare_args)
+          cmdop(os.path.join(dirpath, dir).replace('\\', '/'), scm_token, cmd_token, bare_args)
       dirs.clear() # not recursively
 
     if yaml_environ_vars_pushed:
@@ -178,7 +178,7 @@ def on_main_exit():
       print(registered_ignored_error[1])
       print('---')
 
-def main(configure_root, configure_dir, scm_name, cmd_name, bare_args, subtrees_root = None, root_only = False, reset_hard = False):
+def main(configure_root, configure_dir, scm_token, cmd_token, bare_args, subtrees_root = None, root_only = False, reset_hard = False):
   with tkl.OnExit(on_main_exit):
     configure_relpath = os.path.relpath(configure_dir, configure_root).replace('\\', '/')
     configure_relpath_comps = configure_relpath.split('/')
@@ -206,7 +206,7 @@ def main(configure_root, configure_dir, scm_name, cmd_name, bare_args, subtrees_
           yaml_load_config(configure_parent_dir, 'config.env.yaml', to_globals = False, to_environ = True,
             search_by_environ_pred_at_third = lambda var_name: getglobalvar(var_name))
 
-    cmdop(configure_dir, scm_name, cmd_name, bare_args,
+    cmdop(configure_dir, scm_token, cmd_token, bare_args,
       subtrees_root = subtrees_root,
       root_only = root_only,
       reset_hard = reset_hard)
@@ -215,7 +215,7 @@ def main(configure_root, configure_dir, scm_name, cmd_name, bare_args, subtrees_
 #   Temporary disabled because of issues in the python xonsh module.
 #   See details in the `README_EN.known_issues.txt` file.
 #
-#@(pcall, main, CONFIGURE_ROOT, CONFIGURE_DIR, SCM_NAME, CMD_NAME) | @(CONTOOLS_ROOT + '/wtee.exe', CONFIGURE_DIR + '/.log/' + os.path.splitext(os.path.split(__file__)[1])[0] + '.' + datetime.now().strftime("%Y'%m'%d_%H'%M'%S''%f")[:-3])
+#@(pcall, main, CONFIGURE_ROOT, CONFIGURE_DIR, SCM_TOKEN, CMD_TOKEN) | @(CONTOOLS_ROOT + '/wtee.exe', CONFIGURE_DIR + '/.log/' + os.path.splitext(os.path.split(__file__)[1])[0] + '.' + datetime.now().strftime("%Y'%m'%d_%H'%M'%S''%f")[:-3])
 
 # NOTE:
 #   Logging is implemented externally to the python.
@@ -228,7 +228,7 @@ if __name__ == '__main__':
   arg_parser.add_argument('--reset_hard', action = 'store_true')  # use `git reset ...` call with the `--hard` parameter (boolean)
   known_args, unknown_args = arg_parser.parse_known_args(sys.argv[4:])
 
-  main(CONFIGURE_ROOT, CONFIGURE_DIR, SCM_NAME, CMD_NAME, unknown_args,
+  main(CONFIGURE_ROOT, CONFIGURE_DIR, SCM_TOKEN, CMD_TOKEN, unknown_args,
     subtrees_root = known_args.R,
     root_only = (True if known_args.ro else False),
     reset_hard = (True if known_args.reset_hard else False))
