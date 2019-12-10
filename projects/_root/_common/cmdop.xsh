@@ -45,7 +45,7 @@ if not CMD_TOKEN:
 #except:
 #  pass
 
-def cmdop(configure_dir, scm_token, cmd_token, bare_args, subtrees_root = None, root_only = False, reset_hard = False):
+def cmdop(configure_dir, scm_token, cmd_token, bare_args, subtrees_root = None, root_only = False, reset_hard = False, cleanup = False):
   print("cmdop: {0} {1}: entering `{2}`".format(scm_token, cmd_token, configure_dir))
 
   with tkl.OnExit(lambda: print("cmdop: {0} {1}: leaving `{2}`\n---".format(scm_token, cmd_token, configure_dir))):
@@ -132,7 +132,7 @@ def cmdop(configure_dir, scm_token, cmd_token, bare_args, subtrees_root = None, 
                 subtrees_root = subtrees_root, root_only = root_only, reset_hard = reset_hard)
             elif cmd_token == 'reset':
               ret = cmdoplib_gitsvn.git_reset(configure_dir, scm_token,
-                subtrees_root = subtrees_root, root_only = root_only, reset_hard = reset_hard)
+                subtrees_root = subtrees_root, root_only = root_only, reset_hard = reset_hard, cleanup = cleanup)
             elif cmd_token == 'pull':
               ret = cmdoplib_gitsvn.git_pull(configure_dir, scm_token,
                 subtrees_root = subtrees_root, root_only = root_only, reset_hard = reset_hard)
@@ -178,7 +178,7 @@ def on_main_exit():
       print(registered_ignored_error[1])
       print('---')
 
-def main(configure_root, configure_dir, scm_token, cmd_token, bare_args, subtrees_root = None, root_only = False, reset_hard = False):
+def main(configure_root, configure_dir, scm_token, cmd_token, bare_args, subtrees_root = None, root_only = False, reset_hard = False, cleanup = False):
   with tkl.OnExit(on_main_exit):
     configure_relpath = os.path.relpath(configure_dir, configure_root).replace('\\', '/')
     configure_relpath_comps = configure_relpath.split('/')
@@ -209,7 +209,8 @@ def main(configure_root, configure_dir, scm_token, cmd_token, bare_args, subtree
     cmdop(configure_dir, scm_token, cmd_token, bare_args,
       subtrees_root = subtrees_root,
       root_only = root_only,
-      reset_hard = reset_hard)
+      reset_hard = reset_hard,
+      cleanup = cleanup)
 
 # CAUTION:
 #   Temporary disabled because of issues in the python xonsh module.
@@ -226,9 +227,12 @@ if __name__ == '__main__':
   arg_parser.add_argument('-R', type = str)                       # custom subtree root directory (path)
   arg_parser.add_argument('-ro', action = 'store_true')           # invoke for the root record only (boolean)
   arg_parser.add_argument('--reset_hard', action = 'store_true')  # use `git reset ...` call with the `--hard` parameter (boolean)
+  arg_parser.add_argument('--cleanup', action = 'store_true')     # use `git clean -d -f` call (boolean)
   known_args, unknown_args = arg_parser.parse_known_args(sys.argv[4:])
 
   main(CONFIGURE_ROOT, CONFIGURE_DIR, SCM_TOKEN, CMD_TOKEN, unknown_args,
     subtrees_root = known_args.R,
     root_only = (True if known_args.ro else False),
-    reset_hard = (True if known_args.reset_hard else False))
+    reset_hard = (True if known_args.reset_hard else False),
+    cleanup = (True if known_args.cleanup else False)
+  )

@@ -85,6 +85,16 @@ def get_git_push_refspec_token(git_local_branch, git_remote_branch):
 
   return refspec_token
 
+def get_git_pull_refspec_token(git_local_branch, git_remote_branch):
+  git_local_branch, git_remote_branch = validate_git_refspec(git_local_branch, git_remote_branch)
+
+  if git_local_branch == git_remote_branch:
+    refspec_token = git_local_branch
+  else:
+    refspec_token = git_remote_branch + ':refs/heads/' + git_local_branch
+
+  return refspec_token
+
 def git_remove_svn_branch(svn_branch, remote_refspec_token):
   # remove entire branch and the index
   call_git_no_except(['branch', '-D', '-r', svn_branch])
@@ -573,13 +583,13 @@ def get_last_git_svn_rev_by_git_log(remote_name, git_local_branch, git_remote_br
   return (git_last_svn_rev, git_commit_hash, git_commit_timestamp, git_commit_date_time, git_from_commit_timestamp, num_git_commits)
 
 def get_git_svn_trunk_remote_refspec_token(remote_name, shorted = False):
-  return 'refs/remotes/' if not shorted else '' + remote_name + '/git-svn-trunk'
+  return ('refs/remotes/' if not shorted else '') + remote_name + '/git-svn-trunk'
 
-def get_git_svn_branches_remote_refspec_token(remote_name):
-  return 'refs/remotes/' if not shorted else '' + remote_name + '/git-svn-branches'
+def get_git_svn_branches_remote_refspec_token(remote_name, shorted = False):
+  return ('refs/remotes/' if not shorted else '') + remote_name + '/git-svn-branches'
 
-def get_git_svn_tags_remote_refspec_token(remote_name):
-  return 'refs/remotes/' if not shorted else '' + remote_name + '/git-svn-tags'
+def get_git_svn_tags_remote_refspec_token(remote_name, shorted = False):
+  return ('refs/remotes/' if not shorted else '') + remote_name + '/git-svn-tags'
 
 def git_update_svn_config_refspecs():
   ret = call_git_no_except(['config', 'svn-remote.svn.fetch'])
@@ -1230,7 +1240,7 @@ def update_git_svn_repo_fetch_state(git_svn_repo_tree_tuple_ref_preorder_list, m
           if first_time_pass:
             # NOTE:
             #   1. This might be not required anymore as long the `git svn fetch ...` does use with the `--localtime` parameter,
-            #      but left as is for futher testing.
+            #      but left as is for further testing.
             #
 
             # request svn_commit_timestamp and svn_commit_date_time from svn by git_last_svn_rev
@@ -1629,6 +1639,14 @@ def git_fetch(configure_dir, scm_token, subtrees_root = None, root_only = False,
 
           if not git_last_pushed_commit_hash is None:
             # CAUTION:
+            #   1. The index file cleanup might be required here to avoid the error messsage:
+            #      `fatal: cannot switch branch while merging`
+            #   2. The Working Copy cleanup is required together with the index file cleanup to avoid later a problem with a
+            #      merge around untracked files with the error message:
+            #      `error: The following untracked working tree files would be overwritten by merge`
+            #      `Please move or remove them before you merge.`.
+
+            # CAUTION:
             #   1. Is required to avoid a fetch into the `master` branch by default.
             #
             call_git(['switch', git_local_branch])
@@ -1670,7 +1688,7 @@ def git_fetch(configure_dir, scm_token, subtrees_root = None, root_only = False,
           if parent_tuple_ref is None and root_only:
             break
 
-def git_reset(configure_dir, scm_token, subtrees_root = None, root_only = False, reset_hard = False):
+def git_reset(configure_dir, scm_token, subtrees_root = None, root_only = False, reset_hard = False, cleanup = False):
   print("git_reset: {0}".format(configure_dir))
 
   if not subtrees_root is None:
@@ -1748,7 +1766,30 @@ def git_reset(configure_dir, scm_token, subtrees_root = None, root_only = False,
           git_last_pushed_commit_hash = get_git_last_pushed_commit_hash(git_reporoot, git_remote_local_refspec_token)
 
           if not git_last_pushed_commit_hash is None:
+            # CAUTION:
+            #   1. The index file cleanup is required here to avoid the error messsage:
+            #      `fatal: cannot switch branch while merging`
+            #   2. The Working Copy cleanup is required together with the index file cleanup to avoid later a problem with a
+            #      merge around untracked files with the error message:
+            #      `error: The following untracked working tree files would be overwritten by merge`
+            #      `Please move or remove them before you merge.`.
+            if reset_hard:
+              call_git(['reset', '--hard'])
+            else:
+              call_git(['reset', '--mixed'])
+
+            # cleanup the untracked files if were left behind, for example, by the previous `git reset --mixed`
+            if cleanup:
+              call_git(['clean', '-d', '-f'])
+
+            # CAUTION:
+            #   1. Is required to avoid a fetch into the `master` branch by default.
+            #
             call_git(['switch', git_local_branch])
+          else:
+            # cleanup the untracked files if were left behind, for example, by the previous `git reset --mixed`
+            if cleanup:
+              call_git(['clean', '-d', '-f'])
 
           print('---')
 
@@ -1918,6 +1959,17 @@ def git_pull(configure_dir, scm_token, subtrees_root = None, root_only = False, 
           git_last_pushed_commit_hash = get_git_last_pushed_commit_hash(git_reporoot, git_remote_local_refspec_token)
 
           if not git_last_pushed_commit_hash is None:
+            # CAUTION:
+            #   1. The index file cleanup might be required here to avoid the error messsage:
+            #      `fatal: cannot switch branch while merging`
+            #   2. The Working Copy cleanup is required together with the index file cleanup to avoid later a problem with a
+            #      merge around untracked files with the error message:
+            #      `error: The following untracked working tree files would be overwritten by merge`
+            #      `Please move or remove them before you merge.`.
+
+            # CAUTION:
+            #   1. Is required to avoid a fetch into the `master` branch by default.
+            #
             call_git(['switch', git_local_branch])
 
           print('---')
@@ -2080,6 +2132,9 @@ def git_pull(configure_dir, scm_token, subtrees_root = None, root_only = False, 
           print(' ->> cwd: `{0}`...'.format(wcroot_path))
 
         with conditional(not parent_tuple_ref is None, local.cwd(subtree_git_wcroot) if not parent_tuple_ref is None else None):
+          # CAUTION:
+          #   1. Is required to avoid a fetch into the `master` branch by default.
+          #
           call_git(['switch', git_local_branch])
 
           print('---')
@@ -2329,6 +2384,14 @@ def git_push_from_svn(configure_dir, scm_token, subtrees_root = None, reset_hard
           git_remote_refspec_token = get_git_remote_refspec_token(remote_name, git_local_branch, git_remote_branch)
 
           ret = call_git_no_except(['show-ref', '--verify', git_local_refspec_token])
+
+          # CAUTION:
+          #   1. The index file cleanup might be required here to avoid the error messsage:
+          #      `fatal: cannot switch branch while merging`
+          #   2. The Working Copy cleanup is required together with the index file cleanup to avoid later a problem with a
+          #      merge around untracked files with the error message:
+          #      `error: The following untracked working tree files would be overwritten by merge`
+          #      `Please move or remove them before you merge.`.
 
           # CAUTION:
           #   1. Is required to avoid a fetch into the `master` branch by default.
@@ -2619,7 +2682,7 @@ def git_push_from_svn(configure_dir, scm_token, subtrees_root = None, reset_hard
       # CAUTION:
       #   1. We must always execute the Algorithm A at least one more time, even if no unpushed svn revisions, because the Algorithm A merges
       #      the children repositories left behind in the Algorithm B!
-      #      Read the futher detail below.
+      #      Read the further detail below.
       #
 
       # CAUTION: Do-While equivalent!
@@ -2765,12 +2828,9 @@ def git_push_from_svn(configure_dir, scm_token, subtrees_root = None, reset_hard
             # 2. Merge the not yet pushed (unpushed) svn commit with the same timestamp at first as a parent repository changes.
             #
 
-            git_svn_parent_merge_commit_index = -1
             git_svn_parent_merge_commit_list_size = len(git_svn_parent_merge_commit_list)
 
-            for git_svn_repo_tree_tuple_ref in git_svn_parent_merge_commit_list:
-              git_svn_parent_merge_commit_index += 1
-
+            for git_svn_parent_merge_commit_index, git_svn_repo_tree_tuple_ref in enumerate(git_svn_parent_merge_commit_list):
               is_last_parent_merge_commit = True if git_svn_parent_merge_commit_index == git_svn_parent_merge_commit_list_size - 1 else False
 
               parent_repo_params_ref = git_svn_repo_tree_tuple_ref[0]
@@ -2819,9 +2879,18 @@ def git_push_from_svn(configure_dir, scm_token, subtrees_root = None, reset_hard
                 #
                 call_git(['reset', '--hard'])
 
-                git_local_refspec_token = get_git_local_refspec_token(parent_git_local_branch, parent_git_remote_branch)
+                child_subtree_branch_refspec_list = git_get_local_branch_refspec_list('^refs/heads/[^-]+--subtree')
 
-                reuse_branch_commit_message = None
+                if not len(child_subtree_branch_refspec_list) > 0:
+                  raise Exception('fetch-merge-push sequence is corrupted, the children repository branch list is empty')
+
+                reuse_commit_message_refspec_token = None
+
+                # ('<prefix>', '<refspec>')
+                refspec_merge_tuple_list = []
+
+                # Collect refspecs w/o merge.
+                #
 
                 if unpushed_svn_commit_is_ancestor_to_commits_in_list and is_last_parent_merge_commit:
                   # make an svn branch fetch and merge at first as a parent change
@@ -2850,22 +2919,44 @@ def git_push_from_svn(configure_dir, scm_token, subtrees_root = None, reset_hard
                   ret = call_git_no_except(['log', '--max-count=1',
                     '--format=commit: %H%ntimestamp: %ct%ndate_time: %ci%nauthor: %an <%ae>%n%b', git_svn_trunk_remote_refspec_token])
 
-                  git_first_commit_svn_rev, git_first_commit_hash, git_first_commit_timestamp = get_git_first_commit_from_git_log(ret[1].rstrip())
-                  if git_first_commit_svn_rev == unpushed_svn_commit_rev:
+                  git_svn_trunk_first_commit_svn_rev, git_svn_trunk_first_commit_hash, git_svn_trunk_first_commit_timestamp = \
+                    get_git_first_commit_from_git_log(ret[1].rstrip())
+                  if git_svn_trunk_first_commit_svn_rev == unpushed_svn_commit_rev:
                     # the fetched svn revision is confirmed, can continue now
 
                     # CAUTION:
                     #   1. The `git svn rebase ...` can not handle unrelated histories properly, we have to use plain `git rebase ...` to handle that.
-                    #   2. We can not use `git rebase ...` either because the `git-svn-trunk` branch can be incomplete and consist only of a single
-                    #      and last one commit which can involve incorrect rebase with a fall back to the `patching base and 3-way merge`.
-                    #   3. Additionally, the `git rebase ..` can skip commits and make no action even if commits exists, so we have to track that behaviour.
+                    #   2. We can not use `git rebase ...` too because the `git-svn-trunk` branch can be incomplete and consist only of a single
+                    #      and the last one commit which can involve incorrect rebase with an error message around a fall back rebase:
+                    #      `patching base and 3-way merge`.
+                    #   3. Additionally, the `git rebase ...` can skip commits and make no action even if commits exists, so we have to track that behaviour.
+                    #   4. We can not use `git cherry-pick ...` too because of absence of the merge metadata (single commit parent instead of multiple) in
+                    #      case of multiple child repository merge.
+                    #   5. Additionally, the `git cherry-pick ...` can not handle a subtree prefix and merges all commits into the root directory of a commit.
+                    #   6. We can not use `git read-tree ...` as a standalone command because of a subsequent error message around a merge:
+                    #      `error: Entry '...' overlaps with '...'.  Cannot bind.`.
+                    #   7. We can not use `git pull ...` too because of a subsequent error message around a merge:
+                    #      `error: You have not concluded your merge (MERGE_HEAD exists).`
+                    #      `hint: Please, commit your changes before merging.`
+                    #      `fatal: Exiting because of unfinished merge.`
+                    #   8. We can not use `git subtree add ...` after `git merge ...` too because of a subsequent error message around a merge:
+                    #      `Working tree has modifications.  Cannot add.`
+                    #   9. We can not use `git subtree merge ...` too because of a subsequent error message around a merge:
+                    #      `Working tree has modifications.  Cannot add.`
                     #
-                    #      To resolve all of these we have to use the `git cherry-pick ...` command instead to take commits one by one from
-                    #      unrelated histories unconditionally and arbitrary.
+                    #   To resolve all of these we have to use:
+                    #   1. `git merge --allow-unrelated-histories --no-edit --no-commit -s ours <list-of-refspecs>` to start merge w/o commit anything but with
+                    #       a list of being merged parents.
+                    #   1. `git read-tree [--prefix=<subdir>/] <branch-refspec>` command to merge a commit as a main commit or as a subtree commit into a local
+                    #       index file from related or unrelated history.
+                    #   3. `git commit -C <mainline-reuse-message>` to accomplish changes in the local index as a single commit with multiple parents.
                     #
-                    ##call_git(['svn', 'rebase', '-l'])
-                    ###git_local_refspec_token = get_git_local_refspec_token(parent_git_local_branch, parent_git_remote_branch)
-                    ###call_git(['rebase', git_local_refspec_token, 'refs/remotes/origin/git-svn-trunk'])
+                    ##  1. call_git(['svn', 'rebase', '-l'])
+                    ##  2. git_local_refspec_token = get_git_local_refspec_token(parent_git_local_branch, parent_git_remote_branch)
+                    ##     call_git(['rebase', git_local_refspec_token, 'refs/remotes/origin/git-svn-trunk'])
+                    ##  3. call_git(['cherry-pick', '--allow-empty', '--no-commit', '-X', 'subtree=' + child_parent_git_path_prefix, child_branch_refspec])
+                    ##  4. call_git(['read-tree', '--prefix=' + child_parent_git_path_prefix + '/', child_branch_refspec])
+                    ##  5. call_git(['pull', '--no-edit', '--no-commit', '--allow-unrelated-histories', '-s', 'subtree', '-Xsubtree=' + child_parent_git_path_prefix + '/', child_git_pull_refspec_token])
 
                     # CAUTION:
                     #   1. Before call `git cherry-pick ...` command we have to check whether the same commit already exist by the HEAD, otherwise
@@ -2877,34 +2968,23 @@ def git_push_from_svn(configure_dir, scm_token, subtrees_root = None, reset_hard
                     if not len(unpushed_git_commit_hash) > 0:
                       raise Exception('HEAD commit does not exist')
 
-                    if unpushed_git_commit_hash != git_first_commit_hash:
-                      # without commit creation, only the index file change
-                      call_git(['cherry-pick', '--allow-empty', '--no-commit', git_first_commit_hash])
-
-                    reuse_branch_commit_message = git_svn_trunk_remote_refspec_token
+                    refspec_merge_tuple_list.append((None, git_svn_trunk_remote_refspec_token))
+                    reuse_commit_message_refspec_token = git_svn_trunk_remote_refspec_token
 
                   else:
                     print('- The svn commit merge from a parent repository is skipped, the respective svn commit revision was not found as the last fetched: fetched=' +
-                      str(unpushed_svn_commit_rev) + '; first_found=' + str(git_first_commit_svn_rev))
+                      str(unpushed_svn_commit_rev) + '; first_found=' + str(git_svn_trunk_first_commit_svn_rev))
 
-                git_svn_child_merge_commit_index = -1
                 git_svn_child_merge_commit_list_size = len(parent_children_tuple_ref_list)
 
                 if not git_svn_child_merge_commit_list_size > 0:
                   raise Exception('fetch-merge-push sequence is corrupted, the parent repository does not have a child repository')
 
-                child_subtree_branch_refspec_list = git_get_local_branch_refspec_list('^refs/heads/[^-]+--subtree')
-
-                if not len(child_subtree_branch_refspec_list) > 0:
-                  raise Exception('fetch-merge-push sequence is corrupted, the children repository branch list is empty')
-
                 max_child_git_svn_commit_rev = 0          # must be 0 instead of None
                 max_child_git_svn_commit_timestamp = None
                 max_child_git_svn_commit_datetime = None
 
-                for child_tuple_ref in parent_children_tuple_ref_list:
-                  git_svn_child_merge_commit_index += 1
-
+                for git_svn_child_merge_commit_index, child_tuple_ref in enumerate(parent_children_tuple_ref_list):
                   is_last_child_merge_commit = True if git_svn_child_merge_commit_index == git_svn_child_merge_commit_list_size - 1 else False
 
                   child_repo_params_ref = child_tuple_ref[0]
@@ -2912,12 +2992,18 @@ def git_push_from_svn(configure_dir, scm_token, subtrees_root = None, reset_hard
 
                   child_remote_name = child_repo_params_ref['remote_name']
 
+                  child_git_local_branch = child_repo_params_ref['git_local_branch']
+                  child_git_remote_branch = child_repo_params_ref['git_remote_branch']
+
                   child_branch_refspec = 'refs/heads/' + child_remote_name + '--subtree'
 
                   if child_branch_refspec in child_subtree_branch_refspec_list:
                     child_parent_git_path_prefix = child_repo_params_ref['parent_git_path_prefix']
 
-                    call_git(['cherry-pick', '--allow-empty', '--no-commit', '-Xsubtree=' + child_parent_git_path_prefix, child_branch_refspec])
+                    refspec_merge_tuple_list.append((child_parent_git_path_prefix + '/', child_branch_refspec))
+
+                    if reuse_commit_message_refspec_token is None:
+                      reuse_commit_message_refspec_token = child_branch_refspec
 
                     child_last_pushed_git_svn_commit = child_fetch_state_ref['last_pushed_git_svn_commit']
                     child_last_pushed_git_svn_commit_rev = child_last_pushed_git_svn_commit[0]
@@ -2929,21 +3015,41 @@ def git_push_from_svn(configure_dir, scm_token, subtrees_root = None, reset_hard
                       max_child_git_svn_commit_timestamp = child_last_pushed_git_svn_commit_timestamp
                       max_child_git_svn_commit_datetime = child_last_pushed_git_svn_commit_datetime
 
-                      if reuse_branch_commit_message is None:
-                        reuse_branch_commit_message = child_branch_refspec
-
                 if not max_child_git_svn_commit_rev > 0:
                   raise Exception('fetch-merge-push sequence is corrupted, no one child repository branch is merged')
+
+                # Start merge collected refspecs w/o merge them.
+                #
+
+                call_git(['merge', '--allow-unrelated-histories', '--no-edit', '--no-commit', '-s', 'ours'] + [refspec for prefix, refspec in refspec_merge_tuple_list])
+
+                # Merge collected refspecs with prefixes into local index.
+                #
+
+                for prefix, refspec in refspec_merge_tuple_list:
+                  if not prefix is None:
+                    call_git(['read-tree', '--prefix=' + prefix, refspec])
+                  else:
+                    call_git(['read-tree', refspec])
+
+                # Commit the local index with the mainline commit message reuse.
+                #
 
                 # Change and make a commit:
                 #   1. Author name and email.
                 #   2. Commit date.
                 #
                 author_svn_token = yaml_expand_global_string('${${SCM_TOKEN}.USER} <${${SCM_TOKEN}.EMAIL}>')
-                call_git(['commit', '--no-edit', '--allow-empty', '--author=' + author_svn_token, '--date', unpushed_svn_commit_datetime, '-C', reuse_branch_commit_message])
+                call_git(['commit', '--no-edit', '--allow-empty', '--author=' + author_svn_token, '--date', unpushed_svn_commit_datetime, '-C', reuse_commit_message_refspec_token])
 
                 ret = call_git(['rev-parse', 'HEAD'])
                 parent_unpushed_git_commit_hash = ret[1].rstrip()
+
+                if not len(parent_unpushed_git_commit_hash) > 0:
+                  raise Exception('HEAD commit does not exist')
+
+                #parent_git_local_refspec_token = get_git_local_refspec_token(parent_git_local_branch, parent_git_remote_branch)
+                #call_git(['update-ref', parent_git_local_refspec_token, parent_unpushed_git_commit_hash])
 
                 parent_git_push_refspec_token = get_git_push_refspec_token(parent_git_local_branch, parent_git_remote_branch)
 
@@ -2956,6 +3062,9 @@ def git_push_from_svn(configure_dir, scm_token, subtrees_root = None, reset_hard
                 # update last pushed git/svn commit
                 parent_fetch_state_ref['last_pushed_git_svn_commit'] = \
                   (max_child_git_svn_commit_rev, parent_unpushed_git_commit_hash, max_child_git_svn_commit_timestamp, max_child_git_svn_commit_datetime)
+
+                # remove all subtree merge branches
+                git_remove_child_subtree_merge_branches(parent_children_tuple_ref_list)
 
           # === Algorithm B ===
           #
@@ -3035,22 +3144,28 @@ def git_push_from_svn(configure_dir, scm_token, subtrees_root = None, reset_hard
               ret = call_git_no_except(['log', '--max-count=1',
                 '--format=commit: %H%ntimestamp: %ct%ndate_time: %ci%nauthor: %an <%ae>%n%b', git_svn_trunk_remote_refspec_token])
 
-              git_first_commit_svn_rev, git_first_commit_hash, git_first_commit_timestamp = get_git_first_commit_from_git_log(ret[1].rstrip())
-              if git_first_commit_svn_rev == unpushed_svn_commit_rev:
+              git_svn_trunk_first_commit_svn_rev, git_svn_trunk_first_commit_hash, git_svn_trunk_first_commit_timestamp = \
+                get_git_first_commit_from_git_log(ret[1].rstrip())
+              if git_svn_trunk_first_commit_svn_rev == unpushed_svn_commit_rev:
                 # the fetched svn revision is confirmed, can continue now
 
                 # CAUTION:
                 #   1. The `git svn rebase ...` can not handle unrelated histories properly, we have to use plain `git rebase ...` to handle that.
-                #   2. We can not use `git rebase ...` either because the `git-svn-trunk` branch can be incomplete and consist only of a single
-                #      and last one commit which can involve incorrect rebase with a fall back to the `patching base and 3-way merge`.
-                #   3. Additionally, the `git rebase ..` can skip commits and make no action even if commits exists, so we have to track that behaviour.
+                #   2. We can not use `git rebase ...` too because the `git-svn-trunk` branch can be incomplete and consist only of a single
+                #      and the last one commit which can involve incorrect rebase with an error message around a fall back rebase:
+                #      `patching base and 3-way merge`.
+                #   3. Additionally, the `git rebase ...` can skip commits and make no action even if commits exists, so we have to track that behaviour.
+                #   4. We can not use `git cherry-pick ...` too because of absence of the merge metadata (single commit parent instead of multiple) in
+                #      case of multiple child repository merge.
+                #   5. Additionally, the `git cherry-pick ...` can not handle a subtree prefix and merges all commits into the root directory of a commit.
                 #
-                #      To resolve all of these we have to use the `git cherry-pick ...` command instead to take commits one by one from
-                #      unrelated histories unconditionally and arbitrary.
+                #   To resolve all of these we have to use:
+                #   1. `git merge ...` command without the `--no-commit` parameter to merge commit as a main commit.
                 #
-                ##call_git(['svn', 'rebase', '-l'])
-                ###git_local_refspec_token = get_git_local_refspec_token(git_local_branch, git_remote_branch)
-                ###call_git(['rebase', git_local_refspec_token, 'refs/remotes/origin/git-svn-trunk'])
+                ##  1. call_git(['svn', 'rebase', '-l'])
+                ##  2. git_local_refspec_token = get_git_local_refspec_token(git_local_branch, git_remote_branch)
+                ##     call_git(['rebase', git_local_refspec_token, 'refs/remotes/origin/git-svn-trunk'])
+                ##  3. call_git(['cherry-pick', '--allow-empty', git_svn_trunk_first_commit_hash])
 
                 # CAUTION:
                 #   1. We have to cleanup before the `git cherry-pick ...` command, otherwise the command may fail with the messages:
@@ -3071,28 +3186,35 @@ def git_push_from_svn(configure_dir, scm_token, subtrees_root = None, reset_hard
                 if not len(unpushed_git_commit_hash) > 0:
                   raise Exception('HEAD commit does not exist')
 
-                if unpushed_git_commit_hash != git_first_commit_hash:
-                  call_git(['cherry-pick', '--allow-empty', git_first_commit_hash])
+                # Start merge a commit w/o merge it.
+                #
 
-                # Change:
+                call_git(['merge', '--allow-unrelated-histories', '--no-edit', '--no-commit', '-s', 'ours', git_svn_trunk_first_commit_hash])
+
+                # Merge a commit into local index.
+                #
+
+                call_git(['read-tree', git_svn_trunk_first_commit_hash])
+
+                # Commit the local index with the mainline commit message reuse.
+                #
+
+                # Change and make a commit:
                 #   1. Author name and email.
                 #   2. Commit date.
                 #
                 author_svn_token = yaml_expand_global_string('${${SCM_TOKEN}.USER} <${${SCM_TOKEN}.EMAIL}>')
-                call_git(['commit', '--amend', '--no-edit', '--allow-empty', '--author=' + author_svn_token, '--date', unpushed_svn_commit_datetime, '-C', 'HEAD'])
+                call_git(['commit', '--allow-empty', '--no-edit', '--author=' + author_svn_token, '--date', unpushed_svn_commit_datetime,
+                  '-C', git_svn_trunk_first_commit_hash])
 
-                # CAUTION:
-                #   1. The previous `git commit --amend ...` command may change the last commit hash and detach it from the main branch,
-                #      so we must update the main branch reference by the HEAD to make point the main branch to the HEAD again.
-                #
                 ret = call_git(['rev-parse', 'HEAD'])
                 unpushed_git_commit_hash = ret[1].rstrip()
 
                 if not len(unpushed_git_commit_hash) > 0:
                   raise Exception('HEAD commit does not exist')
 
-                git_local_refspec_token = get_git_local_refspec_token(git_local_branch, git_remote_branch)
-                call_git(['update-ref', git_local_refspec_token, unpushed_git_commit_hash])
+                #git_local_refspec_token = get_git_local_refspec_token(git_local_branch, git_remote_branch)
+                #call_git(['update-ref', git_local_refspec_token, unpushed_git_commit_hash])
 
                 git_push_refspec_token = get_git_push_refspec_token(git_local_branch, git_remote_branch)
 
@@ -3107,7 +3229,7 @@ def git_push_from_svn(configure_dir, scm_token, subtrees_root = None, reset_hard
                   (unpushed_svn_commit_rev, unpushed_git_commit_hash, unpushed_svn_commit_timestamp, unpushed_svn_commit_datetime)
               else:
                 print('- The push is skipped, the respective svn commit revision was not found as the last fetched: fetched=' +
-                  str(unpushed_svn_commit_rev) + '; first_found=' + str(git_first_commit_svn_rev))
+                  str(unpushed_svn_commit_rev) + '; first_found=' + str(git_svn_trunk_first_commit_svn_rev))
 
           if not len(unpushed_svn_commit_sorted_by_timestamp_tuple_list) > 0:
             break
