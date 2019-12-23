@@ -1,6 +1,6 @@
 2019.12.23:
-* fixed: cmdoplib: minor `TmpFileIO` class fixups
-* fixed: cmdoplib: minor `devnull` class fixup
+* fixed: tacklelib: minor `TmpFileIO` class fixups
+* fixed: tacklelib: minor `devnull` class fixup
 * fixed: cmdoplib: workaround for the `plumbum.local.run` function for `TmpFileIO` object as a stdin
 * fixed: cmdoplib: invalid author date/time in `git_push_from_svn` function
 * fixed: cmdoplib: other multiple fixups
