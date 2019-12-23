@@ -45,7 +45,8 @@ if not CMD_TOKEN:
 #except:
 #  pass
 
-def cmdop(configure_dir, scm_token, cmd_token, bare_args, subtrees_root = None, root_only = False, reset_hard = False, cleanup = False):
+def cmdop(configure_dir, scm_token, cmd_token, bare_args, subtrees_root = None, root_only = False, reset_hard = False, remove_svn_on_reset = False, cleanup = False,
+          verbosity = 0, prune_empty_git_svn_commits = True):
   print("cmdop: {0} {1}: entering `{2}`".format(scm_token, cmd_token, configure_dir))
 
   with tkl.OnExit(lambda: print("cmdop: {0} {1}: leaving `{2}`\n---".format(scm_token, cmd_token, configure_dir))):
@@ -115,30 +116,34 @@ def cmdop(configure_dir, scm_token, cmd_token, bare_args, subtrees_root = None, 
         if scm_type == 'svn':
           if hasglobalvar(scm_token + '.WCROOT_DIR'):
             if cmd_token == 'update':
-              ret = cmdoplib_svn.svn_update(configure_dir, scm_token, bare_args)
+              ret = cmdoplib_svn.svn_update(configure_dir, scm_token, bare_args, verbosity = verbosity)
             elif cmd_token == 'checkout':
-              ret = cmdoplib_svn.svn_checkout(configure_dir, scm_token, bare_args)
+              ret = cmdoplib_svn.svn_checkout(configure_dir, scm_token, bare_args, verbosity = verbosity)
             elif cmd_token == 'relocate':
-              ret = cmdoplib_svn.svn_relocate(configure_dir, scm_token, bare_args)
+              ret = cmdoplib_svn.svn_relocate(configure_dir, scm_token, bare_args, verbosity = verbosity)
             else:
               raise Exception('unknown command name: ' + str(cmd_token))
         elif scm_type == 'git':
           if hasglobalvar(scm_token + '.WCROOT_DIR'):
             if cmd_token == 'init':
               ret = cmdoplib_gitsvn.git_init(configure_dir, scm_token,
-                subtrees_root = subtrees_root, root_only = root_only)
+                subtrees_root = subtrees_root, root_only = root_only, verbosity = verbosity)
             elif cmd_token == 'fetch':
               ret = cmdoplib_gitsvn.git_fetch(configure_dir, scm_token,
-                subtrees_root = subtrees_root, root_only = root_only, reset_hard = reset_hard)
+                subtrees_root = subtrees_root, root_only = root_only, reset_hard = reset_hard,
+                verbosity = verbosity, prune_empty_git_svn_commits = prune_empty_git_svn_commits)
             elif cmd_token == 'reset':
               ret = cmdoplib_gitsvn.git_reset(configure_dir, scm_token,
-                subtrees_root = subtrees_root, root_only = root_only, reset_hard = reset_hard, cleanup = cleanup)
+                subtrees_root = subtrees_root, root_only = root_only, reset_hard = reset_hard, remove_svn_on_reset = remove_svn_on_reset,
+                cleanup = cleanup, verbosity = verbosity)
             elif cmd_token == 'pull':
               ret = cmdoplib_gitsvn.git_pull(configure_dir, scm_token,
-                subtrees_root = subtrees_root, root_only = root_only, reset_hard = reset_hard)
+                subtrees_root = subtrees_root, root_only = root_only, reset_hard = reset_hard,
+                verbosity = verbosity, prune_empty_git_svn_commits = prune_empty_git_svn_commits)
             elif cmd_token == 'push_svn_to_git':
               ret = cmdoplib_gitsvn.git_push_from_svn(configure_dir, scm_token,
-                subtrees_root = subtrees_root, reset_hard = reset_hard)
+                subtrees_root = subtrees_root, reset_hard = reset_hard,
+                verbosity = verbosity, prune_empty_git_svn_commits = prune_empty_git_svn_commits)
             else:
               raise Exception('unknown command name: ' + str(cmd_token))
         else:
@@ -178,7 +183,8 @@ def on_main_exit():
       print(registered_ignored_error[1])
       print('---')
 
-def main(configure_root, configure_dir, scm_token, cmd_token, bare_args, subtrees_root = None, root_only = False, reset_hard = False, cleanup = False):
+def main(configure_root, configure_dir, scm_token, cmd_token, bare_args, subtrees_root = None, root_only = False, reset_hard = False, remove_svn_on_reset = False, cleanup = False,
+         verbosity = 0, prune_empty_git_svn_commits = True):
   with tkl.OnExit(on_main_exit):
     configure_relpath = os.path.relpath(configure_dir, configure_root).replace('\\', '/')
     configure_relpath_comps = configure_relpath.split('/')
@@ -210,7 +216,10 @@ def main(configure_root, configure_dir, scm_token, cmd_token, bare_args, subtree
       subtrees_root = subtrees_root,
       root_only = root_only,
       reset_hard = reset_hard,
-      cleanup = cleanup)
+      remove_svn_on_reset = remove_svn_on_reset,
+      cleanup = cleanup,
+      verbosity = verbosity,
+      prune_empty_git_svn_commits = prune_empty_git_svn_commits)
 
 # CAUTION:
 #   Temporary disabled because of issues in the python xonsh module.
@@ -224,15 +233,21 @@ def main(configure_root, configure_dir, scm_token, cmd_token, bare_args, subtree
 if __name__ == '__main__':
   # parse arguments
   arg_parser = argparse.ArgumentParser()
-  arg_parser.add_argument('-R', type = str)                       # custom subtree root directory (path)
-  arg_parser.add_argument('-ro', action = 'store_true')           # invoke for the root record only (boolean)
-  arg_parser.add_argument('--reset_hard', action = 'store_true')  # use `git reset ...` call with the `--hard` parameter (boolean)
-  arg_parser.add_argument('--cleanup', action = 'store_true')     # use `git clean -d -f` call (boolean)
+  arg_parser.add_argument('-R', type = str)                                 # custom subtree root directory (path)
+  arg_parser.add_argument('-ro', action = 'store_true')                     # invoke for the root record only (boolean)
+  arg_parser.add_argument('--reset_hard', action = 'store_true')            # use `git reset ...` call with the `--hard` parameter (boolean)
+  arg_parser.add_argument('--remove_svn_on_reset', action = 'store_true')   # remove svn cache in `git_reset` function
+  arg_parser.add_argument('--cleanup', action = 'store_true')               # use `git clean -d -f` call (boolean)
+  arg_parser.add_argument('-v', type = int, default = 0)                    # verbosity level: 0 - default, 1 - show environment variables upon call to executables
+  arg_parser.add_argument('--no_prune_empty', action = 'store_true')        # not prune empty git-svn commits, does prune by default (boolean)
   known_args, unknown_args = arg_parser.parse_known_args(sys.argv[4:])
 
   main(CONFIGURE_ROOT, CONFIGURE_DIR, SCM_TOKEN, CMD_TOKEN, unknown_args,
     subtrees_root = known_args.R,
-    root_only = (True if known_args.ro else False),
-    reset_hard = (True if known_args.reset_hard else False),
-    cleanup = (True if known_args.cleanup else False)
+    root_only = known_args.ro,
+    reset_hard = known_args.reset_hard,
+    remove_svn_on_reset = known_args.remove_svn_on_reset,
+    cleanup = known_args.cleanup,
+    verbosity = known_args.v,
+    prune_empty_git_svn_commits = not known_args.no_prune_empty
   )
