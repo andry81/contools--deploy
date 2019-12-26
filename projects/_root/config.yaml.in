@@ -9,6 +9,9 @@ GIT_SVN_SSH_AGENT:  'C:/Programs/Dev/git-scm.com/Git/usr/bin/ssh-pageant.exe'
 
 LOCAL_CACHE_ROOT:   '${CONFIGURE_ROOT}/_cache'
 
+GIT_SVN_REMOTE.PRESERVE_EMPTY_DIRS:                   1
+GIT_SVN_REMOTE.PRESERVE_EMPTY_DIRS_FILE_PLACEHOLDER:  '.empty'
+
 SVN.PROJECT_PATH_LIST:
   - orbittools/deploy
   - tacklelib/deploy

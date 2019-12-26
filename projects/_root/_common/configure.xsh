@@ -36,6 +36,20 @@ if not os.path.isdir(CONFIGURE_DIR):
 #except:
 #  pass
 
+def validate_vars(configure_dir):
+  if configure_dir == '':
+    print_err("{0}: error: configure directory is not defined.".format(sys.argv[0]))
+    exit(1)
+
+  if configure_dir[-1:] in ['\\', '/']:
+    configure_dir = configure_dir[:-1]
+
+  if not os.path.isdir(configure_dir):
+    print_err("{0}: error: configure directory does not exist: `{1}`.".format(sys.argv[0], configure_dir))
+    exit(2)
+
+  return (configure_dir)
+
 def configure(configure_dir):
   print("configure: entering `{0}`".format(configure_dir))
 
@@ -44,12 +58,7 @@ def configure(configure_dir):
       print_err("{0}: error: configure directory is not defined.".format(sys.argv[0]))
       exit(1)
 
-    if configure_dir[-1:] in ['\\', '/']:
-      configure_dir = configure_dir[:-1]
-
-    if not os.path.isdir(configure_dir):
-      print_err("{0}: error: configure directory does not exist: `{1}`.".format(sys.argv[0], configure_dir))
-      exit(2)
+    configure_dir = validate_vars(configure_dir)
 
     try:
       if os.path.isfile(os.path.join(configure_dir, 'git_repos.lst.in')):
@@ -82,6 +91,8 @@ def configure(configure_dir):
       yaml_load_config(configure_dir, 'config.env.yaml', to_globals = False, to_environ = True,
         search_by_environ_pred_at_third = lambda var_name: getglobalvar(var_name))
 
+    ret = 0
+
     for dirpath, dirs, files in os.walk(configure_dir):
       for dir in dirs:
         # ignore directories beginning by '.'
@@ -95,7 +106,7 @@ def configure(configure_dir):
         #   os.path.isfile(os.path.join(dirpath, dir, 'config.yaml.in'))):
         #  continue
         if os.path.isfile(os.path.join(dirpath, dir, 'config.yaml.in')):
-          configure(os.path.join(dirpath, dir).replace('\\', '/'))
+          ret = configure(os.path.join(dirpath, dir).replace('\\', '/'))
       dirs.clear() # not recursively
 
     if yaml_environ_vars_pushed:
@@ -105,6 +116,8 @@ def configure(configure_dir):
     if yaml_global_vars_pushed:
       # remove previously added variables and restore previously changed variable values
       yaml_pop_global_vars(True)
+
+  return ret
 
 def on_main_exit():
   if len(g_registered_ignored_errors) > 0:
@@ -116,6 +129,8 @@ def on_main_exit():
 
 def main(configure_root, configure_dir):
   with tkl.OnExit(on_main_exit):
+    configure_dir = validate_vars(configure_dir)
+
     configure_relpath = os.path.relpath(configure_dir, configure_root).replace('\\', '/')
     configure_relpath_comps = configure_relpath.split('/')
     num_comps = len(configure_relpath_comps)

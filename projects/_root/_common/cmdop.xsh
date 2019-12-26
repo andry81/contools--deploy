@@ -45,41 +45,50 @@ if not CMD_TOKEN:
 #except:
 #  pass
 
-def cmdop(configure_dir, scm_token, cmd_token, bare_args, subtrees_root = None, root_only = False, reset_hard = False, remove_svn_on_reset = False, cleanup = False,
+def validate_vars(configure_dir, scm_token):
+  if configure_dir == '':
+    print_err("{0}: error: configure directory is not defined.".format(sys.argv[0]))
+    exit(1)
+
+  if configure_dir[-1:] in ['\\', '/']:
+    configure_dir = configure_dir[:-1]
+
+  if not os.path.isdir(configure_dir):
+    print_err("{0}: error: configure directory does not exist: `{1}`.".format(sys.argv[0], configure_dir))
+    exit(2)
+
+  hub_root_var = scm_token + '.HUB_ROOT'
+  if not hasglobalvar(hub_root_var):
+    print_err("{0}: error: hub root variable is not declared for the scm_token as prefix: `{1}`.".format(sys.argv[0], hub_root_var))
+    exit(3)
+
+  hub_abbr_var = scm_token + '.HUB_ABBR'
+  if not hasglobalvar(hub_abbr_var):
+    print_err("{0}: error: hub abbrivation variable is not declared for the scm_token as prefix: `{1}`.".format(sys.argv[0], hub_abbr_var))
+    exit(4)
+
+  hub_abbr = getglobalvar(hub_abbr_var)
+  scm_type = scm_token[:3].lower()
+
+  return (configure_dir, hub_abbr, scm_type)
+
+def cmdop(configure_dir, scm_token, cmd_token, bare_args,
+          git_subtrees_root = None, svn_subtrees_root = None,
+          compare_remote_name = None, compare_svn_rev = None,
+          root_only = False, reset_hard = False,
+          remove_svn_on_reset = False, cleanup_on_reset = False, cleanup_on_compare = False,
           verbosity = 0, prune_empty_git_svn_commits = True):
   print("cmdop: {0} {1}: entering `{2}`".format(scm_token, cmd_token, configure_dir))
 
   with tkl.OnExit(lambda: print("cmdop: {0} {1}: leaving `{2}`\n---".format(scm_token, cmd_token, configure_dir))):
-    if not subtrees_root is None:
-      print(' subtrees_root: ' + subtrees_root)
+    if not git_subtrees_root is None:
+      print(' git_subtrees_root: ' + git_subtrees_root)
     if root_only:
       print(' root_only: ' + str(root_only))
     if reset_hard:
       print(' reset_hard: ' + str(reset_hard))
 
-    if configure_dir == '':
-      print_err("{0}: error: configure directory is not defined.".format(sys.argv[0]))
-      exit(1)
-
-    if configure_dir[-1:] in ['\\', '/']:
-      configure_dir = configure_dir[:-1]
-
-    if not os.path.isdir(configure_dir):
-      print_err("{0}: error: configure directory does not exist: `{1}`.".format(sys.argv[0], configure_dir))
-      exit(2)
-
-    hub_root_var = scm_token + '.HUB_ROOT'
-    if not hasglobalvar(hub_root_var):
-      print_err("{0}: error: hub root variable is not declared for the scm_token as prefix: `{1}`.".format(sys.argv[0], hub_root_var))
-      exit(3)
-
-    hub_abbr_var = scm_token + '.HUB_ABBR'
-    if not hasglobalvar(hub_abbr_var):
-      print_err("{0}: error: hub abbrivation variable is not declared for the scm_token as prefix: `{1}`.".format(sys.argv[0], hub_abbr_var))
-      exit(4)
-
-    hub_abbr = getglobalvar(hub_abbr_var)
-    scm_type = scm_token[:3].lower()
+    configure_dir, hub_abbr, scm_type = validate_vars(configure_dir, scm_token)
 
     # loads `config.yaml` from `configure_dir`
     yaml_global_vars_pushed = False
@@ -127,23 +136,40 @@ def cmdop(configure_dir, scm_token, cmd_token, bare_args, subtrees_root = None, 
           if hasglobalvar(scm_token + '.WCROOT_DIR'):
             if cmd_token == 'init':
               ret = cmdoplib_gitsvn.git_init(configure_dir, scm_token,
-                subtrees_root = subtrees_root, root_only = root_only, verbosity = verbosity)
+                git_subtrees_root = git_subtrees_root,
+                root_only = root_only,
+                verbosity = verbosity)
             elif cmd_token == 'fetch':
               ret = cmdoplib_gitsvn.git_fetch(configure_dir, scm_token,
-                subtrees_root = subtrees_root, root_only = root_only, reset_hard = reset_hard,
-                verbosity = verbosity, prune_empty_git_svn_commits = prune_empty_git_svn_commits)
+                git_subtrees_root = git_subtrees_root,
+                root_only = root_only, reset_hard = reset_hard,
+                prune_empty_git_svn_commits = prune_empty_git_svn_commits,
+                verbosity = verbosity)
             elif cmd_token == 'reset':
               ret = cmdoplib_gitsvn.git_reset(configure_dir, scm_token,
-                subtrees_root = subtrees_root, root_only = root_only, reset_hard = reset_hard, remove_svn_on_reset = remove_svn_on_reset,
-                cleanup = cleanup, verbosity = verbosity)
+                git_subtrees_root = git_subtrees_root,
+                root_only = root_only,
+                reset_hard = reset_hard, cleanup = cleanup_on_reset,
+                remove_svn_on_reset = remove_svn_on_reset,
+                verbosity = verbosity)
             elif cmd_token == 'pull':
               ret = cmdoplib_gitsvn.git_pull(configure_dir, scm_token,
-                subtrees_root = subtrees_root, root_only = root_only, reset_hard = reset_hard,
-                verbosity = verbosity, prune_empty_git_svn_commits = prune_empty_git_svn_commits)
+                git_subtrees_root = git_subtrees_root,
+                root_only = root_only,
+                reset_hard = reset_hard,
+                prune_empty_git_svn_commits = prune_empty_git_svn_commits,
+                verbosity = verbosity)
             elif cmd_token == 'push_svn_to_git':
               ret = cmdoplib_gitsvn.git_push_from_svn(configure_dir, scm_token,
-                subtrees_root = subtrees_root, reset_hard = reset_hard,
-                verbosity = verbosity, prune_empty_git_svn_commits = prune_empty_git_svn_commits)
+                git_subtrees_root = git_subtrees_root,
+                reset_hard = reset_hard,
+                prune_empty_git_svn_commits = prune_empty_git_svn_commits,
+                verbosity = verbosity)
+            elif cmd_token == 'compare_commits':
+              ret = cmdoplib_gitsvn.git_svn_compare_commits(configure_dir, scm_token, compare_remote_name, compare_svn_rev,
+                git_subtrees_root = git_subtrees_root, svn_subtrees_root = svn_subtrees_root,
+                reset_hard = reset_hard, cleanup = cleanup_on_compare,
+                verbosity = verbosity)
             else:
               raise Exception('unknown command name: ' + str(cmd_token))
         else:
@@ -162,7 +188,7 @@ def cmdop(configure_dir, scm_token, cmd_token, bare_args, subtrees_root = None, 
         #   os.path.isfile(os.path.join(dirpath, dir, 'config.yaml.in'))):
         #  continue
         if os.path.isfile(os.path.join(dirpath, dir, 'config.yaml.in')):
-          cmdop(os.path.join(dirpath, dir).replace('\\', '/'), scm_token, cmd_token, bare_args)
+          ret = cmdop(os.path.join(dirpath, dir).replace('\\', '/'), scm_token, cmd_token, bare_args)
       dirs.clear() # not recursively
 
     if yaml_environ_vars_pushed:
@@ -183,9 +209,10 @@ def on_main_exit():
       print(registered_ignored_error[1])
       print('---')
 
-def main(configure_root, configure_dir, scm_token, cmd_token, bare_args, subtrees_root = None, root_only = False, reset_hard = False, remove_svn_on_reset = False, cleanup = False,
-         verbosity = 0, prune_empty_git_svn_commits = True):
+def main(configure_root, configure_dir, scm_token, cmd_token, bare_args, **kwargs):
   with tkl.OnExit(on_main_exit):
+    configure_dir, hub_abbr, scm_type = validate_vars(configure_dir, scm_token)
+
     configure_relpath = os.path.relpath(configure_dir, configure_root).replace('\\', '/')
     configure_relpath_comps = configure_relpath.split('/')
     num_comps = len(configure_relpath_comps)
@@ -212,14 +239,24 @@ def main(configure_root, configure_dir, scm_token, cmd_token, bare_args, subtree
           yaml_load_config(configure_parent_dir, 'config.env.yaml', to_globals = False, to_environ = True,
             search_by_environ_pred_at_third = lambda var_name: getglobalvar(var_name))
 
-    cmdop(configure_dir, scm_token, cmd_token, bare_args,
-      subtrees_root = subtrees_root,
-      root_only = root_only,
-      reset_hard = reset_hard,
-      remove_svn_on_reset = remove_svn_on_reset,
-      cleanup = cleanup,
-      verbosity = verbosity,
-      prune_empty_git_svn_commits = prune_empty_git_svn_commits)
+    # do action only if not in the root and a command file is present
+    if not tkl.compare_file_paths(configure_dir, CONFIGURE_ROOT):
+      dir_files_wo_ext = [os.path.splitext(f)[0] for f in os.listdir(configure_dir) if os.path.isfile(f)]
+      cmd_file = hub_abbr + '~' + scm_type + '~' + cmd_token
+
+      is_cmd_file_found = False
+      for dir_file_wo_ext in dir_files_wo_ext:
+        if tkl.compare_file_paths(dir_file_wo_ext, cmd_file):
+          is_cmd_file_found = True
+          break
+
+      if is_cmd_file_found:
+        cmdop(
+          configure_dir, scm_token, cmd_token, bare_args,
+          **kwargs
+        )
+      else:
+        raise Exception('command file is not found: `{0}`'.format(configure_dir + '/' + cmd_file + '.*'))
 
 # CAUTION:
 #   Temporary disabled because of issues in the python xonsh module.
@@ -233,21 +270,36 @@ def main(configure_root, configure_dir, scm_token, cmd_token, bare_args, subtree
 if __name__ == '__main__':
   # parse arguments
   arg_parser = argparse.ArgumentParser()
-  arg_parser.add_argument('-R', type = str)                                 # custom subtree root directory (path)
-  arg_parser.add_argument('-ro', action = 'store_true')                     # invoke for the root record only (boolean)
-  arg_parser.add_argument('--reset_hard', action = 'store_true')            # use `git reset ...` call with the `--hard` parameter (boolean)
-  arg_parser.add_argument('--remove_svn_on_reset', action = 'store_true')   # remove svn cache in `git_reset` function
-  arg_parser.add_argument('--cleanup', action = 'store_true')               # use `git clean -d -f` call (boolean)
-  arg_parser.add_argument('-v', type = int, default = 0)                    # verbosity level: 0 - default, 1 - show environment variables upon call to executables
-  arg_parser.add_argument('--no_prune_empty', action = 'store_true')        # not prune empty git-svn commits, does prune by default (boolean)
+  arg_parser.add_argument('--git_subtrees_root', type = str, default = None)      # custom local git subtrees root directory (path)
+  arg_parser.add_argument('--svn_subtrees_root', type = str, default = None)      # custom local svn subtrees root directory (path)
+  arg_parser.add_argument('-ro', action = 'store_true')                           # invoke for the root record only (boolean)
+  arg_parser.add_argument('--reset_hard', action = 'store_true')                  # use `git reset ...` call with the `--hard` parameter (boolean)
+  arg_parser.add_argument('--remove_svn_on_reset', action = 'store_true')         # remove svn cache in `git_reset` function
+  arg_parser.add_argument('--cleanup_on_reset', action = 'store_true')            # use `git clean -d -f` call in `git_reset` function (boolean)
+  arg_parser.add_argument('--cleanup_on_compare', action = 'store_true')          # use `git clean -d -f` call in `git_svn_compare_commits` function (boolean)
+  arg_parser.add_argument('-v', type = int, default = 0)                          # verbosity level: 0 - default, 1 - show environment variables upon call to executables
+  arg_parser.add_argument('--no_prune_empty', action = 'store_true')              # not prune empty git-svn commits, does prune by default (boolean)
+  arg_parser.add_argument('--compare_remote_name', type = str, default = None)    # compare repository associated with a particular remote name (string)
+  arg_parser.add_argument('--compare_svn_rev', type = str, default = None)        # compare a particular svn revision (string)
   known_args, unknown_args = arg_parser.parse_known_args(sys.argv[4:])
 
-  main(CONFIGURE_ROOT, CONFIGURE_DIR, SCM_TOKEN, CMD_TOKEN, unknown_args,
-    subtrees_root = known_args.R,
+  for unknown_arg in unknown_args:
+    unknown_arg = unknown_arg.lstrip('-')
+    for known_arg in vars(known_args).keys():
+      if unknown_arg.startswith(known_arg):
+        raise Exception('frontend argument is unsafely intersected with the backend argument, you should use an unique name to avoid that: frontrend=`{0}` backend=`{1}`'.format(known_arg, unknown_arg))
+
+  main(
+    CONFIGURE_ROOT, CONFIGURE_DIR, SCM_TOKEN, CMD_TOKEN, unknown_args,
+    git_subtrees_root = known_args.git_subtrees_root,
+    svn_subtrees_root = known_args.svn_subtrees_root,
+    compare_remote_name = known_args.compare_remote_name,
+    compare_svn_rev = known_args.compare_svn_rev,
     root_only = known_args.ro,
     reset_hard = known_args.reset_hard,
     remove_svn_on_reset = known_args.remove_svn_on_reset,
-    cleanup = known_args.cleanup,
+    cleanup_on_reset = known_args.cleanup_on_reset,
+    cleanup_on_compare = known_args.cleanup_on_compare,
     verbosity = known_args.v,
     prune_empty_git_svn_commits = not known_args.no_prune_empty
   )
