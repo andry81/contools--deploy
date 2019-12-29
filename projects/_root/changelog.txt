@@ -1,3 +1,8 @@
+2019.12.29:
+* fixed: `cmdop.xpy` execution from the root directory
+* new: added more projects
+* refactor: cmdoplib: minor refactor
+
 2019.12.26:
 * fixed: cmdoplib: missed local branch cleanup before `git svn fetch ...` (a local branch can contain empty commits after the last `git filter-branch --prune-empty` command)
 

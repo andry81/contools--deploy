@@ -239,24 +239,22 @@ def main(configure_root, configure_dir, scm_token, cmd_token, bare_args, **kwarg
           yaml_load_config(configure_parent_dir, 'config.env.yaml', to_globals = False, to_environ = True,
             search_by_environ_pred_at_third = lambda var_name: getglobalvar(var_name))
 
-    # do action only if not in the root and a command file is present
-    if not tkl.compare_file_paths(configure_dir, CONFIGURE_ROOT):
-      dir_files_wo_ext = [os.path.splitext(f)[0] for f in os.listdir(configure_dir) if os.path.isfile(f)]
-      cmd_file = hub_abbr + '~' + scm_type + '~' + cmd_token
+    dir_files_wo_ext = [os.path.splitext(f)[0] for f in os.listdir(configure_dir) if os.path.isfile(f)]
+    cmd_file = hub_abbr + '~' + scm_type + '~' + cmd_token
 
-      is_cmd_file_found = False
-      for dir_file_wo_ext in dir_files_wo_ext:
-        if tkl.compare_file_paths(dir_file_wo_ext, cmd_file):
-          is_cmd_file_found = True
-          break
+    is_cmd_file_found = False
+    for dir_file_wo_ext in dir_files_wo_ext:
+      if tkl.compare_file_paths(dir_file_wo_ext, cmd_file):
+        is_cmd_file_found = True
+        break
 
-      if is_cmd_file_found:
-        cmdop(
-          configure_dir, scm_token, cmd_token, bare_args,
-          **kwargs
-        )
-      else:
-        raise Exception('command file is not found: `{0}`'.format(configure_dir + '/' + cmd_file + '.*'))
+    if is_cmd_file_found:
+      cmdop(
+        configure_dir, scm_token, cmd_token, bare_args,
+        **kwargs
+      )
+    else:
+      raise Exception('command file is not found: `{0}`'.format(configure_dir + '/' + cmd_file + '.*'))
 
 # CAUTION:
 #   Temporary disabled because of issues in the python xonsh module.
