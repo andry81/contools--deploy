@@ -1,4 +1,7 @@
 2019.12.30:
+* changed: readme update
+
+2019.12.30:
 * changed: minor changes
 
 2019.12.30:
