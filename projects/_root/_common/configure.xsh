@@ -161,7 +161,7 @@ def main(configure_root, configure_dir):
 
 # CAUTION:
 #   Temporary disabled because of issues in the python xonsh module.
-#   See details in the `README_EN.known_issues.txt` file.
+#   See details in the `README_EN.python_xonsh.known_issues.txt` file.
 #
 #@(pcall, main, CONFIGURE_ROOT, CONFIGURE_DIR) | @(CONTOOLS_ROOT + '/wtee.exe', CONFIGURE_DIR + '/.log/' + os.path.splitext(os.path.split(__file__)[1])[0] + '.' + datetime.now().strftime("%Y'%m'%d_%H'%M'%S''%f")[:-3])
 
