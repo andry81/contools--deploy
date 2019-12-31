@@ -1,7 +1,7 @@
 [submodule "solutions/all-in-one/all-in-one"]
 	path = solutions/all-in-one/all-in-one
 	owner = solutions/all-in-one
-	url = /p/pyxvcs/pyxvcs/trunk/pyxvcs
+	url = /p/pyxvcs/pyxvcs/trunk/_pyxvcs
 	branch = /
 	fetch = :refs/remotes/git-svn
 	remote = svn
