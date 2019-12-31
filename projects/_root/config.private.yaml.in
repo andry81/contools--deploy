@@ -1,24 +1,153 @@
-SVN.HUB_ROOT:     localhost
-SVN.HUB_ABBR:     lh
+# DESCRIPTION:
+#   `*.HUB_ABBR` uses to select what template command scripts to use for generation and
+#   `*.PROJECT_PATH_LIST` uses to select where to generate
+#
+
+SVN.HUB_ROOT:     svn.code.sf.net/p
+SVN.HUB_ABBR:     sf
 SVN.USER:         user
 
-GIT.HUB_ROOT:     localhost
-GIT.HUB_ABBR:     lh
+GIT.HUB_ROOT:     github.com
+GIT.HUB_ABBR:     gh
 GIT.REPO_OWNER:   owner
 GIT.USER:         user
 GIT.SVNSSH.USER:  ${SVN.USER}
 GIT.EMAIL:        user@mail.com
 
-GIT2.HUB_ROOT:    localhost
-GIT2.HUB_ABBR:    lh
+GIT2.HUB_ROOT:    bitbucket.org
+GIT2.HUB_ABBR:    bb
 GIT2.REPO_OWNER:  owner
 GIT2.USER:        user
 GIT2.SVNSSH.USER: ${SVN.USER}
 GIT2.EMAIL:       user@mail.com
 
-GIT3.HUB_ROOT:    localhost
-GIT3.HUB_ABBR:    lh
+GIT3.HUB_ROOT:    gitlab.com
+GIT3.HUB_ABBR:    gl
 GIT3.REPO_OWNER:  owner
 GIT3.USER:        user
 GIT3.SVNSSH.USER: ${SVN.USER}
 GIT3.EMAIL:       user@mail.com
+
+SVN.PROJECT_PATH_LIST:
+  - contools/3dparty
+  - contools/3dparty_scripts
+  - contools/bittools
+  - contools/contools
+  - contools/debug
+  - contools/deploy
+  - contools/external_tools
+  - nsisplus/_projects
+  - nsisplus/deploy
+  - nsisplus/NsisSetupLib
+  - nsisplus/NsisSetupDev
+  - nsisplus/NsisSetupSamples
+  - orbittools/_projects
+  - orbittools/deploy
+  - orbittools/orbittools
+  - orbittools/qd
+  - orbittools/sgp4
+  - svncmd/deploy
+  - svncmd/svncmd
+  - tacklelib/3dparty
+  - tacklelib/3dparty/fmt
+  - tacklelib/3dparty/googletest
+  - tacklelib/3dparty/pyclient
+  - tacklelib/3dparty/pystring
+  - tacklelib/deploy
+  - tacklelib/tacklelib
+
+GIT.PROJECT_PATH_LIST:
+  #- 3dparty/dev
+  #- 3dparty/scripts
+  - contools/3dparty
+  - contools/3dparty_scripts
+  - contools/bittools
+  - contools/contools
+  - contools/debug
+  - contools/deploy
+  - contools/external_tools
+  - contools/tools
+  - nsisplus/_projects
+  - nsisplus/deploy
+  - nsisplus/NsisSetupLib
+  - nsisplus/NsisSetupDev
+  - nsisplus/NsisSetupSamples
+  - orbittools/_projects
+  - orbittools/deploy
+  - orbittools/orbittools
+  - orbittools/qd
+  - orbittools/sgp4
+  - svncmd/deploy
+  - svncmd/scripts
+  - svncmd/svncmd
+  - tacklelib/3dparty
+  - tacklelib/3dparty/fmt
+  - tacklelib/3dparty/googletest
+  - tacklelib/3dparty/pyclient
+  - tacklelib/3dparty/pystring
+  - tacklelib/deploy
+  - tacklelib/tacklelib
+
+GIT2.PROJECT_PATH_LIST:
+  #- 3dparty/dev
+  #- 3dparty/scripts
+  - contools/3dparty
+  - contools/3dparty_scripts
+  - contools/bittools
+  - contools/contools
+  - contools/debug
+  - contools/deploy
+  - contools/external_tools
+  - contools/tools
+  - nsisplus/_projects
+  - nsisplus/deploy
+  - nsisplus/NsisSetupLib
+  - nsisplus/NsisSetupDev
+  - nsisplus/NsisSetupSamples
+  - orbittools/_projects
+  - orbittools/deploy
+  - orbittools/orbittools
+  - orbittools/qd
+  - orbittools/sgp4
+  - svncmd/deploy
+  - svncmd/scripts
+  - svncmd/svncmd
+  - tacklelib/3dparty
+  - tacklelib/3dparty/fmt
+  - tacklelib/3dparty/googletest
+  - tacklelib/3dparty/pyclient
+  - tacklelib/3dparty/pystring
+  - tacklelib/deploy
+  - tacklelib/tacklelib
+
+GIT3.PROJECT_PATH_LIST:
+  - 3dparty/dev
+  - 3dparty/scripts
+  #- contools/3dparty
+  #- contools/3dparty_scripts
+  - contools/bittools
+  #- contools/contools
+  #- contools/debug
+  #- contools/deploy
+  #- contools/external_tools
+  #- contools/tools
+  #- nsisplus/_projects
+  #- nsisplus/deploy
+  - nsisplus/NsisSetupLib
+  - nsisplus/NsisSetupDev
+  - nsisplus/NsisSetupSamples
+  #- orbittools/_projects
+  - orbittools/deploy
+  - orbittools/orbittools
+  - orbittools/qd
+  - orbittools/sgp4
+  - svncmd/deploy
+  - svncmd/scripts
+  - svncmd/svncmd
+  - tacklelib/3dparty
+  - tacklelib/3dparty/fmt
+  - tacklelib/3dparty/googletest
+  - tacklelib/3dparty/pyclient
+  - tacklelib/3dparty/pystring
+  #- tacklelib/deploy
+  - tacklelib/tacklelib
