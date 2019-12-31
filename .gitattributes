@@ -1,5 +1,4 @@
 * text=auto !eol
-projects/_root/3dparty/README_EN.txt -text
 projects/_root/3dparty/__init__.bat -text
 projects/_root/3dparty/config.vars.in -text
 projects/_root/3dparty/config.yaml.in -text
@@ -26,7 +25,6 @@ projects/contools/3dparty_scripts/config.vars.in -text
 projects/contools/3dparty_scripts/config.yaml.in -text
 projects/contools/3dparty_scripts/configure.bat -text
 projects/contools/3dparty_scripts/git_repos.lst.in -text
-projects/contools/README_EN.txt -text
 projects/contools/Tools/__init__.bat -text
 projects/contools/Tools/config.vars.in -text
 projects/contools/Tools/config.yaml.in -text
