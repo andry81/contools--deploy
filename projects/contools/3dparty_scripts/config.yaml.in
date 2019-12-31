@@ -1,6 +1,6 @@
 SVN.WCROOT_DIR:             sf~svn~contools--3dparty_scripts
 GIT.WCROOT_DIR:             gh~git~contools--3dparty_scripts
 GIT2.WCROOT_DIR:            bb~git~contools--3dparty_scripts
-GIT3.WCROOT_DIR:            gl~git~3dparty_scripts
+GIT3.WCROOT_DIR:            gl~git~3dparty--scripts
 
 SVN.CHECKOUT_URL:           ${CONTOOLS_3DPARTY_SCRIPTS.SVN.REPOROOT}/trunk

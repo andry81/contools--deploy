@@ -3,4 +3,4 @@ GIT|root|origin|.|${CONTOOLS_3DPARTY.${SCM_TOKEN}.ORIGIN}|${CONTOOLS_3DPARTY.SVN
 
 GIT2|root|origin|.|${CONTOOLS_3DPARTY.${SCM_TOKEN}.ORIGIN}|${CONTOOLS_3DPARTY.SVN.REPOROOT}|trunk|trunk|.|trunk|--stdlayout|.
 
-GIT3|root|origin|.|${CONTOOLS_3DPARTY.${SCM_TOKEN}.ORIGIN}|${CONTOOLS_3DPARTY.SVN.REPOROOT}|trunk|trunk|.|trunk|--stdlayout|.
+GIT3|root|origin|.|${_3DPARTY.${SCM_TOKEN}.ORIGIN}|${CONTOOLS_3DPARTY.SVN.REPOROOT}|trunk|trunk|.|trunk|--stdlayout|.

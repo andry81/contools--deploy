@@ -30,6 +30,6 @@ CONTOOLS_BITTOOLS.GIT2.ORIGIN:          https://${GIT2.HUB_ROOT}/${GIT2.REPO_OWN
 SVNCMD_SCRIPTS.GIT2.ORIGIN:             https://${GIT2.HUB_ROOT}/${GIT2.REPO_OWNER}/svncmd-scripts.git
 EXTERNAL_TOOLS.GIT2.ORIGIN:             https://${GIT2.HUB_ROOT}/${GIT2.REPO_OWNER}/external_tools.git
 
-CONTOOLS_3DPARTY.GIT3.ORIGIN:           https://${GIT3.HUB_ROOT}/${GIT3.REPO_OWNER}/contools--3dparty.git
-CONTOOLS_3DPARTY_SCRIPTS.GIT3.ORIGIN:   https://${GIT3.HUB_ROOT}/${GIT3.REPO_OWNER}/contools--3dparty_scripts.git
-CONTOOLS_BITTOOLS.GIT3.ORIGIN:          https://${GIT3.HUB_ROOT}/${GIT3.REPO_OWNER}/contools--bittools.git
+_3DPARTY.GIT3.ORIGIN:                   https://${GIT3.HUB_ROOT}/${GIT3.REPO_OWNER}/3dparty.git
+_3DPARTY_SCRIPTS.GIT3.ORIGIN:           https://${GIT3.HUB_ROOT}/${GIT3.REPO_OWNER}/3dparty--scripts.git
+BITTOOLS.GIT3.ORIGIN:                   https://${GIT3.HUB_ROOT}/${GIT3.REPO_OWNER}/bittools.git
