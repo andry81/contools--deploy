@@ -1,18 +1,4 @@
 * text=auto !eol
-projects/_root/3dparty/__init__.bat -text
-projects/_root/3dparty/config.vars.in -text
-projects/_root/3dparty/config.yaml.in -text
-projects/_root/3dparty/configure.bat -text
-projects/_root/3dparty/dev/__init__.bat -text
-projects/_root/3dparty/dev/config.vars.in -text
-projects/_root/3dparty/dev/config.yaml.in -text
-projects/_root/3dparty/dev/configure.bat -text
-projects/_root/3dparty/dev/git_repos.lst.in -text
-projects/_root/3dparty/scripts/__init__.bat -text
-projects/_root/3dparty/scripts/config.vars.in -text
-projects/_root/3dparty/scripts/config.yaml.in -text
-projects/_root/3dparty/scripts/configure.bat -text
-projects/_root/3dparty/scripts/git_repos.lst.in -text
 projects/_root/_cache/.svnignore -text
 projects/_root/config.private.yaml.in -text
 projects/contools/3dparty/__init__.bat -text
