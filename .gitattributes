@@ -6,6 +6,7 @@ projects/_root/_config/config.env.yaml.in -text
 projects/_root/_config/config.private.yaml.in -text
 projects/_root/_config/config.vars.in -text
 projects/_root/_config/config.yaml.in -text
+projects/_root/changelog.txt -text
 projects/_root/configure.bat -text
 projects/_root/configure.private.bat -text
 projects/_root/configure.vars.bat -text
