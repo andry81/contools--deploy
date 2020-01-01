@@ -1,3 +1,11 @@
+[submodule "projects/_root/_common"]
+	path = projects/_root/_common
+	owner = projects/_root
+	url = /p/pyxvcs/pyxvcs/trunk/_pyxvcs/_common
+	branch = /
+	fetch = :refs/remotes/git-svn
+	remote = svn
+	type = dir
 [submodule "solutions/all-in-one/all-in-one/_common"]
 	path = solutions/all-in-one/all-in-one/_common
 	owner = solutions/all-in-one
