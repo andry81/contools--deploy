@@ -5,8 +5,6 @@ PYTHONDONTWRITEBYTECODE=1
 CONFIGURE_BASE_SCRIPT_FILE_NAME=configure.py.bat
 CMDOP_BASE_SCRIPT_FILE_NAME=cmdop.py.bat
 
-"LOCAL_CONFIG_DIR_NAME=_config"
-
 # console codepage before start the python
 CHCP=1251
 

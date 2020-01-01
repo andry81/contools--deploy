@@ -7,6 +7,8 @@ if not defined NEST_LVL set NEST_LVL=0
 set "CONFIGURE_ROOT=%~dp0"
 set "CONFIGURE_ROOT=%CONFIGURE_ROOT:~0,-1%"
 
+set "LOCAL_CONFIG_DIR_NAME=_config"
+
 set "BASE_SCRIPTS_ROOT=%CONFIGURE_ROOT%\_common"
 set "CONTOOLS_ROOT=%BASE_SCRIPTS_ROOT%\tools"
 set "TACKLELIB_ROOT=%BASE_SCRIPTS_ROOT%\tools\tacklelib"

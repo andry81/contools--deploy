@@ -1,4 +1,7 @@
 2020.01.01:
+* changed: back merge from pyxvcs project
+
+2020.01.01:
 * new: is restored changelog file with the history before the fork at 2019.12.31
 
 2020.01.01:
