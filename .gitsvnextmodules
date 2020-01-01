@@ -6,10 +6,10 @@
 	fetch = :refs/remotes/git-svn
 	remote = svn
 	type = dir
-[submodule "solutions/all-in-one/all-in-one/_common"]
-	path = solutions/all-in-one/all-in-one/_common
+[submodule "solutions/all-in-one/all-in-one"]
+	path = solutions/all-in-one/all-in-one
 	owner = solutions/all-in-one
-	url = /p/pyxvcs/pyxvcs/trunk/_pyxvcs/_common
+	url = /p/contools/deploy/trunk/projects/_root
 	branch = /
 	fetch = :refs/remotes/git-svn
 	remote = svn
