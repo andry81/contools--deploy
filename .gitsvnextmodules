@@ -1,19 +1,3 @@
-[submodule "solutions/all-in-one/all-in-one/__init__.bat"]
-	path = solutions/all-in-one/all-in-one/__init__.bat
-	owner = solutions/all-in-one
-	url = /p/pyxvcs/pyxvcs/trunk/_pyxvcs/__init__.bat
-	branch = /
-	fetch = :refs/remotes/git-svn
-	remote = svn
-	type = dir
-[submodule "solutions/all-in-one/all-in-one/__init__.xsh"]
-	path = solutions/all-in-one/all-in-one/__init__.xsh
-	owner = solutions/all-in-one
-	url = /p/pyxvcs/pyxvcs/trunk/_pyxvcs/__init__.xsh
-	branch = /
-	fetch = :refs/remotes/git-svn
-	remote = svn
-	type = dir
 [submodule "solutions/all-in-one/all-in-one/_common"]
 	path = solutions/all-in-one/all-in-one/_common
 	owner = solutions/all-in-one
@@ -22,58 +6,10 @@
 	fetch = :refs/remotes/git-svn
 	remote = svn
 	type = dir
-[submodule "solutions/all-in-one/all-in-one/config.env.yaml.in"]
-	path = solutions/all-in-one/all-in-one/config.env.yaml.in
-	owner = solutions/all-in-one
-	url = /p/pyxvcs/pyxvcs/trunk/_pyxvcs/config.env.yaml.in
-	branch = /
-	fetch = :refs/remotes/git-svn
-	remote = svn
-	type = dir
-[submodule "solutions/all-in-one/all-in-one/config.vars.in"]
-	path = solutions/all-in-one/all-in-one/config.vars.in
-	owner = solutions/all-in-one
-	url = /p/pyxvcs/pyxvcs/trunk/_pyxvcs/config.vars.in
-	branch = /
-	fetch = :refs/remotes/git-svn
-	remote = svn
-	type = dir
-[submodule "solutions/all-in-one/all-in-one/config.yaml.in"]
-	path = solutions/all-in-one/all-in-one/config.yaml.in
-	owner = solutions/all-in-one
-	url = /p/pyxvcs/pyxvcs/trunk/_pyxvcs/config.yaml.in
-	branch = /
-	fetch = :refs/remotes/git-svn
-	remote = svn
-	type = dir
-[submodule "solutions/all-in-one/all-in-one/configure.bat"]
-	path = solutions/all-in-one/all-in-one/configure.bat
-	owner = solutions/all-in-one
-	url = /p/pyxvcs/pyxvcs/trunk/_pyxvcs/configure.bat
-	branch = /
-	fetch = :refs/remotes/git-svn
-	remote = svn
-	type = dir
-[submodule "solutions/all-in-one/all-in-one/configure.private.bat"]
-	path = solutions/all-in-one/all-in-one/configure.private.bat
-	owner = solutions/all-in-one
-	url = /p/pyxvcs/pyxvcs/trunk/_pyxvcs/configure.private.bat
-	branch = /
-	fetch = :refs/remotes/git-svn
-	remote = svn
-	type = dir
 [submodule "solutions/all-in-one/all-in-one/contools"]
 	path = solutions/all-in-one/all-in-one/contools
 	owner = solutions/all-in-one
 	url = /p/contools/deploy/trunk/projects/contools
-	branch = /
-	fetch = :refs/remotes/git-svn
-	remote = svn
-	type = dir
-[submodule "solutions/all-in-one/all-in-one/install_python_modules.bat"]
-	path = solutions/all-in-one/all-in-one/install_python_modules.bat
-	owner = solutions/all-in-one
-	url = /p/pyxvcs/pyxvcs/trunk/_pyxvcs/install_python_modules.bat
 	branch = /
 	fetch = :refs/remotes/git-svn
 	remote = svn
