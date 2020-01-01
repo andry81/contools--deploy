@@ -1,6 +1,15 @@
 * text=auto !eol
+projects/_root/__init__.bat -text
+projects/_root/__init__.xsh -text
 projects/_root/_cache/.svnignore -text
-projects/_root/config.private.yaml.in -text
+projects/_root/_config/config.env.yaml.in -text
+projects/_root/_config/config.private.yaml.in -text
+projects/_root/_config/config.vars.in -text
+projects/_root/_config/config.yaml.in -text
+projects/_root/configure.bat -text
+projects/_root/configure.private.bat -text
+projects/_root/configure.vars.bat -text
+projects/_root/install_python_modules.bat -text
 projects/contools/3dparty/__init__.bat -text
 projects/contools/3dparty/config.vars.in -text
 projects/contools/3dparty/config.yaml.in -text
