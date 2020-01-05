@@ -5,8 +5,7 @@ tkl_declare_global('CONFIGURE_ROOT', SOURCE_DIR)
 tkl_declare_global('BASE_SCRIPTS_ROOT', os.environ['BASE_SCRIPTS_ROOT'])
 
 tkl_declare_global('LOCAL_CONFIG_DIR_NAME', os.environ['LOCAL_CONFIG_DIR_NAME'])
-
-tkl_declare_global('TMPL_CMDOP_FILES_DIR', BASE_SCRIPTS_ROOT + '/tmpl')
+tkl_declare_global('TMPL_CMDOP_FILES_DIR', os.environ['TMPL_CMDOP_FILES_DIR'])
 
 tkl_declare_global('CONTOOLS_ROOT', os.environ['CONTOOLS_ROOT'])
 tkl_declare_global('TACKLELIB_ROOT', os.environ['TACKLELIB_ROOT'])

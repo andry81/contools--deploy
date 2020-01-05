@@ -1,8 +1,8 @@
-# <scm_token>|<branch_type>|<remote_name>|<parent_remote_name>|<git_reporoot>|<svn_reporoot>|<git_local_branch>|<git_remote_branch>|<parent_git_path_prefix>|<svn_path_prefix>|<git_svn_init_cmdline>|<git_remote_add_cmdline>
-GIT|root|origin|.|${CONTOOLS_ROOT.${SCM_TOKEN}.ORIGIN}|${CONTOOLS_ROOT.SVN.REPOROOT}|trunk|trunk|.|trunk|--stdlayout|.
-GIT|subtree|tools|origin|${CONTOOLS_TOOLS.${SCM_TOKEN}.ORIGIN}|${CONTOOLS_ROOT.SVN.REPOROOT}|master|master|Scripts/Tools|trunk/Scripts/Tools|.|.
-GIT|subtree|tools-svn|tools|${SVNCMD_SCRIPTS.${SCM_TOKEN}.ORIGIN}|${SVNCMD_ROOT.SVN.REPOROOT}|master|master|scm/svn|trunk/Scripts|.|.
+# <scm_token>|<branch_type>|<remote_name>|<parent_remote_name>|<git_reporoot>|<svn_reporoot>|<git_local_branch>|<git_remote_branch>|<parent_git_path_prefix>|<git_path_prefix>|<svn_path_prefix>|<git_svn_init_cmdline>|<git_remote_add_cmdline>
+GIT|root|origin|.|${CONTOOLS_ROOT.${SCM_TOKEN}.ORIGIN}|${CONTOOLS_ROOT.SVN.REPOROOT}|trunk|trunk|.|.|trunk|--stdlayout|.
+GIT|subtree|tools|origin|${CONTOOLS_TOOLS.${SCM_TOKEN}.ORIGIN}|${CONTOOLS_ROOT.SVN.REPOROOT}|master|master|Scripts/Tools|.|trunk/Scripts/Tools|.|.
+GIT|subtree|tools-svn|tools|${SVNCMD_SCRIPTS.${SCM_TOKEN}.ORIGIN}|${SVNCMD_ROOT.SVN.REPOROOT}|master|master|scm/svn|.|trunk/Scripts|.|.
 
-GIT2|root|origin|.|${CONTOOLS_ROOT.${SCM_TOKEN}.ORIGIN}|${CONTOOLS_ROOT.SVN.REPOROOT}|trunk|trunk|.|trunk|--stdlayout|.
-GIT2|subtree|tools|origin|${CONTOOLS_TOOLS.${SCM_TOKEN}.ORIGIN}|${CONTOOLS_ROOT.SVN.REPOROOT}|master|master|Scripts/Tools|trunk/Scripts/Tools|.|.
-GIT2|subtree|tools-svn|tools|${SVNCMD_SCRIPTS.${SCM_TOKEN}.ORIGIN}|${SVNCMD_ROOT.SVN.REPOROOT}|master|master|scm/svn|trunk/Scripts|.|.
+GIT2|root|origin|.|${CONTOOLS_ROOT.${SCM_TOKEN}.ORIGIN}|${CONTOOLS_ROOT.SVN.REPOROOT}|trunk|trunk|.|.|trunk|--stdlayout|.
+GIT2|subtree|tools|origin|${CONTOOLS_TOOLS.${SCM_TOKEN}.ORIGIN}|${CONTOOLS_ROOT.SVN.REPOROOT}|master|master|Scripts/Tools|.|trunk/Scripts/Tools|.|.
+GIT2|subtree|tools-svn|tools|${SVNCMD_SCRIPTS.${SCM_TOKEN}.ORIGIN}|${SVNCMD_ROOT.SVN.REPOROOT}|master|master|scm/svn|.|trunk/Scripts|.|.

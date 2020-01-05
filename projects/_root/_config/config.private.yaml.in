@@ -55,6 +55,8 @@ SVN.PROJECT_PATH_LIST:
   - tacklelib/3dparty/pystring
   - tacklelib/deploy
   - tacklelib/tacklelib
+  - pyxvcs/deploy
+  - pyxvcs/pyxvcs
 
 GIT.PROJECT_PATH_LIST:
   #- 3dparty/dev
@@ -87,6 +89,8 @@ GIT.PROJECT_PATH_LIST:
   - tacklelib/3dparty/pystring
   - tacklelib/deploy
   - tacklelib/tacklelib
+  - pyxvcs/deploy
+  - pyxvcs/pyxvcs
 
 GIT2.PROJECT_PATH_LIST:
   #- 3dparty/dev
@@ -119,6 +123,8 @@ GIT2.PROJECT_PATH_LIST:
   - tacklelib/3dparty/pystring
   - tacklelib/deploy
   - tacklelib/tacklelib
+  - pyxvcs/deploy
+  - pyxvcs/pyxvcs
 
 GIT3.PROJECT_PATH_LIST:
   - 3dparty/dev
@@ -151,3 +157,5 @@ GIT3.PROJECT_PATH_LIST:
   - tacklelib/3dparty/pystring
   #- tacklelib/deploy
   - tacklelib/tacklelib
+  #- pyxvcs/deploy
+  - pyxvcs/pyxvcs
