@@ -1,8 +1,7 @@
+projects/_root/*.bat
 projects/_root/*.lst
 projects/_root/*.vars
 projects/_root/*.yaml
-projects/_root/*~*~*.bat
-projects/_root/*~*~*.sh
 projects/_root/.log
 projects/_root/__pycache__
 projects/_root/_cache/*
