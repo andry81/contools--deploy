@@ -1,4 +1,7 @@
 2020.01.04:
+* changed: removed obsolete files
+
+2020.01.04:
 * new: `pyxvcs` project as an example of self svn2git mirroring
 * new: `git_path_prefix` parameter in `git_repos.lst.in` configuration file
 * changed: back merge from pyxvcs project
