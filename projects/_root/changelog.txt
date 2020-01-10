@@ -1,3 +1,7 @@
+2020.01.09:
+* changed: aligned `git_repos.lst.in` files
+* changed: back merge from cmdoplib project
+
 2020.01.04:
 * changed: removed obsolete files
 

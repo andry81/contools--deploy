@@ -1,4 +1,4 @@
-# <scm_token>|<branch_type>|<remote_name>|<parent_remote_name>|<git_reporoot>|<svn_reporoot>|<git_local_branch>|<git_remote_branch>|<parent_git_path_prefix>|<git_path_prefix>|<svn_path_prefix>|<git_svn_init_cmdline>|<git_remote_add_cmdline>
-GIT|root|origin|.|${CONTOOLS_DEPLOY.${SCM_TOKEN}.ORIGIN}|${CONTOOLS_DEPLOY.SVN.REPOROOT}|trunk|trunk|.|.|trunk|--stdlayout|.
+# <scm_token>|<branch_type>|<remote_name>|<parent_remote_name>|<git_reporoot>                        |<svn_reporoot>                 |<git_local_branch>|<git_remote_branch>|<parent_git_path_prefix>|<git_path_prefix>|<svn_path_prefix>|<git_svn_init_cmdline>|<git_remote_add_cmdline>
+GIT          |root         |origin       |.                   |${CONTOOLS_DEPLOY.${SCM_TOKEN}.ORIGIN}|${CONTOOLS_DEPLOY.SVN.REPOROOT}|trunk             |trunk              |.                       |.                |trunk            |--stdlayout           |.
 
-GIT2|root|origin|.|${CONTOOLS_DEPLOY.${SCM_TOKEN}.ORIGIN}|${CONTOOLS_DEPLOY.SVN.REPOROOT}|trunk|trunk|.|.|trunk|--stdlayout|.
+GIT2         |root         |origin       |.                   |${CONTOOLS_DEPLOY.${SCM_TOKEN}.ORIGIN}|${CONTOOLS_DEPLOY.SVN.REPOROOT}|trunk             |trunk              |.                       |.                |trunk            |--stdlayout           |.
