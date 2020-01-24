@@ -1,3 +1,8 @@
+2020.01.24:
+* fixed: minor multiple fixes
+* new: added sub projects
+* changed: projects path list
+
 2020.01.19:
 * changed: back merge from cmdoplib project
 

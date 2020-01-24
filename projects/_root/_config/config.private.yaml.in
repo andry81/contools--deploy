@@ -44,17 +44,23 @@ SVN.PROJECT_PATH_LIST:
   - orbittools/_projects
   - orbittools/deploy
   - orbittools/orbittools
+  - orbittools/orbittools-p1
   - orbittools/qd
   - orbittools/sgp4
+  - orbittools/sgp4-p1
   - svncmd/deploy
   - svncmd/svncmd
-  - tacklelib/3dparty
-  - tacklelib/3dparty/fmt
-  - tacklelib/3dparty/googletest
-  - tacklelib/3dparty/pyclient
-  - tacklelib/3dparty/pystring
-  - tacklelib/deploy
   - tacklelib/tacklelib
+  - tacklelib/tacklelib/3dparty
+  - tacklelib/tacklelib/3dparty/fmt
+  - tacklelib/tacklelib/3dparty/googletest
+  - tacklelib/tacklelib/3dparty/libarchive
+  - tacklelib/tacklelib/3dparty/p7client
+  - tacklelib/tacklelib/3dparty/pystring
+  - tacklelib/tacklelib/3dparty/qcustomplot
+  - tacklelib/tacklelib/3dparty/qwtpolar
+  - tacklelib/tacklelib/3dparty/xzutils
+  - tacklelib/tacklelib/deploy
   - pyxvcs/deploy
   - pyxvcs/pyxvcs
 
@@ -77,18 +83,24 @@ GIT.PROJECT_PATH_LIST:
   - orbittools/_projects
   - orbittools/deploy
   - orbittools/orbittools
+  - orbittools/orbittools-p1
   - orbittools/qd
   - orbittools/sgp4
+  - orbittools/sgp4-p1
   - svncmd/deploy
   - svncmd/scripts
   - svncmd/svncmd
-  - tacklelib/3dparty
-  - tacklelib/3dparty/fmt
-  - tacklelib/3dparty/googletest
-  - tacklelib/3dparty/pyclient
-  - tacklelib/3dparty/pystring
-  - tacklelib/deploy
   - tacklelib/tacklelib
+  - tacklelib/tacklelib/3dparty
+  - tacklelib/tacklelib/3dparty/fmt
+  - tacklelib/tacklelib/3dparty/googletest
+  - tacklelib/tacklelib/3dparty/libarchive
+  - tacklelib/tacklelib/3dparty/p7client
+  - tacklelib/tacklelib/3dparty/pystring
+  - tacklelib/tacklelib/3dparty/qcustomplot
+  - tacklelib/tacklelib/3dparty/qwtpolar
+  - tacklelib/tacklelib/3dparty/xzutils
+  - tacklelib/tacklelib/deploy
   - pyxvcs/deploy
   - pyxvcs/pyxvcs
 
@@ -111,16 +123,22 @@ GIT2.PROJECT_PATH_LIST:
   - orbittools/_projects
   - orbittools/deploy
   - orbittools/orbittools
+  - orbittools/orbittools-p1
   - orbittools/qd
   - orbittools/sgp4
+  - orbittools/sgp4-p1
   - svncmd/deploy
   - svncmd/scripts
   - svncmd/svncmd
   - tacklelib/3dparty
   - tacklelib/3dparty/fmt
   - tacklelib/3dparty/googletest
-  - tacklelib/3dparty/pyclient
+  - tacklelib/3dparty/libarchive
+  - tacklelib/3dparty/p7client
   - tacklelib/3dparty/pystring
+  - tacklelib/3dparty/qcustomplot
+  - tacklelib/3dparty/qwtpolar
+  - tacklelib/3dparty/xzutils
   - tacklelib/deploy
   - tacklelib/tacklelib
   - pyxvcs/deploy
@@ -145,17 +163,23 @@ GIT3.PROJECT_PATH_LIST:
   #- orbittools/_projects
   - orbittools/deploy
   - orbittools/orbittools
+  - orbittools/orbittools-p1
   - orbittools/qd
   - orbittools/sgp4
+  - orbittools/sgp4-p1
   - svncmd/deploy
   - svncmd/scripts
   - svncmd/svncmd
-  - tacklelib/3dparty
-  - tacklelib/3dparty/fmt
-  - tacklelib/3dparty/googletest
-  - tacklelib/3dparty/pyclient
-  - tacklelib/3dparty/pystring
-  #- tacklelib/deploy
   - tacklelib/tacklelib
+  - tacklelib/tacklelib/3dparty
+  - tacklelib/tacklelib/3dparty/fmt
+  - tacklelib/tacklelib/3dparty/googletest
+  - tacklelib/tacklelib/3dparty/libarchive
+  - tacklelib/tacklelib/3dparty/p7client
+  - tacklelib/tacklelib/3dparty/pystring
+  - tacklelib/tacklelib/3dparty/qcustomplot
+  - tacklelib/tacklelib/3dparty/qwtpolar
+  - tacklelib/tacklelib/3dparty/xzutils
+  #- tacklelib/tacklelib/deploy
   #- pyxvcs/deploy
   - pyxvcs/pyxvcs
