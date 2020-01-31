@@ -1,3 +1,6 @@
+2020.01.31:
+* changed: added content of the `tmpl` directory as standalone files.
+
 2020.01.25:
 * fixed: excessive quotes in the SVN_SSH/GIT_SSH environment variables
 
