@@ -1,4 +1,8 @@
 * text=auto !eol
+projects/_root/01_configure.vars.bat -text
+projects/_root/02_configure.private.bat -text
+projects/_root/03_configure.yaml.bat -text
+projects/_root/04_configure.bat -text
 projects/_root/__init__.bat -text
 projects/_root/__init__.xsh -text
 projects/_root/_cache/.svnignore -text
@@ -19,10 +23,6 @@ projects/_root/_config/tmpl/{HUB}~svn~checkout.bat.in -text
 projects/_root/_config/tmpl/{HUB}~svn~relocate.bat.in -text
 projects/_root/_config/tmpl/{HUB}~svn~update.bat.in -text
 projects/_root/changelog.txt -text
-projects/_root/configure.bat -text
-projects/_root/configure.private.bat -text
-projects/_root/configure.vars.bat -text
-projects/_root/configure.yaml.bat -text
 projects/_root/install_python_modules.bat -text
 projects/contools/3dparty/config.yaml.in -text
 projects/contools/3dparty/git_repos.lst.in -text
