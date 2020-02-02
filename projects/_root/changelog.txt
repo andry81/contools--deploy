@@ -1,4 +1,7 @@
 2020.02.02:
+* fixed: `config.yaml` and other files generation
+
+2020.02.02:
 * refactor: root configure scripts rename
 
 2020.01.31:
