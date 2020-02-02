@@ -1,4 +1,7 @@
 2020.02.02:
+* fixed: root `__init__.bat` script
+
+2020.02.02:
 * fixed: `config.yaml` and other files generation
 
 2020.02.02:
