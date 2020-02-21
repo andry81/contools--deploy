@@ -1,5 +1,5 @@
-[submodule "projects/_root/_common"]
-	path = projects/_root/_common
+[submodule "projects/_root/_pyxvcs"]
+	path = projects/_root/_pyxvcs
 	owner = projects/_root
 	url = /p/pyxvcs/pyxvcs/trunk/_pyxvcs/_common
 	branch = /
