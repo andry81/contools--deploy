@@ -1,5 +1,5 @@
-SVN.WCROOT_DIR:             sf~svn~contools
-GIT.WCROOT_DIR:             gh~git~contools
-GIT2.WCROOT_DIR:            bb~git~contools
+SVN_SF.WCROOT_DIR:          sf~svn~contools
+GIT_GH.WCROOT_DIR:          gh~git~contools
+GIT_BB.WCROOT_DIR:          bb~git~contools
 
-SVN.CHECKOUT_URL:           ${CONTOOLS_ROOT.SVN.REPOROOT}/trunk
+SVN_SF.CHECKOUT_URL:        ${CONTOOLS_ROOT.SVN_SF.REPOROOT}/trunk

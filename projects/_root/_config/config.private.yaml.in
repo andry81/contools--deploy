@@ -3,183 +3,221 @@
 #   `*.PROJECT_PATH_LIST` uses to select where to generate
 #
 
-SVN.HUB_ROOT:     svn.code.sf.net/p
-SVN.HUB_ABBR:     sf
-SVN.USER:         user
+SVN_SF.HUB_ROOT:    svn.code.sf.net/p
+SVN_SF.HUB_ABBR:    sf
+SVN_SF.USER:        user
 
-GIT.HUB_ROOT:     github.com
-GIT.HUB_ABBR:     gh
-GIT.REPO_OWNER:   owner
-GIT.USER:         user
-GIT.SVNSSH.USER:  ${SVN.USER}
-GIT.EMAIL:        user@mail.com
+GIT_GH.HUB_ROOT:    github.com
+GIT_GH.HUB_ABBR:    gh
+GIT_GH.REPO_OWNER:  owner
+GIT_GH.USER:        user
+GIT_GH.SVNSSH.USER: ${SVN_SF.USER}
+GIT_GH.EMAIL:       user@mail.com
 
-GIT2.HUB_ROOT:    bitbucket.org
-GIT2.HUB_ABBR:    bb
-GIT2.REPO_OWNER:  owner
-GIT2.USER:        user
-GIT2.SVNSSH.USER: ${SVN.USER}
-GIT2.EMAIL:       user@mail.com
+GIT_BB.HUB_ROOT:    bitbucket.org
+GIT_BB.HUB_ABBR:    bb
+GIT_BB.REPO_OWNER:  owner
+GIT_BB.USER:        user
+GIT_BB.SVNSSH.USER: ${SVN_SF.USER}
+GIT_BB.EMAIL:       user@mail.com
 
-GIT3.HUB_ROOT:    gitlab.com
-GIT3.HUB_ABBR:    gl
-GIT3.REPO_OWNER:  owner
-GIT3.USER:        user
-GIT3.SVNSSH.USER: ${SVN.USER}
-GIT3.EMAIL:       user@mail.com
+GIT_GL.HUB_ROOT:    gitlab.com
+GIT_GL.HUB_ABBR:    gl
+GIT_GL.REPO_OWNER:  owner
+GIT_GL.USER:        user
+GIT_GL.SVNSSH.USER: ${SVN_SF.USER}
+GIT_GL.EMAIL:       user@mail.com
 
-SVN.PROJECT_PATH_LIST:
-  - contools/3dparty
-  - contools/3dparty_scripts
-  - contools/bittools
-  - contools/contools
-  - contools/debug
-  - contools/deploy
-  - contools/external_tools
-  - nsisplus/_projects
-  - nsisplus/deploy
-  - nsisplus/NsisSetupLib
-  - nsisplus/NsisSetupDev
-  - nsisplus/NsisSetupSamples
-  - orbittools/_projects
-  - orbittools/deploy
-  - orbittools/orbittools
-  - orbittools/orbittools-p1
-  - orbittools/qd
-  - orbittools/sgp4
-  - orbittools/sgp4-p1
-  - svncmd/deploy
-  - svncmd/svncmd
-  - tacklelib/tacklelib
-  - tacklelib/tacklelib/3dparty
-  - tacklelib/tacklelib/3dparty/fmt
-  - tacklelib/tacklelib/3dparty/googletest
-  - tacklelib/tacklelib/3dparty/libarchive
-  - tacklelib/tacklelib/3dparty/p7client
-  - tacklelib/tacklelib/3dparty/pystring
-  - tacklelib/tacklelib/3dparty/qcustomplot
-  - tacklelib/tacklelib/3dparty/qwtpolar
-  - tacklelib/tacklelib/3dparty/xzutils
-  - tacklelib/tacklelib/deploy
-  - pyxvcs/deploy
-  - pyxvcs/pyxvcs
+SVN_SF.PROJECT_PATH_LIST:
+  - _scripts
+  - _scripts/contools
+  - _scripts/contools/3dparty
+  - _scripts/contools/3dparty_checkout_scripts
+  - _scripts/contools/3dparty_build_scripts
+  - _scripts/contools/3dparty_scripts
+  - _scripts/contools/3dparty/wxwidgets
+  - _scripts/contools/bittools
+  - _scripts/contools/contools
+  - _scripts/contools/debug
+  - _scripts/contools/deploy
+  - _scripts/contools/external_tools
+  - _scripts/nsisplus
+  - _scripts/nsisplus/_projects
+  - _scripts/nsisplus/deploy
+  - _scripts/nsisplus/NsisSetupLib
+  - _scripts/nsisplus/NsisSetupDev
+  - _scripts/nsisplus/NsisSetupSamples
+  - _scripts/orbittools
+  - _scripts/orbittools/_projects
+  - _scripts/orbittools/deploy
+  - _scripts/orbittools/orbittools
+  - _scripts/orbittools/orbittools-p1
+  - _scripts/orbittools/qd
+  - _scripts/orbittools/sgp4
+  - _scripts/orbittools/sgp4-p1
+  - _scripts/svncmd
+  - _scripts/svncmd/deploy
+  - _scripts/svncmd/svncmd
+  - _scripts/tacklelib
+  - _scripts/tacklelib/deploy
+  - _scripts/tacklelib/tacklelib
+  - _scripts/tacklelib/tacklelib/3dparty
+  - _scripts/tacklelib/tacklelib/3dparty_checkout_scripts
+  - _scripts/tacklelib/tacklelib/3dparty_build_scripts
+  - _scripts/tacklelib/tacklelib/3dparty/fmt
+  - _scripts/tacklelib/tacklelib/3dparty/googletest
+  - _scripts/tacklelib/tacklelib/3dparty/libarchive
+  - _scripts/tacklelib/tacklelib/3dparty/p7client
+  - _scripts/tacklelib/tacklelib/3dparty/pystring
+  - _scripts/tacklelib/tacklelib/3dparty/qcustomplot
+  - _scripts/tacklelib/tacklelib/3dparty/qwtpolar
+  - _scripts/tacklelib/tacklelib/3dparty/xzutils
+  - _scripts/tacklelib/tacklelib/deploy
+  - _scripts/pyxvcs
+  - _scripts/pyxvcs/deploy
+  - _scripts/pyxvcs/pyxvcs
 
-GIT.PROJECT_PATH_LIST:
-  #- 3dparty/dev
-  #- 3dparty/scripts
-  - contools/3dparty
-  - contools/3dparty_scripts
-  - contools/bittools
-  - contools/contools
-  - contools/debug
-  - contools/deploy
-  - contools/external_tools
-  - contools/tools
-  - nsisplus/_projects
-  - nsisplus/deploy
-  - nsisplus/NsisSetupLib
-  - nsisplus/NsisSetupDev
-  - nsisplus/NsisSetupSamples
-  - orbittools/_projects
-  - orbittools/deploy
-  - orbittools/orbittools
-  - orbittools/orbittools-p1
-  - orbittools/qd
-  - orbittools/sgp4
-  - orbittools/sgp4-p1
-  - svncmd/deploy
-  - svncmd/scripts
-  - svncmd/svncmd
-  - tacklelib/tacklelib
-  - tacklelib/tacklelib/3dparty
-  - tacklelib/tacklelib/3dparty/fmt
-  - tacklelib/tacklelib/3dparty/googletest
-  - tacklelib/tacklelib/3dparty/libarchive
-  - tacklelib/tacklelib/3dparty/p7client
-  - tacklelib/tacklelib/3dparty/pystring
-  - tacklelib/tacklelib/3dparty/qcustomplot
-  - tacklelib/tacklelib/3dparty/qwtpolar
-  - tacklelib/tacklelib/3dparty/xzutils
-  - tacklelib/tacklelib/deploy
-  - pyxvcs/deploy
-  - pyxvcs/pyxvcs
+GIT_GH.PROJECT_PATH_LIST:
+  - _scripts
+  - _scripts/contools
+  - _scripts/contools/3dparty
+  - _scripts/contools/3dparty_checkout_scripts
+  - _scripts/contools/3dparty_build_scripts
+  - _scripts/contools/3dparty_scripts
+  - _scripts/contools/3dparty/wxwidgets
+  - _scripts/contools/bittools
+  - _scripts/contools/contools
+  - _scripts/contools/debug
+  - _scripts/contools/deploy
+  - _scripts/contools/external_tools
+  - _scripts/contools/tools
+  - _scripts/nsisplus
+  - _scripts/nsisplus/_projects
+  - _scripts/nsisplus/deploy
+  - _scripts/nsisplus/NsisSetupLib
+  - _scripts/nsisplus/NsisSetupDev
+  - _scripts/nsisplus/NsisSetupSamples
+  - _scripts/orbittools
+  - _scripts/orbittools/_projects
+  - _scripts/orbittools/deploy
+  - _scripts/orbittools/orbittools
+  - _scripts/orbittools/orbittools-p1
+  - _scripts/orbittools/qd
+  - _scripts/orbittools/sgp4
+  - _scripts/orbittools/sgp4-p1
+  - _scripts/svncmd
+  - _scripts/svncmd/deploy
+  - _scripts/svncmd/scripts
+  - _scripts/svncmd/svncmd
+  - _scripts/tacklelib
+  - _scripts/tacklelib/deploy
+  - _scripts/tacklelib/tacklelib
+  - _scripts/tacklelib/tacklelib/3dparty
+  - _scripts/tacklelib/tacklelib/3dparty/fmt
+  - _scripts/tacklelib/tacklelib/3dparty/googletest
+  - _scripts/tacklelib/tacklelib/3dparty/libarchive
+  - _scripts/tacklelib/tacklelib/3dparty/p7client
+  - _scripts/tacklelib/tacklelib/3dparty/pystring
+  - _scripts/tacklelib/tacklelib/3dparty/qcustomplot
+  - _scripts/tacklelib/tacklelib/3dparty/qwtpolar
+  - _scripts/tacklelib/tacklelib/3dparty/xzutils
+  - _scripts/tacklelib/tacklelib/deploy
+  - _scripts/pyxvcs
+  - _scripts/pyxvcs/deploy
+  - _scripts/pyxvcs/pyxvcs
 
-GIT2.PROJECT_PATH_LIST:
-  #- 3dparty/dev
-  #- 3dparty/scripts
-  - contools/3dparty
-  - contools/3dparty_scripts
-  - contools/bittools
-  - contools/contools
-  - contools/debug
-  - contools/deploy
-  - contools/external_tools
-  - contools/tools
-  - nsisplus/_projects
-  - nsisplus/deploy
-  - nsisplus/NsisSetupLib
-  - nsisplus/NsisSetupDev
-  - nsisplus/NsisSetupSamples
-  - orbittools/_projects
-  - orbittools/deploy
-  - orbittools/orbittools
-  - orbittools/orbittools-p1
-  - orbittools/qd
-  - orbittools/sgp4
-  - orbittools/sgp4-p1
-  - svncmd/deploy
-  - svncmd/scripts
-  - svncmd/svncmd
-  - tacklelib/3dparty
-  - tacklelib/3dparty/fmt
-  - tacklelib/3dparty/googletest
-  - tacklelib/3dparty/libarchive
-  - tacklelib/3dparty/p7client
-  - tacklelib/3dparty/pystring
-  - tacklelib/3dparty/qcustomplot
-  - tacklelib/3dparty/qwtpolar
-  - tacklelib/3dparty/xzutils
-  - tacklelib/deploy
-  - tacklelib/tacklelib
-  - pyxvcs/deploy
-  - pyxvcs/pyxvcs
+GIT_BB.PROJECT_PATH_LIST:
+  - _scripts
+  - _scripts/contools
+  - _scripts/contools/3dparty
+  - _scripts/contools/3dparty_checkout_scripts
+  - _scripts/contools/3dparty_build_scripts
+  - _scripts/contools/3dparty_scripts
+  - _scripts/contools/3dparty/wxwidgets
+  - _scripts/contools/bittools
+  - _scripts/contools/contools
+  - _scripts/contools/debug
+  - _scripts/contools/deploy
+  - _scripts/contools/external_tools
+  - _scripts/contools/tools
+  - _scripts/nsisplus
+  - _scripts/nsisplus/_projects
+  - _scripts/nsisplus/deploy
+  - _scripts/nsisplus/NsisSetupLib
+  - _scripts/nsisplus/NsisSetupDev
+  - _scripts/nsisplus/NsisSetupSamples
+  - _scripts/orbittools
+  - _scripts/orbittools/_projects
+  - _scripts/orbittools/deploy
+  - _scripts/orbittools/orbittools
+  - _scripts/orbittools/orbittools-p1
+  - _scripts/orbittools/qd
+  - _scripts/orbittools/sgp4
+  - _scripts/orbittools/sgp4-p1
+  - _scripts/svncmd
+  - _scripts/svncmd/deploy
+  - _scripts/svncmd/scripts
+  - _scripts/svncmd/svncmd
+  - _scripts/tacklelib
+  - _scripts/tacklelib/deploy
+  - _scripts/tacklelib/tacklelib
+  - _scripts/tacklelib/tacklelib/3dparty
+  - _scripts/tacklelib/tacklelib/3dparty/fmt
+  - _scripts/tacklelib/tacklelib/3dparty/googletest
+  - _scripts/tacklelib/tacklelib/3dparty/libarchive
+  - _scripts/tacklelib/tacklelib/3dparty/p7client
+  - _scripts/tacklelib/tacklelib/3dparty/pystring
+  - _scripts/tacklelib/tacklelib/3dparty/qcustomplot
+  - _scripts/tacklelib/tacklelib/3dparty/qwtpolar
+  - _scripts/tacklelib/tacklelib/3dparty/xzutils
+  - _scripts/pyxvcs
+  - _scripts/pyxvcs/deploy
+  - _scripts/pyxvcs/pyxvcs
 
-GIT3.PROJECT_PATH_LIST:
-  - 3dparty/dev
-  - 3dparty/scripts
-  #- contools/3dparty
-  #- contools/3dparty_scripts
-  - contools/bittools
-  #- contools/contools
-  #- contools/debug
-  #- contools/deploy
-  #- contools/external_tools
-  #- contools/tools
-  #- nsisplus/_projects
-  #- nsisplus/deploy
-  - nsisplus/NsisSetupLib
-  - nsisplus/NsisSetupDev
-  - nsisplus/NsisSetupSamples
-  #- orbittools/_projects
-  - orbittools/deploy
-  - orbittools/orbittools
-  - orbittools/orbittools-p1
-  - orbittools/qd
-  - orbittools/sgp4
-  - orbittools/sgp4-p1
-  - svncmd/deploy
-  - svncmd/scripts
-  - svncmd/svncmd
-  - tacklelib/tacklelib
-  - tacklelib/tacklelib/3dparty
-  - tacklelib/tacklelib/3dparty/fmt
-  - tacklelib/tacklelib/3dparty/googletest
-  - tacklelib/tacklelib/3dparty/libarchive
-  - tacklelib/tacklelib/3dparty/p7client
-  - tacklelib/tacklelib/3dparty/pystring
-  - tacklelib/tacklelib/3dparty/qcustomplot
-  - tacklelib/tacklelib/3dparty/qwtpolar
-  - tacklelib/tacklelib/3dparty/xzutils
-  #- tacklelib/tacklelib/deploy
-  #- pyxvcs/deploy
-  - pyxvcs/pyxvcs
+GIT_GL.PROJECT_PATH_LIST:
+  - _scripts
+  - _scripts/contools
+  #- _scripts/contools/3dparty
+  #- _scripts/contools/3dparty_checkout_scripts
+  #- _scripts/contools/3dparty_scripts
+  #- _scripts/contools/3dparty/wxwidgets
+  - _scripts/contools/bittools
+  #- _scripts/contools/contools
+  #- _scripts/contools/debug
+  #- _scripts/contools/deploy
+  #- _scripts/contools/external_tools
+  #- _scripts/contools/tools
+  - _scripts/nsisplus
+  - _scripts/nsisplus/_projects
+  #- _scripts/nsisplus/deploy
+  - _scripts/nsisplus/NsisSetupLib
+  - _scripts/nsisplus/NsisSetupDev
+  - _scripts/nsisplus/NsisSetupSamples
+  - _scripts/orbittools
+  - _scripts/orbittools/_projects
+  #- _scripts/orbittools/deploy
+  - _scripts/orbittools/orbittools
+  - _scripts/orbittools/orbittools-p1
+  - _scripts/orbittools/qd
+  - _scripts/orbittools/sgp4
+  - _scripts/orbittools/sgp4-p1
+  - _scripts/svncmd
+  #- _scripts/svncmd/deploy
+  - _scripts/svncmd/scripts
+  - _scripts/svncmd/svncmd
+  - _scripts/tacklelib
+  #- _scripts/tacklelib/deploy
+  - _scripts/tacklelib/tacklelib
+  - _scripts/tacklelib/tacklelib/3dparty
+  - _scripts/tacklelib/tacklelib/3dparty/fmt
+  - _scripts/tacklelib/tacklelib/3dparty/googletest
+  - _scripts/tacklelib/tacklelib/3dparty/libarchive
+  - _scripts/tacklelib/tacklelib/3dparty/p7client
+  - _scripts/tacklelib/tacklelib/3dparty/pystring
+  - _scripts/tacklelib/tacklelib/3dparty/qcustomplot
+  - _scripts/tacklelib/tacklelib/3dparty/qwtpolar
+  - _scripts/tacklelib/tacklelib/3dparty/xzutils
+  #- _scripts/tacklelib/tacklelib/deploy
+  - _scripts/pyxvcs
+  #- _scripts/pyxvcs/deploy
+  - _scripts/pyxvcs/pyxvcs

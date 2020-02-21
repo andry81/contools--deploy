@@ -1,6 +1,6 @@
-SVN.WCROOT_DIR:             sf~svn~contools--bittools
-GIT.WCROOT_DIR:             gh~git~contools--bittools
-GIT2.WCROOT_DIR:            bb~git~contools--bittools
-GIT3.WCROOT_DIR:            gl~git~contools--bittools
+SVN_SF.WCROOT_DIR:          sf~svn~contools--bittools
+GIT_GH.WCROOT_DIR:          gh~git~contools--bittools
+GIT_BB.WCROOT_DIR:          bb~git~contools--bittools
+GIT_GL.WCROOT_DIR:          gl~git~contools--bittools
 
-SVN.CHECKOUT_URL:           ${CONTOOLS_BITTOOLS.SVN.REPOROOT}/trunk
+SVN_SF.CHECKOUT_URL:        ${CONTOOLS_BITTOOLS.SVN_SF.REPOROOT}/trunk

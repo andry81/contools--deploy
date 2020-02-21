@@ -2,7 +2,7 @@ import os
 
 # auto export these globals to all child modules
 tkl_declare_global('CONFIGURE_ROOT', SOURCE_DIR)
-tkl_declare_global('BASE_SCRIPTS_ROOT', os.environ['BASE_SCRIPTS_ROOT'])
+tkl_declare_global('PYXVCS_SCRIPTS_ROOT', os.environ['PYXVCS_SCRIPTS_ROOT'])
 
 tkl_declare_global('LOCAL_CONFIG_DIR_NAME', os.environ['LOCAL_CONFIG_DIR_NAME'])
 tkl_declare_global('TMPL_CMDOP_FILES_DIR', os.environ['TMPL_CMDOP_FILES_DIR'])
@@ -19,7 +19,7 @@ tkl_declare_global('PYTHON_EXE_FILE_NAME', os.path.basename(PYTHON_EXE_PATH))
 tkl_source_module(CMDOPLIB_ROOT, 'cmdoplib.xsh')
 
 is_config_private_loaded = False
-for config_dir in [CONFIGURE_ROOT + '/' + LOCAL_CONFIG_DIR_NAME, CONFIGURE_ROOT]:
+for config_dir in [CONFIGURE_ROOT + '/' + LOCAL_CONFIG_DIR_NAME]:
   if not os.path.exists(config_dir):
     continue
 

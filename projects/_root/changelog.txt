@@ -1,3 +1,7 @@
+2020.02.21:
+* refactor: moved external scripts into standalone directory `_scripts`
+* refactor: global configuration refactor
+
 2020.02.02:
 * fixed: root `__init__.bat` script
 

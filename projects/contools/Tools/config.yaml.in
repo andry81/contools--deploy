@@ -1,2 +1,2 @@
-GIT.WCROOT_DIR:             gh~git~contools--Tools
-GIT2.WCROOT_DIR:            bb~git~contools--Tools
+GIT_GH.WCROOT_DIR:          gh~git~contools--Tools
+GIT_BB.WCROOT_DIR:          bb~git~contools--Tools
