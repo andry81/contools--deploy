@@ -1,4 +1,7 @@
 2020.02.24:
+* changed: _config: merge with the pyxvcs project
+
+2020.02.24:
 * fixed: _config: `config.yaml` and `config.env.yaml` common configuration files now loads from the `__init__.xsh` script
 
 2020.02.24:
