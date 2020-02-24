@@ -19,13 +19,14 @@ tkl_declare_global('PYTHON_EXE_FILE_NAME', os.path.basename(PYTHON_EXE_PATH))
 tkl_source_module(CMDOPLIB_ROOT, 'cmdoplib.xsh')
 
 is_config_private_loaded = False
-for config_dir in [CONFIGURE_ROOT + '/' + LOCAL_CONFIG_DIR_NAME]:
+for config_dir in [CONFIGURE_ROOT + '/' + LOCAL_CONFIG_DIR_NAME, CONFIGURE_ROOT]:
   if not os.path.exists(config_dir):
     continue
 
   if os.path.isfile(os.path.join(config_dir, 'config.private.yaml')):
     yaml_load_config(config_dir, 'config.private.yaml')
     is_config_private_loaded = True
+    break # break on success
 
 if not is_config_private_loaded:
   raise Exception(

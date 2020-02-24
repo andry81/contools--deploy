@@ -14,48 +14,48 @@
 	fetch = :refs/remotes/git-svn
 	remote = svn
 	type = dir
-[submodule "solutions/all-in-one/all-in-one/_sctipts/contools"]
-	path = solutions/all-in-one/all-in-one/_sctipts/contools
+[submodule "solutions/all-in-one/all-in-one/_scripts/contools"]
+	path = solutions/all-in-one/all-in-one/_scripts/contools
 	owner = solutions/all-in-one
 	url = /p/contools/deploy/trunk/projects/contools
 	branch = /
 	fetch = :refs/remotes/git-svn
 	remote = svn
 	type = dir
-[submodule "solutions/all-in-one/all-in-one/_sctipts/nsisplus"]
-	path = solutions/all-in-one/all-in-one/_sctipts/nsisplus
+[submodule "solutions/all-in-one/all-in-one/_scripts/nsisplus"]
+	path = solutions/all-in-one/all-in-one/_scripts/nsisplus
 	owner = solutions/all-in-one
 	url = /p/nsisplus/deploy/trunk/projects/nsisplus
 	branch = /
 	fetch = :refs/remotes/git-svn
 	remote = svn
 	type = dir
-[submodule "solutions/all-in-one/all-in-one/_sctipts/orbittools"]
-	path = solutions/all-in-one/all-in-one/_sctipts/orbittools
+[submodule "solutions/all-in-one/all-in-one/_scripts/orbittools"]
+	path = solutions/all-in-one/all-in-one/_scripts/orbittools
 	owner = solutions/all-in-one
 	url = /p/orbittools/deploy/trunk/projects/orbittools
 	branch = /
 	fetch = :refs/remotes/git-svn
 	remote = svn
 	type = dir
-[submodule "solutions/all-in-one/all-in-one/_sctipts/pyxvcs"]
-	path = solutions/all-in-one/all-in-one/_sctipts/pyxvcs
+[submodule "solutions/all-in-one/all-in-one/_scripts/pyxvcs"]
+	path = solutions/all-in-one/all-in-one/_scripts/pyxvcs
 	owner = solutions/all-in-one
 	url = /p/pyxvcs/deploy/trunk/projects/pyxvcs
 	branch = /
 	fetch = :refs/remotes/git-svn
 	remote = svn
 	type = dir
-[submodule "solutions/all-in-one/all-in-one/_sctipts/svncmd"]
-	path = solutions/all-in-one/all-in-one/_sctipts/svncmd
+[submodule "solutions/all-in-one/all-in-one/_scripts/svncmd"]
+	path = solutions/all-in-one/all-in-one/_scripts/svncmd
 	owner = solutions/all-in-one
 	url = /p/svncmd/deploy/trunk/projects/svncmd
 	branch = /
 	fetch = :refs/remotes/git-svn
 	remote = svn
 	type = dir
-[submodule "solutions/all-in-one/all-in-one/_sctipts/tacklelib"]
-	path = solutions/all-in-one/all-in-one/_sctipts/tacklelib
+[submodule "solutions/all-in-one/all-in-one/_scripts/tacklelib"]
+	path = solutions/all-in-one/all-in-one/_scripts/tacklelib
 	owner = solutions/all-in-one
 	url = /p/tacklelib/deploy/trunk/projects/tacklelib
 	branch = /

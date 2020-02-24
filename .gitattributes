@@ -11,8 +11,6 @@ projects/_root/_config/config.private.yaml.in -text
 projects/_root/_config/config.vars.in -text
 projects/_root/_config/config.yaml.in -text
 projects/_root/_config/tmpl/__init__.bat.in -text
-projects/_root/_config/tmpl/configure.bat.in -text
-projects/_root/_config/tmpl/configure.yaml.bat.in -text
 projects/_root/_config/tmpl/{HUB}~git~compare_commits.bat.in -text
 projects/_root/_config/tmpl/{HUB}~git~fetch.bat.in -text
 projects/_root/_config/tmpl/{HUB}~git~init.bat.in -text

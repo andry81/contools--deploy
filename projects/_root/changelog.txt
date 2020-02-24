@@ -1,3 +1,11 @@
+2020.02.24:
+* fixed: svn externals
+* fixed: _config: `config.vars` double generation
+* fixed: configuration files and scripts generation by project paths walking instead by all directories walking to avoid paths which is not a part of project paths or does not have (yet) configuration files or script files
+* changed: reverted to previous initialization scripts except the break-on-success logic when the load function keeps going and enumerating directories only when the previous load is failed (first success load is the last)
+* changed: switched all other scrips to break-on-success strategy when loads the same configuration files from multiple directories
+* changed: removed configure scripts generation from project subdirectories, from now configuration scripts must be run only from a project root
+
 2020.02.21:
 * refactor: moved external scripts into standalone directory `_scripts`
 * refactor: global configuration refactor
