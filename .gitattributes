@@ -14,10 +14,12 @@ projects/_root/_config/tmpl/__init__.bat.in -text
 projects/_root/_config/tmpl/{HUB}~git~compare_commits.bat.in -text
 projects/_root/_config/tmpl/{HUB}~git~fetch.bat.in -text
 projects/_root/_config/tmpl/{HUB}~git~init.bat.in -text
+projects/_root/_config/tmpl/{HUB}~git~makedirs.bat.in -text
 projects/_root/_config/tmpl/{HUB}~git~pull.bat.in -text
 projects/_root/_config/tmpl/{HUB}~git~push_svn_to_git.bat.in -text
 projects/_root/_config/tmpl/{HUB}~git~reset.bat.in -text
 projects/_root/_config/tmpl/{HUB}~svn~checkout.bat.in -text
+projects/_root/_config/tmpl/{HUB}~svn~makedirs.bat.in -text
 projects/_root/_config/tmpl/{HUB}~svn~relocate.bat.in -text
 projects/_root/_config/tmpl/{HUB}~svn~update.bat.in -text
 projects/_root/changelog.txt -text
