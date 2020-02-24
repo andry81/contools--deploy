@@ -2,7 +2,7 @@
 
 setlocal
 
-call "%%~dp0__init__.bat" 0 1 || exit /b
+call "%%~dp0__init__.bat" || exit /b
 
 set /A NEST_LVL+=1
 

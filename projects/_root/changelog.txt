@@ -1,4 +1,7 @@
 2020.02.24:
+* fixed: _config: `config.yaml` and `config.env.yaml` common configuration files now loads from the `__init__.xsh` script
+
+2020.02.24:
 * fixed: svn externals
 * fixed: _config: `config.vars` double generation
 * fixed: configuration files and scripts generation by project paths walking instead by all directories walking to avoid paths which is not a part of project paths or does not have (yet) configuration files or script files
