@@ -4,6 +4,7 @@ projects/_root/02_configure.private.bat -text
 projects/_root/03_configure.yaml.bat -text
 projects/_root/04_configure.bat -text
 projects/_root/__init__.bat -text
+projects/_root/__init__.sh -text
 projects/_root/__init__.xsh -text
 projects/_root/_cache/.svnignore -text
 projects/_root/_config/config.env.yaml.in -text
@@ -11,6 +12,7 @@ projects/_root/_config/config.private.yaml.in -text
 projects/_root/_config/config.vars.in -text
 projects/_root/_config/config.yaml.in -text
 projects/_root/_config/tmpl/__init__.bat.in -text
+projects/_root/_config/tmpl/__init__.sh.in -text
 projects/_root/_config/tmpl/{HUB}~git~compare_commits.bat.in -text
 projects/_root/_config/tmpl/{HUB}~git~fetch.bat.in -text
 projects/_root/_config/tmpl/{HUB}~git~init.bat.in -text

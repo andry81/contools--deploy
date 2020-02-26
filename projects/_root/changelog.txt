@@ -1,3 +1,8 @@
+2020.02.27:
+* new: `__init__.bat` script port into `__init__.sh` script
+* new: `configure.bat` script port into `configure.sh` script
+* changed: svn ignores update
+
 2020.02.24:
 * changed: _config: merge with the pyxvcs project
 
