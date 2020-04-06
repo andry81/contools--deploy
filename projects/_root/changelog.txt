@@ -1,3 +1,6 @@
+2020.04.06:
+* changed: back merge from the `pyxvcs` project
+
 2020.04.05:
 * changed: back merge from the `pyxvcs` project
 
