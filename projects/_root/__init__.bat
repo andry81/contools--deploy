@@ -1,6 +1,8 @@
 @echo off
 
-if %__BASE_INIT__%0 NEQ 0 exit /b
+if /i "%PYXVCS_SCRIPTS_INIT0_DIR%" == "%~dp0" exit /b
+
+set "PYXVCS_SCRIPTS_INIT0_DIR=%~dp0"
 
 if not defined NEST_LVL set NEST_LVL=0
 
@@ -31,8 +33,6 @@ if %MUST_LOAD_CONFIG% NEQ 0 (
 ) >&2
 
 if defined CHCP chcp %CHCP%
-
-set __BASE_INIT__=1
 
 (
   set "MUST_LOAD_CONFIG="
